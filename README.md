@@ -9,7 +9,7 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-![登录](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen1.png)
+![登录](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen2.png)
 
 ![个人中心](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen1.png)
 
@@ -53,16 +53,20 @@
 
 如果你喜欢它,不妨给它点个`star`或者请我喝杯咖啡
 
-<div style="display: flex;">
-    <div>
-    支付宝：
-    <img src="https://gitee.com/XiaoLanMiao/smart-miao/raw/master/alipay.png" width="200" hegiht="200"/>
-    </div>
-    <div>
-        微信：
+<table>
+ <tr>
+    <th>支付宝</th>
+    <th>微信</th>
+ </tr>
+  <tr>
+    <td valign="top">
+        <img src="https://gitee.com/XiaoLanMiao/smart-miao/raw/master/alipay.png" width="200" hegiht="200"/>
+    </td>
+    <td valign="top">
         <img src="https://gitee.com/XiaoLanMiao/smart-miao/raw/master/wechatpay.png" width="200" hegiht="200"/>
-    </div>
-</div>
+    </td>
+  </tr>
+</table>
 
 ## 开源协议
 
