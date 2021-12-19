@@ -14,11 +14,11 @@
 ![个人中心](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen1.png)
 
 ## 目录
-- backend：基于`Egg.js`的后端工程
-- frontend：基于`Vue2`的前端工程
-- web：基于`Bulma.css`的产品营销网站
-- app：基于`Uniapp、uviewui`的移动端工程
-- desktop：基于`Electron`的桌面工程
+- backend：基于`Egg.js 2.x`和`nodejs 14.x`的后端工程
+- frontend：基于`Vue.js 2.x`的前端工程
+- web：基于`Bulma.css 0.9.x`的产品营销网站
+- app：基于`Uniapp、uviewui 2.x`的移动端工程
+- desktop：基于`Electron 16.x`的桌面工程
 
 ## 功能
 - [x] 系统管理-用户管理
@@ -31,6 +31,7 @@
 - [x] 系统监控-登录日志
 - [x] 系统监控-服务监控
 - [x] 消息通知
+- [x] 登录-Token、RefreshToken
 - [x] 登录-账号密码登录
 - [ ] 登录-手机短信登录
 - [ ] 登录-Github、微信、钉钉第三方登录
