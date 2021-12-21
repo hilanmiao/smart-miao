@@ -47,7 +47,7 @@
                 size="small"
                 icon="el-icon-user-solid"
               />
-              <el-avatar v-else size="small" :src="scope.row.avatar" />
+              <el-avatar v-else size="small" :src="VUE_APP_BASE_API + scope.row.avatar" />
             </template>
           </el-table-column>
           <el-table-column

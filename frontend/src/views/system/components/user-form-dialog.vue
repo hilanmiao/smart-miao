@@ -73,17 +73,22 @@
           <el-col :span="12" />
         </el-row>
         <el-form-item label="头像" :label-width="labelWidth">
-          <!--        <el-upload-->
-          <!--          class="avatar-uploader"-->
-          <!--          action="#"-->
-          <!--          :show-file-list="false"-->
-          <!--          :on-success="handleUploadSuccess"-->
-          <!--          :on-error="handleUploadError"-->
-          <!--          :http-request="upload"-->
-          <!--        >-->
-          <!--          <img v-if="form.avatar" :src="form.avatar" class="avatar">-->
-          <!--          <i v-else class="el-icon-plus avatar-uploader-icon" />-->
-          <!--        </el-upload>-->
+          <el-upload
+            class="avatar-uploader"
+            action="#"
+            accept="image/png, image/jpeg"
+            :show-file-list="false"
+            :on-success="handleUploadSuccess"
+            :on-error="handleUploadError"
+            :on-progress="handlePicUploadProgress"
+            :http-request="upload"
+          >
+            <img v-show="form.avatar" :src="VUE_APP_BASE_API + form.avatar" class="avatar">
+            <i v-show="!form.avatar" class="el-icon-plus avatar-uploader-icon" />
+            <div v-show="picProgressPercent !== 0" class="progress-wrapper">
+              <el-progress type="circle" :percentage="picProgressPercent" />
+            </div>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -118,7 +123,7 @@
 <script>
 import clip from '@/utils/clipboard'
 import _ from 'lodash'
-import { roleService, userService } from '@/services'
+import { roleService, userService, fileService } from '@/services'
 
 export default {
   components: {
@@ -162,6 +167,8 @@ export default {
       },
       loading: false,
       saving: false,
+      // 图片上传
+      picProgressPercent: 0,
       // 业务属性
       roleList: [],
       visiblePassword: false,
@@ -309,6 +316,59 @@ export default {
     },
     handleCopy(text, event) {
       clip(text, event)
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      const isLtXM = file.size / 1024 / 1024 < 5
+
+      if (!isJPG && !isPNG) {
+        this.$message.error('上传头像图片只能是 JPG、PNG 格式!')
+        return false
+      }
+      if (!isLtXM) {
+        this.$message.error('上传头像图片大小不能超过 5MB!')
+        return false
+      }
+      return true
+    },
+    upload(content) {
+      const checkUpload = this.beforeUpload(content.file)
+      if (!checkUpload) {
+        return
+      }
+      console.log(content)
+      fileService.uploadAvatar(content.file.name, content.file, {
+        // axios 上传进度事件
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+          console.log(percentCompleted)
+          // 更新element upload progress
+          content.onProgress({ percent: percentCompleted })
+          this.picProgressPercent = percentCompleted
+        }
+      }).then(response => {
+        content.onSuccess(response)
+        setTimeout(() => {
+          this.picProgressPercent = 0
+        }, 1000)
+      }).catch(error => {
+        content.onError(error)
+      })
+    },
+    handleUploadSuccess(response, file) {
+      console.log(response)
+      this.form.avatar = response.data.data.url
+    },
+    handleUploadError(err) {
+      console.log(err)
+      this.$message({
+        message: '上传失败',
+        type: 'error'
+      })
+    },
+    handlePicUploadProgress(event, file, fileList) {
+      console.log(event, file)
     }
   }
 }
@@ -321,6 +381,9 @@ export default {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       border-color: #409EFF;
     }
@@ -339,6 +402,20 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+  }
+
+  .progress-wrapper {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .el-progress {
+    position: absolute;
   }
 }
 </style>
