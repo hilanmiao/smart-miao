@@ -85,8 +85,8 @@
           >
             <img v-show="form.avatar" :src="VUE_APP_BASE_API + form.avatar" class="avatar">
             <i v-show="!form.avatar" class="el-icon-plus avatar-uploader-icon" />
-            <div v-show="picProgressPercent !== 0" class="progress-wrapper">
-              <el-progress type="circle" :percentage="picProgressPercent" />
+            <div v-show="uploadProgressPercent !== 0" class="progress-wrapper">
+              <el-progress type="circle" :percentage="uploadProgressPercent" />
             </div>
           </el-upload>
         </el-form-item>
@@ -146,7 +146,7 @@ export default {
   data() {
     return {
       // 通用属性
-      labelWidth: '80px',
+      labelWidth: '100px',
       defaultForm: null,
       form: {
         id: '',
@@ -168,7 +168,7 @@ export default {
       loading: false,
       saving: false,
       // 图片上传
-      picProgressPercent: 0,
+      uploadProgressPercent: 0,
       // 业务属性
       roleList: [],
       visiblePassword: false,
@@ -345,12 +345,12 @@ export default {
           console.log(percentCompleted)
           // 更新element upload progress
           content.onProgress({ percent: percentCompleted })
-          this.picProgressPercent = percentCompleted
+          this.uploadProgressPercent = percentCompleted
         }
       }).then(response => {
         content.onSuccess(response)
         setTimeout(() => {
-          this.picProgressPercent = 0
+          this.uploadProgressPercent = 0
         }, 1000)
       }).catch(error => {
         content.onError(error)

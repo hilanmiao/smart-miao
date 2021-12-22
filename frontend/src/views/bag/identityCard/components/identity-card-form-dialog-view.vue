@@ -1,8 +1,8 @@
 <template>
   <el-dialog
     :title="title"
-    width="50%"
-    :close-on-click-modal="false"
+    width="60%"
+    :close-on-click-modal="true"
     :append-to-body="true"
     :center="true"
     :visible.sync="visible"
@@ -13,39 +13,63 @@
     <el-descriptions class="margin-top" :column="3" border>
       <el-descriptions-item :span="3">
         <template slot="label">
-          标题
+          身份证号码
         </template>
-        {{ form.title }}
+        {{ form.content.identityNumber }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
-          接收人
+          姓名
         </template>
-        {{ form.recipientUser && form.recipientUser.username || '' }}
+        {{ form.content.name }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
-          发送人
+          性别
         </template>
-        {{ form.managerUser && form.managerUser.username || '' }}
+        {{ form.content.sex === '1' ? '男' : '女' }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
-          发送时间
+          民族
         </template>
-        {{ form.createdAt }}
+        {{ form.content.nationality }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          出生日期
+        </template>
+        {{ form.content.dob }}
+      </el-descriptions-item>
+      <el-descriptions-item :span="2">
+        <template slot="label">
+          有效期
+        </template>
+        {{ form.content.validity && form.content.validity[0] || '' }} ~ {{ form.content.validity && form.content.validity[1] || '' }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          签发机关
+        </template>
+        {{ form.content.issuingAuthority }}
+      </el-descriptions-item>
+      <el-descriptions-item :span="2">
+        <template slot="label">
+          户籍地址
+        </template>
+        {{ form.content.address }}
       </el-descriptions-item>
       <el-descriptions-item :span="3">
         <template slot="label">
-          备注
+          身份证人像面
         </template>
-        {{ form.remark }}
+        <el-image :src="VUE_APP_BASE_API + form.content.identityCardFront" />
       </el-descriptions-item>
       <el-descriptions-item :span="3">
         <template slot="label">
-          内容
+          身份证国徽面
         </template>
-        {{ form.content }}
+        <el-image :src="VUE_APP_BASE_API + form.content.identityCardBack" />
       </el-descriptions-item>
     </el-descriptions>
     <div slot="footer" class="dialog-footer">
@@ -57,7 +81,7 @@
 </template>
 
 <script>
-import { notificationService } from '@/services'
+import { bagService } from '@/services'
 import _ from 'lodash'
 
 export default {
@@ -81,7 +105,9 @@ export default {
   data() {
     return {
       // 通用属性
-      form: {}
+      form: {
+        content: {}
+      }
     }
   },
   computed: {
@@ -96,7 +122,7 @@ export default {
       }
     },
     title() {
-      return '查看通知'
+      return '查看身份证'
     }
   },
   created() {
@@ -118,7 +144,7 @@ export default {
       try {
         this.form.id = this.formId
       } catch (e) {
-        console.error('notification.getUserList-error:', e)
+        console.error('bag.getUserList-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
         this.$message.error(errorMessage)
       }
@@ -126,11 +152,11 @@ export default {
     // 设置数据
     async setData() {
       try {
-        const response = await notificationService.getNotification({ id: this.form.id })
-        const { data: notification } = response.data
-        this.form = notification
+        const response = await bagService.getBag({ id: this.form.id })
+        const { data: bag } = response.data
+        this.form = bag
       } catch (e) {
-        console.error('notification.getNotification-error:', e)
+        console.error('bag.getBag-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
         this.$message.error(errorMessage)
       }
@@ -149,4 +175,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .el-image {
+    width: 300px;
+    height: 160px;
+  }
 </style>

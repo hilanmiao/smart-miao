@@ -7,10 +7,10 @@
           action="#"
           accept=".jpg,.png,.gif,.jpeg,.JPG,.JPEG,.GIF"
           :show-file-list="false"
-          :on-success="handleAvatarUploadSuccess"
-          :on-error="handleAvatarUploadError"
-          :on-progress="handleAvatarUploadProgress"
-          :http-request="uploadAvatar"
+          :on-success="handleUploadSuccess"
+          :on-error="handleUploadError"
+          :on-progress="handleUploadProgress"
+          :http-request="upload"
         >
           <img v-if="user.avatar" :src="VUE_APP_BASE_API + user.avatar" alt="" draggable="false">
           <img v-else src="@/assets/images/logo.png">
@@ -22,8 +22,8 @@
       <div class="box-center">
         <div class="user-name text-center">{{ user.username }}</div>
         <div class="user-role text-center text-muted">
-          <i class="el-icon-male" style="color: deeppink;" v-if="user.sex === '2'"></i>
-          <i class="el-icon-female" style="color: deepskyblue;" v-else></i>
+          <i v-if="user.sex === '2'" class="el-icon-male" style="color: deeppink;" />
+          <i v-else class="el-icon-female" style="color: deepskyblue;" />
           {{ user.displayName }}
         </div>
       </div>
@@ -47,19 +47,19 @@
             class=""
           >
             <el-menu-item index="account" @click="activeMenu = 'account'">
-              <svg-icon icon-class="link"/>
+              <svg-icon icon-class="link" />
               <strong slot="title">账号绑定</strong>
             </el-menu-item>
             <el-menu-item index="profile" @click="activeMenu = 'profile'">
-              <svg-icon icon-class="profile"/>
+              <svg-icon icon-class="profile" />
               <strong slot="title">个人信息</strong>
             </el-menu-item>
             <el-menu-item index="operationLog" @click="activeMenu = 'operationLog'">
-              <svg-icon icon-class="history"/>
+              <svg-icon icon-class="history" />
               <strong slot="title">操作记录</strong>
             </el-menu-item>
             <el-menu-item index="authenticate" @click="activeMenu = 'authenticate'">
-              <svg-icon icon-class="safety-certificate"/>
+              <svg-icon icon-class="safety-certificate" />
               <strong slot="title">实名认证</strong>
             </el-menu-item>
           </el-menu>
@@ -97,7 +97,7 @@ export default {
     console.log(this.user)
   },
   methods: {
-    beforeUploadAvatar(file) {
+    beforeUpload(file) {
       const isLt5M = file.size / 1024 / 1024 < 10
 
       if (!isLt5M) {
@@ -106,8 +106,8 @@ export default {
       }
       return true
     },
-    uploadAvatar(content) {
-      const checkUpload = this.beforeUploadAvatar(content.file)
+    upload(content) {
+      const checkUpload = this.beforeUpload(content.file)
       if (!checkUpload) {
         return
       }
@@ -131,7 +131,7 @@ export default {
         content.onError(error)
       })
     },
-    async handleAvatarUploadSuccess(response, file) {
+    async handleUploadSuccess(response, file) {
       console.log(response)
 
       // 更新用户头像
@@ -148,14 +148,14 @@ export default {
         this.$message.error(errorMessage)
       }
     },
-    handleAvatarUploadError(err) {
+    handleUploadError(err) {
       console.log(err)
       this.$message({
         message: '上传失败',
         type: 'error'
       })
     },
-    handleAvatarUploadProgress(event, file, fileList) {
+    handleUploadProgress(event, file, fileList) {
       console.log(event, file)
     }
   }

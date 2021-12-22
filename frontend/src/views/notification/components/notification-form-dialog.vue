@@ -78,7 +78,7 @@ export default {
   data() {
     return {
       // 通用属性
-      labelWidth: '80px',
+      labelWidth: '100px',
       defaultForm: null,
       form: {
         id: '',

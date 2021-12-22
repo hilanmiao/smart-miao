@@ -75,6 +75,15 @@ export function validMobile(mobile) {
 }
 
 /**
+ * @param {string} identityNumber
+ * @returns {Boolean}
+ */
+export function validIdentityNumber(identityNumber) {
+  const reg = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+  return reg.test(identityNumber)
+}
+
+/**
  * @param {string} str
  * @returns {Boolean}
  */

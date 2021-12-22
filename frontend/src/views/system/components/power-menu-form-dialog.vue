@@ -46,7 +46,7 @@
         <el-input v-model="form.router" autocomplete="off" placeholder="例：/system/power/menu" />
       </el-form-item>
       <el-form-item label="节点图标" :label-width="labelWidth" prop="icon">
-<!--        <icon-selector :value="form.icon" @selected="iconSelected" />-->
+        <!--        <icon-selector :value="form.icon" @selected="iconSelected" />-->
         <el-popover
           v-model="popoverVisibleIcon"
           placement="bottom-start"
@@ -127,7 +127,7 @@ export default {
   data() {
     return {
       // 通用属性
-      labelWidth: '80px',
+      labelWidth: '100px',
       defaultForm: null,
       form: {
         id: '-1',

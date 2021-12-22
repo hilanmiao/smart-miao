@@ -1,28 +1,28 @@
 import { httpClient as http } from '@/services'
 const internals = {}
-const apiUrl = 'api/system/role/'
+const apiUrl = 'api/bag/'
 
-internals.getRole = (params) => {
+internals.getBag = (params) => {
   return http.get(apiUrl, params)
 }
 
-internals.getRoleList = (params) => {
+internals.getBagList = (params) => {
   return http.get(apiUrl + 'list', params)
 }
 
-internals.getRoleListByPage = (params) => {
+internals.getBagListByPage = (params) => {
   return http.get(apiUrl + 'page', params)
 }
 
-internals.createRole = (data) => {
+internals.createBag = (data) => {
   return http.post(apiUrl, data)
 }
 
-internals.updateRole = (data) => {
+internals.updateBag = (data) => {
   return http.put(apiUrl, data)
 }
 
-internals.deleteRole = (data) => {
+internals.deleteBag = (data) => {
   return http.delete(apiUrl, data)
 }
 

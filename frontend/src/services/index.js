@@ -13,5 +13,5 @@ export { default as serverService } from './server.service'
 export { default as onlineUserService } from './online-user.service'
 export { default as notificationService } from './notification.service'
 
-export { default as walletService } from './business/wallet.service'
+export { default as bagService } from './business/bag.service'
 
