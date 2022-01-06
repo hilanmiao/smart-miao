@@ -124,14 +124,16 @@ class BagService extends Service {
   /**
    * 分页
    * @param page
+   * @param type
    * @param limit
    * @param name
    * @returns {Promise<{pagination: {total, size, page}, list: number | TInstance[] | M[] | SQLResultSetRowList | HTMLCollectionOf<HTMLTableRowElement> | string}>}
    */
-  async page({ page, limit, name }) {
+  async page({ page, limit, type, name }) {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
     const op = {
       where: {
+        type,
         'content.name': { [Op.like]: `%${name || ''}%` },
       },
       order: [

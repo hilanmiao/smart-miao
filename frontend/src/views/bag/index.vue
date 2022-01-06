@@ -1,31 +1,40 @@
 <template>
   <div class="notification-container">
     <el-tabs v-model="activeTab" tab-position="left">
-      <el-tab-pane label="身份证" name="IDCard">
-        <identity-card />
+      <el-tab-pane label="身份证" name="identityCard">
+        <identity-card ref="identityCard" />
       </el-tab-pane>
       <el-tab-pane label="驾驶证" name="drivingLicense">
-        <driving-license />
+        <driving-license ref="drivingLicense" />
       </el-tab-pane>
       <el-tab-pane label="行驶证" name="vehicleLicense">
-        <driving-license />
+        <vehicle-license ref="vehicleLicense" />
+      </el-tab-pane>
+      <el-tab-pane label="结婚证" name="marriageRegistration">
+        <marriage-registration ref="marriageRegistration" />
+      </el-tab-pane>
+      <el-tab-pane label="产权证" name="ownershipCertificate">
+        <ownership-certificate ref="ownershipCertificate" />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import identityCard from './identityCard/index'
+import identityCard from './identity-card/index'
 import drivingLicense from './driving-license/index'
+import vehicleLicense from './vehicle-license/index'
+import marriageRegistration from './marriage-registration/index'
+import ownershipCertificate from './ownership-certificate/index'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Wallet',
-  components: { identityCard, drivingLicense },
+  components: { identityCard, drivingLicense, vehicleLicense, marriageRegistration, ownershipCertificate },
   data() {
     return {
       user: {},
-      activeTab: 'IDCard'
+      activeTab: 'identityCard'
     }
   },
   computed: {
@@ -35,10 +44,8 @@ export default {
   watch: {
     activeTab(newValue) {
       this.currentValue = newValue
-      // if (newValue === 'read') {
-      //   // 更新已读组件数据
-      //   this.$refs.read.loadTableData()
-      // }
+      // 刷新子组件数据
+      this.$refs[newValue].loadTableData()
     }
   },
   created() {

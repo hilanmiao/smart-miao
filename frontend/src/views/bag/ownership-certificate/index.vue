@@ -1,5 +1,5 @@
 <template>
-  <div class="identityCard-container">
+  <div class="ownership-certificate-container">
     <table-layout class="table-layout">
       <template v-slot:headerLeft>
         <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
@@ -11,7 +11,7 @@
         >批量删除</warning-confirm-button>
       </template>
       <template v-slot:headerRight>
-        <el-input v-model="tableSearchParams.name" size="mini" placeholder="请输入姓名" class="search-input">
+        <el-input v-model="tableSearchParams.name" size="mini" placeholder="请输入名称" class="search-input">
           <el-button slot="append" icon="el-icon-search" type="primary" @click="loadTableData">搜索</el-button>
         </el-input>
         <span class="line">|</span>
@@ -20,6 +20,7 @@
       </template>
       <template>
         <el-table
+          ref="table"
           v-loading="tableLoading"
           class="has-checkbox"
           :data="tableData"
@@ -33,21 +34,12 @@
         >
           <el-table-column type="index" width="30" fixed="left" />
           <el-table-column type="selection" align="center" width="30" fixed="left" />
-          <el-table-column prop="content" label="姓名" align="center" width="100">
+          <el-table-column prop="content" label="名称" align="center">
             <template slot-scope="{row}">
               <span class="link-type" @click="handleEdit(row)">{{ row.content.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="content.identityNumber" label="身份证号码" align="center" width="160">
-          </el-table-column>
-          <el-table-column prop="validity" label="有效期" align="center" width="180">
-            <template slot-scope="{row}">
-              {{ row.content.validity && row.content.validity[0] || '' }} ~ {{ row.content.validity && row.content.validity[1] || '' }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="content.issuingAuthority" label="签发机关" align="center" width="160">
-          </el-table-column>
-          <el-table-column prop="content.address" label="户籍地址" align="center" />
+          <el-table-column prop="content.registrationDate" label="登记日期" align="center" width="160" />
           <el-table-column label="操作" width="150" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
@@ -65,8 +57,8 @@
       </template>
     </table-layout>
 
-    <identity-card-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
-    <identity-card-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
+    <ownership-certificate-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
+    <ownership-certificate-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
   </div>
 </template>
 
@@ -75,8 +67,8 @@ import _ from 'lodash'
 import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
-import identityCardFormDialog from './components/identity-card-form-dialog'
-import identityCardFormDialogView from './components/identity-card-form-dialog-view'
+import ownershipCertificateFormDialog from './components/ownership-certificate-form-dialog'
+import ownershipCertificateFormDialogView from './components/ownership-certificate-form-dialog-view'
 import { bagService } from '@/services'
 
 export default {
@@ -85,8 +77,8 @@ export default {
     TableLayout,
     Pagination,
     WarningConfirmButton,
-    identityCardFormDialog,
-    identityCardFormDialogView
+    ownershipCertificateFormDialog,
+    ownershipCertificateFormDialogView
   },
   data() {
     return {
@@ -99,6 +91,7 @@ export default {
         currentPage: 1
       },
       tableSearchParams: {
+        type: 'ownershipCertificate',
         name: ''
       },
       tablePaginationDefault: null,
@@ -111,8 +104,17 @@ export default {
       formId: '-1'
     }
   },
+  watch: {
+    tableData: {
+      handler: function(val, oldVal) {
+        // 对 Table 进行重新布局
+        // https://element.eleme.cn/#/zh-CN/component/table#table-methods
+        this.$refs.table.doLayout()
+      },
+      immediate: true
+    }
+  },
   created() {
-    // this.sync()
     this.loadTableData()
     // 拷贝默认值
     this.tablePaginationDefault = _.cloneDeep(this.tablePagination)
@@ -128,9 +130,10 @@ export default {
       this.tableLoading = true
       const page = this.tablePagination.currentPage
       const limit = this.tablePagination.pageSize
+      const type = this.tableSearchParams.type
       const name = this.tableSearchParams.name
       try {
-        const response = await bagService.getBagListByPage({ page, limit, name })
+        const response = await bagService.getBagListByPage({ page, limit, type, name })
         const { data } = response.data
         this.tableData = data.list
         this.tablePagination.total = data.pagination.total

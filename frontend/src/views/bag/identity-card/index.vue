@@ -1,5 +1,5 @@
 <template>
-  <div class="driving-license-container">
+  <div class="identity-card-container">
     <table-layout class="table-layout">
       <template v-slot:headerLeft>
         <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
@@ -39,13 +39,14 @@
               <span class="link-type" @click="handleEdit(row)">{{ row.content.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="content.class" label="准驾车型" align="center" width="160" />
+          <el-table-column prop="content.identityNumber" label="身份证号码" align="center" width="160" />
           <el-table-column prop="content" label="有效期" align="center" width="180">
             <template slot-scope="{row}">
               {{ row.content.validPeriod && row.content.validPeriod[0] || '' }} ~ {{ row.content.validPeriod && row.content.validPeriod[1] || '' }}
             </template>
           </el-table-column>
-          <el-table-column prop="content.address" label="住址" align="center" />
+          <el-table-column prop="content.issuingAuthority" label="签发机关" align="center" width="160" />
+          <el-table-column prop="content.address" label="户籍地址" align="center" />
           <el-table-column label="操作" width="150" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
@@ -63,8 +64,8 @@
       </template>
     </table-layout>
 
-    <driving-license-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
-    <driving-license-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
+    <identity-card-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
+    <identity-card-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
   </div>
 </template>
 
@@ -73,8 +74,8 @@ import _ from 'lodash'
 import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
-import drivingLicenseFormDialog from './components/driving-license-form-dialog'
-import drivingLicenseFormDialogView from './components/driving-license-form-dialog-view'
+import identityCardFormDialog from './components/identity-card-form-dialog'
+import identityCardFormDialogView from './components/identity-card-form-dialog-view'
 import { bagService } from '@/services'
 
 export default {
@@ -83,8 +84,8 @@ export default {
     TableLayout,
     Pagination,
     WarningConfirmButton,
-    drivingLicenseFormDialog,
-    drivingLicenseFormDialogView
+    identityCardFormDialog,
+    identityCardFormDialogView
   },
   data() {
     return {
@@ -97,7 +98,7 @@ export default {
         currentPage: 1
       },
       tableSearchParams: {
-        type: 'drivingLicense',
+        type: 'identityCard',
         name: ''
       },
       tablePaginationDefault: null,

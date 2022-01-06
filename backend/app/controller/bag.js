@@ -93,9 +93,9 @@ class BagController extends Controller {
    */
   async page() {
     const { ctx } = this;
-    const { page, limit, name } = ctx.request.query
+    const { page, limit, type, name } = ctx.request.query
 
-    const res = await ctx.service.bag.page({ page, limit, name })
+    const res = await ctx.service.bag.page({ page, limit, type, name })
 
     this.success({ ctx, data: res })
   }

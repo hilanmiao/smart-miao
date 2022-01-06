@@ -1,5 +1,5 @@
 <template>
-  <div class="driving-license-container">
+  <div class="marriage-registration-container">
     <table-layout class="table-layout">
       <template v-slot:headerLeft>
         <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
@@ -34,18 +34,13 @@
         >
           <el-table-column type="index" width="30" fixed="left" />
           <el-table-column type="selection" align="center" width="30" fixed="left" />
-          <el-table-column prop="content" label="姓名" align="center" width="100">
+          <el-table-column prop="content" label="姓名" align="center">
             <template slot-scope="{row}">
               <span class="link-type" @click="handleEdit(row)">{{ row.content.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="content.class" label="准驾车型" align="center" width="160" />
-          <el-table-column prop="content" label="有效期" align="center" width="180">
-            <template slot-scope="{row}">
-              {{ row.content.validPeriod && row.content.validPeriod[0] || '' }} ~ {{ row.content.validPeriod && row.content.validPeriod[1] || '' }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="content.address" label="住址" align="center" />
+          <el-table-column prop="content.registrationDate" label="登记日期" align="center" width="160" />
+          <el-table-column prop="content.issuingAuthority" label="签发机关" align="center" width="260" />
           <el-table-column label="操作" width="150" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
@@ -63,8 +58,8 @@
       </template>
     </table-layout>
 
-    <driving-license-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
-    <driving-license-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
+    <marriage-registration-form-dialog ref="formDialog" v-model="dialogVisible" :form-id="formId" @save-success="handleRefresh" />
+    <marriage-registration-form-dialog-view ref="formDialogView" v-model="dialogVisibleView" :form-id="formId" />
   </div>
 </template>
 
@@ -73,8 +68,8 @@ import _ from 'lodash'
 import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
-import drivingLicenseFormDialog from './components/driving-license-form-dialog'
-import drivingLicenseFormDialogView from './components/driving-license-form-dialog-view'
+import marriageRegistrationFormDialog from './components/marriage-registration-form-dialog'
+import marriageRegistrationFormDialogView from './components/marriage-registration-form-dialog-view'
 import { bagService } from '@/services'
 
 export default {
@@ -83,8 +78,8 @@ export default {
     TableLayout,
     Pagination,
     WarningConfirmButton,
-    drivingLicenseFormDialog,
-    drivingLicenseFormDialogView
+    marriageRegistrationFormDialog,
+    marriageRegistrationFormDialogView
   },
   data() {
     return {
@@ -97,7 +92,7 @@ export default {
         currentPage: 1
       },
       tableSearchParams: {
-        type: 'drivingLicense',
+        type: 'marriageRegistration',
         name: ''
       },
       tablePaginationDefault: null,

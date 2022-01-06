@@ -92,7 +92,7 @@
       </div>
       <div class="item">
         <div class="left">
-          <svg-icon class="dingtalk" icon-class="dingtalk"/>
+          <svg-icon class="dingtalk" icon-class="dingtalk" />
         </div>
         <div class="right">
           <p class="brand"><strong>钉钉</strong></p>

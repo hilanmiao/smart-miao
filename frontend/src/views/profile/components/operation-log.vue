@@ -38,7 +38,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import VueJsonPretty from 'vue-json-pretty'
 
-import { loginLogService } from '@/services'
+// import { loginLogService } from '@/services'
 
 export default {
   components: { Pagination, VueJsonPretty },

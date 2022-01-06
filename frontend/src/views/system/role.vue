@@ -31,7 +31,7 @@
           style="width: 100%;"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="index" width="30" fixed="left"/>
+          <el-table-column type="index" width="30" fixed="left" />
           <el-table-column type="selection" align="center" width="30" />
           <el-table-column prop="name" label="名称" align="center" width="200">
             <template slot-scope="{row}">

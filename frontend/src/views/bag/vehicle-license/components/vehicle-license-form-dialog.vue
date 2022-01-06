@@ -13,110 +13,96 @@
     <el-form ref="form" label-position="right" :model="form" :rules="rules">
       <el-row>
         <el-col :span="12">
+          <el-form-item label="号牌号码" :label-width="labelWidth" prop="content.plateNo">
+            <el-input v-model="form.content.plateNo" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="准驾车型" :label-width="labelWidth" prop="content.vehicleType">
+            <el-input v-model="form.content.vehicleType" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="品牌型号" :label-width="labelWidth" prop="content.model">
+            <el-input v-model="form.content.model" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车辆识别代码" label-width="120px" prop="content.vin">
+            <el-input v-model="form.content.vin" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="发动机号码" :label-width="labelWidth" prop="content.engineNo">
+            <el-input v-model="form.content.engineNo" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="姓名" :label-width="labelWidth" prop="content.name">
             <el-input v-model="form.content.name" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="性别" :label-width="labelWidth" prop="content.sex">
-            <el-radio v-model="form.content.sex" label="1">男</el-radio>
-            <el-radio v-model="form.content.sex" label="2">女</el-radio>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="民族" :label-width="labelWidth" prop="content.nationality">
-            <el-select
-              v-model="form.content.nationality"
-              filterable
-              placeholder="请选择"
-              style="width: 100%;"
-            >
-              <el-option
-                v-for="item in nationalityList"
-                :key="item"
-                :label="item"
-                :value="item"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="出生日期" :label-width="labelWidth" prop="content.dob">
+          <el-form-item label="注册日期" :label-width="labelWidth" prop="content.registerDate">
             <el-date-picker
-              v-model="form.content.dob"
+              v-model="form.content.registerDate"
               value-format="yyyy-MM-dd"
-              size="mini"
               align="right"
               unlink-panels
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="身份号码" :label-width="labelWidth" prop="content.identityNumber">
-            <el-input v-model="form.content.identityNumber" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="签发机关" :label-width="labelWidth" prop="content.issuingAuthority">
-            <el-input v-model="form.content.issuingAuthority" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
-          <el-form-item label="有效期" :label-width="labelWidth" prop="content.validity">
+          <el-form-item label="发证日期" :label-width="labelWidth" prop="content.issueDate">
             <el-date-picker
-              v-model="form.content.validity"
+              v-model="form.content.issueDate"
               value-format="yyyy-MM-dd"
-              size="mini"
-              type="daterange"
               align="right"
               unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="户籍地址" :label-width="labelWidth" prop="content.address">
-            <el-input v-model="form.content.address" autocomplete="off" />
+          <el-form-item label="检验记录" :label-width="labelWidth" prop="content.testRecord">
+            <el-input v-model="form.content.testRecord" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="身份证人像面" label-width="auto" prop="content.identityCardFront">
+          <el-form-item label="行驶证页照片" label-width="auto" prop="content.vehicleLicensePhoto1">
             <el-upload
               class="avatar-uploader"
               action="#"
               accept="image/png, image/jpeg"
               :show-file-list="false"
-              :on-success="(response, file, fileList) => handleUploadSuccess(response, file, fileList, 'identityCardFront')"
+              :on-success="(response, file, fileList) => handleUploadSuccess(response, file, fileList, 'vehicleLicensePhoto1')"
               :on-error="handleUploadError"
               :on-progress="handleUploadProgress"
-              :http-request="(content) => upload(content, 'identityCardFront' )"
+              :http-request="(content) => upload(content, 'vehicleLicensePhoto1' )"
             >
-              <img v-if="form.content.identityCardFront" :src="VUE_APP_BASE_API + form.content.identityCardFront" class="avatar">
+              <img v-if="form.content.vehicleLicensePhoto1" :src="VUE_APP_BASE_API + form.content.vehicleLicensePhoto1" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
-              <div v-show="uploadProgressPercentIdentityCardFront !== 0" class="progress-wrapper">
-                <el-progress type="circle" :percentage="uploadProgressPercentIdentityCardFront" />
+              <div v-show="uploadProgressPercentVehicleLicensePhoto1 !== 0" class="progress-wrapper">
+                <el-progress type="circle" :percentage="uploadProgressPercentVehicleLicensePhoto1" />
               </div>
             </el-upload>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="身份证国徽面" label-width="auto" prop="content.identityCardBack">
+          <el-form-item label="驾驶证副页照片" label-width="auto" prop="content.vehicleLicensePhoto2">
             <el-upload
               class="avatar-uploader"
               action="#"
               accept="image/png, image/jpeg"
               :show-file-list="false"
-              :on-success="(response, file, fileList) => handleUploadSuccess(response, file, fileList, 'identityCardBack')"
+              :on-success="(response, file, fileList) => handleUploadSuccess(response, file, fileList, 'vehicleLicensePhoto2')"
               :on-error="handleUploadError"
               :on-progress="handleUploadProgress"
-              :http-request="(content) => upload(content, 'identityCardBack' )"
+              :http-request="(content) => upload(content, 'vehicleLicensePhoto2' )"
             >
-              <img v-if="form.content.identityCardBack" :src="VUE_APP_BASE_API + form.content.identityCardBack" class="avatar">
+              <img v-if="form.content.vehicleLicensePhoto2" :src="VUE_APP_BASE_API + form.content.vehicleLicensePhoto2" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
-              <div v-show="uploadProgressPercentIdentityCardBack !== 0" class="progress-wrapper">
-                <el-progress type="circle" :percentage="uploadProgressPercentIdentityCardBack" />
+              <div v-show="uploadProgressPercentVehicleLicensePhoto2 !== 0" class="progress-wrapper">
+                <el-progress type="circle" :percentage="uploadProgressPercentVehicleLicensePhoto2" />
               </div>
             </el-upload>
           </el-form-item>
@@ -135,13 +121,6 @@
 <script>
 import _ from 'lodash'
 import { bagService, fileService } from '@/services'
-const nationalityList = [
-  '汉族', '壮族', '满族', '回族', '苗族', '维吾尔族', '土家族', '彝族', '蒙古族', '藏族', '布依族', '侗族', '瑶族', '朝鲜族', '白族', '哈尼族',
-  '哈萨克族', '黎族', '傣族', '畲族', '傈僳族', '仡佬族', '东乡族', '高山族', '拉祜族', '水族', '佤族', '纳西族', '羌族', '土族', '仫佬族', '锡伯族',
-  '柯尔克孜族', '达斡尔族', '景颇族', '毛南族', '撒拉族', '布朗族', '塔吉克族', '阿昌族', '普米族', '鄂温克族', '怒族', '京族', '基诺族', '德昂族', '保安族',
-  '俄罗斯族', '裕固族', '乌孜别克族', '门巴族', '鄂伦春族', '独龙族', '塔塔尔族', '赫哲族', '珞巴族'
-]
-import { validIdentityNumber } from '@/utils/validate'
 
 export default {
   components: {
@@ -162,54 +141,48 @@ export default {
     }
   },
   data() {
-    const validateIdentityNumber = (rule, value, callback) => {
-      if (!validIdentityNumber(value)) {
-        callback(new Error('请输入正确的身份证号码'))
-      } else {
-        callback()
-      }
-    }
     return {
       // 通用属性
       labelWidth: '100px',
       defaultForm: null,
       form: {
         id: '',
-        type: 'identityCard',
+        type: 'vehicleLicense',
         content: {
+          plateNo: '',
+          vehicleType: '',
+          model: '',
+          vin: '',
+          engineNo: '',
           name: '',
-          sex: '1',
-          nationality: '',
-          dob: '',
-          identityNumber: '',
-          issuingAuthority: '',
-          validity: '',
-          address: '',
-          identityCardFront: '',
-          identityCardBack: ''
+          registerDate: '',
+          issueDate: '',
+          testRecord: '',
+          vehicleLicensePhoto1: '',
+          vehicleLicensePhoto2: ''
         }
       },
       rules: {
+        'content.plateNo': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.vehicleType': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.model': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.vin': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.engineNo': [{ required: true, message: '必填', trigger: 'blur' }],
         'content.name': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.sex': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.nationality': [{ required: true, message: '必选', trigger: 'change' }],
-        'content.dob': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.identityNumber': [{ required: true, trigger: 'blur', validator: validateIdentityNumber }],
-        'content.issuingAuthority': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.validity': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.address': [{ required: true, message: '必填', trigger: 'blur' }],
-        'content.identityCardFront': [{ required: true, message: '必填', trigger: 'change' }],
-        'content.identityCardBack': [{ required: true, message: '必填', trigger: 'change' }]
+        'content.registerDate': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.issueDate': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.testRecord': [{ required: true, message: '必填', trigger: 'blur' }],
+        'content.vehicleLicensePhoto1': [{ required: true, message: '必填', trigger: 'change' }],
+        'content.vehicleLicensePhoto2': [{ required: true, message: '必填', trigger: 'change' }]
       },
       loading: false,
       saving: false,
       // 图片上传
-      uploadProgressPercentIdentityCardFront: 0,
-      uploadProgressPercentIdentityCardBack: 0,
+      uploadProgressPercentVehicleLicensePhoto1: 0,
+      uploadProgressPercentVehicleLicensePhoto2: 0,
       // 业务属性
       loadingSelect: false,
-      userList: [],
-      nationalityList: nationalityList
+      userList: []
     }
   },
   computed: {
@@ -224,7 +197,15 @@ export default {
       }
     },
     title() {
-      return this.form.id === '-1' ? '添加身份证' : '编辑身份证'
+      return this.form.id === '-1' ? '添加行驶证' : '编辑行驶证'
+    },
+    classUpperCase: {
+      get() {
+        return this.form.content.class
+      },
+      set(val) {
+        this.form.content.class = val.replace(/[\W]/g, '').toUpperCase()
+      }
     }
   },
   created() {
@@ -375,7 +356,7 @@ export default {
       })
     },
     handleUploadSuccess(response, file, fileList, customParam) {
-      // this.form.identityCardFront = response.data.data.url
+      // this.form.vehicleLicensePhoto1 = response.data.data.url
       this.form.content[customParam] = response.data.data.url
       // 移除表单上传组件的校验
       this.clearValidate('content.' + customParam)

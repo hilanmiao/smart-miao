@@ -34,18 +34,15 @@
         >
           <el-table-column type="index" width="30" fixed="left" />
           <el-table-column type="selection" align="center" width="30" fixed="left" />
-          <el-table-column prop="content" label="姓名" align="center" width="100">
+          <el-table-column prop="content" label="号牌号码" align="center">
             <template slot-scope="{row}">
-              <span class="link-type" @click="handleEdit(row)">{{ row.content.name }}</span>
+              <span class="link-type" @click="handleEdit(row)">{{ row.content.plateNo }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="content.class" label="准驾车型" align="center" width="160" />
-          <el-table-column prop="content" label="有效期" align="center" width="180">
-            <template slot-scope="{row}">
-              {{ row.content.validPeriod && row.content.validPeriod[0] || '' }} ~ {{ row.content.validPeriod && row.content.validPeriod[1] || '' }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="content.address" label="住址" align="center" />
+          <el-table-column prop="content.vehicleType" label="准驾车型" align="center" width="160" />
+          <el-table-column prop="content.model" label="品牌型号" align="center" width="160" />
+          <el-table-column prop="content.vin" label="车辆识别代码" align="center" width="160" />
+          <el-table-column prop="content.engineNo" label="发动机号码" align="center" width="160" />
           <el-table-column label="操作" width="150" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
@@ -73,8 +70,8 @@ import _ from 'lodash'
 import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
-import drivingLicenseFormDialog from './components/driving-license-form-dialog'
-import drivingLicenseFormDialogView from './components/driving-license-form-dialog-view'
+import drivingLicenseFormDialog from './components/vehicle-license-form-dialog'
+import drivingLicenseFormDialogView from './components/vehicle-license-form-dialog-view'
 import { bagService } from '@/services'
 
 export default {
@@ -97,7 +94,7 @@ export default {
         currentPage: 1
       },
       tableSearchParams: {
-        type: 'drivingLicense',
+        type: 'vehicleLicense',
         name: ''
       },
       tablePaginationDefault: null,
