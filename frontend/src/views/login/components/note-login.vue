@@ -11,7 +11,7 @@
           tabindex="1"
           autocomplete="on"
         >
-          <font-awesome-icon slot="prefix" :icon="['fas', 'mobile-alt']" class="icon" />
+          <svg-icon slot="prefix" icon-class="mobile" class="icon" />
         </el-input>
       </el-form-item>
       <el-form-item prop="verificationCode" class="code-wrap">
@@ -20,7 +20,7 @@
           maxlength="6"
           placeholder="短信验证码"
         >
-          <font-awesome-icon slot="prefix" :icon="['fas', 'sms']" class="icon" />
+          <svg-icon slot="prefix" icon-class="mail" class="icon" />
         </el-input>
         <el-button plain class="btn-code" :disabled="disabled=!canSend" @click="send">
           <span v-show="canSend">获取验证码</span>

@@ -4,6 +4,9 @@
       <el-tab-pane label="身份证" name="identityCard">
         <identity-card ref="identityCard" />
       </el-tab-pane>
+      <el-tab-pane label="户口本" name="householdRegister">
+        <household-register ref="householdRegister" />
+      </el-tab-pane>
       <el-tab-pane label="驾驶证" name="drivingLicense">
         <driving-license ref="drivingLicense" />
       </el-tab-pane>
@@ -16,6 +19,12 @@
       <el-tab-pane label="产权证" name="ownershipCertificate">
         <ownership-certificate ref="ownershipCertificate" />
       </el-tab-pane>
+      <el-tab-pane label="出生证" name="birthCertificate">
+        <birth-certificate ref="birthCertificate" />
+      </el-tab-pane>
+      <el-tab-pane label="营业执照" name="businessLicense">
+        <business-license ref="businessLicense" />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -26,11 +35,23 @@ import drivingLicense from './driving-license/index'
 import vehicleLicense from './vehicle-license/index'
 import marriageRegistration from './marriage-registration/index'
 import ownershipCertificate from './ownership-certificate/index'
+import birthCertificate from './birth-certificate/index'
+import businessLicense from './business-license/index'
+import householdRegister from './household-register/index'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Wallet',
-  components: { identityCard, drivingLicense, vehicleLicense, marriageRegistration, ownershipCertificate },
+  components: {
+    identityCard,
+    drivingLicense,
+    vehicleLicense,
+    marriageRegistration,
+    ownershipCertificate,
+    birthCertificate,
+    businessLicense,
+    householdRegister
+  },
   data() {
     return {
       user: {},

@@ -63,12 +63,12 @@ import defaultSettings from '@/settings'
 import CanvasStarBackground from '@/components/CanvasStarBackground'
 import accountLogin from './components/account-login'
 import noteLogin from './components/note-login'
-// import ScanLogin from './components/scan-login'
+import scanLogin from './components/scan-login'
 import register from './components/register'
 
 export default {
   name: 'Login',
-  components: { accountLogin, noteLogin, CanvasStarBackground, register },
+  components: { accountLogin, noteLogin, scanLogin, CanvasStarBackground, register },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
