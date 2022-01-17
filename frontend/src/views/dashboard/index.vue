@@ -53,6 +53,13 @@
 import 'github-markdown-css/github-markdown.css'
 import VueMarkdown from 'vue-markdown'
 const md = `
+## 平台目录
+- [x] backend：基于\`Egg.js 2.x\`和\`nodejs 16.x\`的后端工程
+- [x] frontend：基于\`Vue.js 2.x\`的前端工程
+- [ ] web：基于\`Bulma.css 0.9.x\`的产品营销网站
+- [x] app：基于\`Uniapp、uviewui 2.x\`的移动端工程
+- [ ] desktop：基于\`Electron 16.x\`的桌面工程
+
 ## 功能
 - [x] 系统管理-用户管理
 - [x] 系统管理-角色管理
@@ -71,14 +78,14 @@ const md = `
 - [ ] 登录-app扫码登录
 - [x] 个人中心
 - [ ] 注册
-- [ ] 卡证照管理
-- [ ] 记账
+- [x] 卡证照管理
+- [x] 记账
 - [ ] 智能提醒
 - [ ] 运维-数据备份
 - [ ] 运维-版本管理
 - [ ] 增强网站无障碍功能的
-- [ ] 应用链接-YApi、MinIO、开发手册
-- [ ] 增强网站无障碍功能
+- [x] 应用链接-YApi、MinIO、开发手册
+
 `
 
 const manualMd = `

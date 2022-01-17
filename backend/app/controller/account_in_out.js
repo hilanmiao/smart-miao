@@ -2,7 +2,7 @@
 
 const Controller = require('../core/controller');
 
-class BagController extends Controller {
+class AccountInOutController extends Controller {
 
   /**
    * 创建
@@ -10,10 +10,10 @@ class BagController extends Controller {
    */
   async create() {
     const { ctx } = this;
-    ctx.validate({ type: 'string' }, ctx.request.body)
-    const { type, content } = ctx.request.body
+    ctx.validate({ amount: 'string' }, ctx.request.body)
+    const { accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark } = ctx.request.body
 
-    const res = await ctx.service.bag.create({ type, content })
+    const res = await ctx.service.accountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -28,10 +28,10 @@ class BagController extends Controller {
    */
   async update() {
     const { ctx } = this;
-    ctx.validate({ id: 'string', type: 'string' }, ctx.request.body)
-    const { id, type, content } = ctx.request.body
+    ctx.validate({ id: 'string', amount: 'string' }, ctx.request.body)
+    const { id, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark } = ctx.request.body
 
-    const res = await ctx.service.bag.update({ id, type, content })
+    const res = await ctx.service.accountInOut.update({ id, account_book_id, account_in_out_category_id, type, amount, remark })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -48,7 +48,7 @@ class BagController extends Controller {
     const { ctx } = this;
     const { ids } = ctx.request.body
 
-    const res = await ctx.service.bag.delete({ ids })
+    const res = await ctx.service.accountInOut.delete({ ids })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -66,7 +66,7 @@ class BagController extends Controller {
     ctx.validate({ id: 'string' }, ctx.request.query)
     const { id } = ctx.request.query
 
-    const res = await ctx.service.bag.get({ id })
+    const res = await ctx.service.accountInOut.get({ id })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -82,7 +82,7 @@ class BagController extends Controller {
   async list() {
     const { ctx } = this;
 
-    const res = await ctx.service.bag.list()
+    const res = await ctx.service.accountInOut.list()
 
     this.success({ ctx, data: res })
   }
@@ -93,12 +93,12 @@ class BagController extends Controller {
    */
   async page() {
     const { ctx } = this;
-    const { page, limit, name } = ctx.request.query
+    const { page, limit, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, dateRange } = ctx.request.query
 
-    const res = await ctx.service.bag.page({ page, limit, type, name })
+    const res = await ctx.service.accountInOut.page({ page, limit, account_book_id, account_in_out_category_id, type, dateRange })
 
     this.success({ ctx, data: res })
   }
 }
 
-module.exports = BagController;
+module.exports = AccountInOutController;
