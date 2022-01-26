@@ -1,5 +1,5 @@
 # Smart miao
-生活小助理-聪明猫，丰富的记账功能，助你养成良好的记账习惯。便捷的卡证照管理，打印、分享更加快捷高效。多用户管理，家庭成员、亲戚朋友都可以注册使用。
+生活小助理-招财猫，丰富的记账功能，助你养成良好的记账习惯。便捷的卡证照管理，打印、分享更加快捷高效。多用户管理，家庭成员、亲戚朋友都可以注册使用。
 
 演示环境及账号密码：https://demo.smartmiao.com
 
@@ -13,12 +13,12 @@
 
 ![个人中心](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen1.png)
 
-## 目录
-- backend：基于`Egg.js 2.x`和`nodejs 14.x`的后端工程
-- frontend：基于`Vue.js 2.x`的前端工程
-- web：基于`Bulma.css 0.9.x`的产品营销网站
-- app：基于`Uniapp、uviewui 2.x`的移动端工程
-- desktop：基于`Electron 16.x`的桌面工程
+## 平台目录
+- [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
+- [x] frontend：基于`Vue.js 2.x`的前端工程
+- [ ] web：基于`Bulma.css 0.9.x`的产品营销网站
+- [x] app：基于`Uniapp、uviewui 2.x`的移动端工程
+- [ ] desktop：基于`Electron 16.x`的桌面工程
 
 ## 功能
 - [x] 系统管理-用户管理
@@ -36,15 +36,15 @@
 - [ ] 登录-手机短信登录
 - [ ] 登录-Github、微信、钉钉第三方登录
 - [ ] 登录-app扫码登录
+- [x] 个人中心
 - [ ] 注册
-- [ ] 卡证照管理
-- [ ] 记账
+- [x] 卡证照管理
+- [x] 记账
 - [ ] 智能提醒
 - [ ] 运维-数据备份
 - [ ] 运维-版本管理
 - [ ] 增强网站无障碍功能的
-- [ ] 应用链接-YApi、MinIO、开发手册
-- [ ] 增强网站无障碍功能
+- [x] 应用链接-YApi、MinIO、开发手册
 
 
 ## 教程
@@ -82,7 +82,7 @@
 
 [issue]: https://gitee.com/XiaoLanMiao/smart-miao/issues
 
-# 致谢
+## 致谢
 
 - [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 - [sf-vue-admin](https://github.com/hackycy/sf-vue-admin)

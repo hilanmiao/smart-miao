@@ -30,6 +30,7 @@
     "minio": "^7.0.25",
     "mysql2": "^2.2.5",
     "nodemailer": "^6.6.3",
+    "number-precision": "^1.5.1",
     "readable-stream-clone": "0.0.7",
     "sharp": "^0.29.3",
     "stream-wormhole": "^1.1.0",
@@ -60,7 +61,10 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "npmi:prod": "npm install --production",
+    "zip": "tar -zcvf ../release.tgz .",
+    "unzip": "tar -zxvf release.tgz"
   },
   "ci": {
     "version": "10"

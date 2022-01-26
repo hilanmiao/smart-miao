@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Smart Miao',
-  subTitle: '生活小助理-聪明猫',
+  subTitle: '生活小助理-招财猫',
   dashboardName: '工作台',
 
   /**
