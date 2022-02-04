@@ -1,6 +1,8 @@
 # Smart miao
 生活小助理-招财猫，丰富的记账功能，助你养成良好的记账习惯。便捷的卡证照管理，打印、分享更加快捷高效。多用户管理，家庭成员、亲戚朋友都可以注册使用。
 
+> AE视频模板等资源太大，就不放到代码管理了，有需要可以提issue，写上你的邮箱，我会尽快发给你～
+
 演示环境及账号密码：https://demo.smartmiao.com
 
 | 账号    | 密码   | 权限        |
@@ -9,9 +11,7 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-![登录](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen2.png)
-
-![个人中心](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen1.png)
+![登录](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen-shot-web.png)
 
 ## 平台目录
 - [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
