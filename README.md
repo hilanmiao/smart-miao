@@ -11,7 +11,7 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-![登录](https://gitee.com/XiaoLanMiao/smart-miao/raw/master/screen-shot-web.png)
+![营销网站](screen-shot-web.png)
 
 ## 平台目录
 - [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
@@ -61,10 +61,10 @@
  </tr>
   <tr>
     <td valign="top">
-        <img src="https://gitee.com/XiaoLanMiao/smart-miao/raw/master/alipay.png" width="200" hegiht="200"/>
+        <img src="alipay.png" width="200" hegiht="200"/>
     </td>
     <td valign="top">
-        <img src="https://gitee.com/XiaoLanMiao/smart-miao/raw/master/wechatpay.png" width="200" hegiht="200"/>
+        <img src="wechatpay.png" width="200" hegiht="200"/>
     </td>
   </tr>
 </table>
