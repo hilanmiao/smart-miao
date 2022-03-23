@@ -1,26 +1,49 @@
-import App from './App'
+import Vue from 'vue';
+import App from './App';
 
-// #ifndef VUE3
-import Vue from 'vue'
-Vue.config.productionTip = false
-App.mpType = 'app'
+Vue.config.productionTip = false;
+
+App.mpType = 'app';
+
+// 此处为演示Vue.prototype使用，非uView的功能部分
+Vue.prototype.vuePrototype = '枣红';
+
+// 引入全局uView
+import uView from 'plugin/uview-ui';
+Vue.use(uView);
+
+// 此处为演示vuex使用，非uView的功能部分
+import store from '@/store';
+
+// 引入uView提供的对vuex的简写法文件
+let vuexStore = require('@/store/$u.mixin.js');
+Vue.mixin(vuexStore);
+
+// 引入uView对小程序分享的mixin封装
+let mpShare = require('plugin/uview-ui/libs/mixin/mpShare.js');
+Vue.mixin(mpShare);
+
+// dayjs
+import dayjs from 'plugin/dayjs/dayjs.min'
+Vue.prototype.$dayjs = dayjs
+
+// 配置luchRequest
+import Request from "plugin/luch-request";
+Vue.prototype.$luchRequest = new Request()
+import { authInterceptor } from './services'
+import { serverURL } from './config'
+Vue.prototype.$luchRequest.config.baseURL = serverURL
+Vue.prototype.$luchRequest.interceptors.response.use(authInterceptor.response, authInterceptor.responseError)
+Vue.prototype.$luchRequest.config.header.Authorization = store.state.vuex_token
+
+// 权限验证全局函数
+import verifyPermission from './permission'
+Vue.prototype.$verifyPermission = verifyPermission
+
 const app = new Vue({
-    ...App
-})
-import uView from '@/uni_modules/uview-ui'
-Vue.use(uView)
-// 打印版本
-const version = uni.$u.config.v;
-console.log("\n %c uview V"+version+" %c https://www.uviewui.com/ \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-app.$mount()
-// #endif
+	store,
+	...App
+});
 
-// #ifdef VUE3
-import { createSSRApp } from 'vue'
-export function createApp() {
-  const app = createSSRApp(App)
-  return {
-    app
-  }
-}
-// #endif
+
+app.$mount();
