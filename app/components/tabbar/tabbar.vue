@@ -1,6 +1,11 @@
 <template>
-  <u-tabbar class="u-tabbar" :list="vuex_tabbar" :border-top="false" bg-color="#ffffff" active-color="#f11313"
-            inactive-color="#909399"></u-tabbar>
+  <u-tabbar class="u-tabbar"
+            :list="vuex_tabbar"
+            :border-top="true"
+            :bg-color="vuex_tabbar_bg_color"
+            :active-color="vuex_tabbar_active_color"
+            :inactive-color="vuex_tabbar_inactive_color"
+            :mid-button="vuex_tabbar_mid"></u-tabbar>
 </template>
 
 <script>

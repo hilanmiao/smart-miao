@@ -4,7 +4,7 @@ internals.response = (response) => {
   console.log('正常请求', response)
   const { code } = response.data
   // if(response.data.code == 1002 || response.data.code === 1001) {
-  //   uni.$u.vuex('vuex_token', '')
+  //   uni.$u.vuex('vuex_accessToken', '')
   //   uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
   //   return Promise.reject(response)
   // }

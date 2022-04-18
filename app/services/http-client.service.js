@@ -9,7 +9,6 @@ internals.get = function (url, params, options) {
   config = Object.assign(config, options)
   return this.$luchRequest.middleware(config)
     .then(function (response) {
-      // if (response.headers['x-access-token']) {
       if (response.header['x-access-token']) {
         internals.updateTokens(response.headers)
       }
@@ -29,7 +28,6 @@ internals.put = function (url, payload, options) {
   config = Object.assign(config, options)
   return this.$luchRequest.middleware(config)
     .then(function (response) {
-      // if (response.headers['x-access-token']) {
       if (response.header['x-access-token']) {
         internals.updateTokens(response.headers)
       }
@@ -49,7 +47,6 @@ internals.post = function (url, payload, options) {
   config = Object.assign(config, options)
   return this.$luchRequest.middleware(config)
     .then(function (response) {
-      // if (response.headers['x-access-token']) {
       if (response.header['x-access-token']) {
         internals.updateTokens(response.headers)
       }
@@ -69,7 +66,6 @@ internals.delete = function (url, payload, options) {
   config = Object.assign(config, options)
   return this.$luchRequest.middleware(config)
     .then(function (response) {
-      // if (response.headers['x-access-token']) {
       if (response.header['x-access-token']) {
         internals.updateTokens(response.headers)
       }

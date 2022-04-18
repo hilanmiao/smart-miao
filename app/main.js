@@ -34,11 +34,14 @@ import { authInterceptor } from './services'
 import { serverURL } from './config'
 Vue.prototype.$luchRequest.config.baseURL = serverURL
 Vue.prototype.$luchRequest.interceptors.response.use(authInterceptor.response, authInterceptor.responseError)
-Vue.prototype.$luchRequest.config.header.Authorization = store.state.vuex_token
+Vue.prototype.$luchRequest.config.header.Authorization = store.state.vuex_accessToken
 
 // 权限验证全局函数
 import verifyPermission from './permission'
 Vue.prototype.$verifyPermission = verifyPermission
+
+// 颜色
+Vue.prototype.$cusMaincolor = '#DC4232'
 
 const app = new Vue({
 	store,

@@ -13,7 +13,7 @@ try {
 }
 
 // 需要永久存储，且下次APP启动需要取出的，在state中的变量名
-let saveStateKeys = ['vuex_user', 'vuex_token', 'vuex_login'];
+let saveStateKeys = ['vuex_login', 'vuex_user', 'vuex_accessToken', 'vuex_refreshToken'];
 
 // 保存变量到本地存储中
 const saveLifeData = function (key, value) {
@@ -33,43 +33,54 @@ const store = new Vuex.Store({
         // 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
         // 加上vuex_前缀，是防止变量名冲突，也让人一目了然
         vuex_user: lifeData.vuex_user ? lifeData.vuex_user : {name: '明月'},
-        vuex_token: lifeData.vuex_token ? lifeData.vuex_token : '',
-        vuex_login: lifeData.vuex_login ? lifeData.vuex_login : {userCode: '', userPassword: ''},
+        vuex_accessToken: lifeData.vuex_accessToken ? lifeData.vuex_accessToken : '',
+        vuex_refreshToken: lifeData.vuex_refreshToken ? lifeData.vuex_refreshToken : '',
+        vuex_login: lifeData.vuex_login ? lifeData.vuex_login : {username: '', password: ''},
         // 如果vuex_version无需保存到本地永久存储，无需lifeData.vuex_version方式
         vuex_config: {},
         vuex_version: '1.0.1',
         vuex_demo: '绛紫',
         // 自定义tabbar数据
+        vuex_tabbar_mid: true,
+        vuex_tabbar_bg_color: '#fff',
+        vuex_tabbar_active_color: '#DC4232',
+        vuex_tabbar_inactive_color: '#606266',
         vuex_tabbar: [
             {
-                iconPath: "/static/app/tabbar-news.png",
-                selectedIconPath: "/static/app/tabbar-news-active.png",
-                text: '要闻',
-                pagePath: '/pages/news/index'
+                iconPath: "home",
+                selectedIconPath: "home-fill",
+                text: '首页',
+                pagePath: '/pages/home/index',
+                customIcon: true
             },
             {
-                iconPath: "/static/app/tabbar-video.png",
-                selectedIconPath: "/static/app/tabbar-video-active.png",
-                text: '视频',
-                pagePath: '/pages/video/index'
+                iconPath: "alert",
+                selectedIconPath: "alert-fill",
+                text: '提醒',
+                pagePath: '/pages/alert/index',
+                customIcon: true
             },
             {
-                iconPath: "/static/app/tabbar-learn.png",
-                selectedIconPath: "/static/app/tabbar-learn-active.png",
-                text: '学习',
-                pagePath: '/pages/learn/index'
+                iconPath: "/static/app/tabbar-money-active.png",
+                selectedIconPath: "/static/app/tabbar-money-active.png",
+                text: '记账',
+                pagePath: '/pages/account-manage/index',
+                customIcon: false,
+                midButton: true
             },
             {
-                iconPath: "/static/app/tabbar-question.png",
-                selectedIconPath: "/static/app/tabbar-question-active.png",
-                text: '题库',
-                pagePath: '/pages/question/index'
+                iconPath: "wallet",
+                selectedIconPath: "wallet-fill",
+                text: '卡包',
+                pagePath: '/pages/wallet/index',
+                customIcon: true
             },
             {
-                iconPath: "/static/app/tabbar-me.png",
-                selectedIconPath: "/static/app/tabbar-me-active.png",
+                iconPath: "user",
+                selectedIconPath: "user-fill",
                 text: '我的',
-                pagePath: '/pages/me/index'
+                pagePath: '/pages/me/index',
+                customIcon: true
             },
         ]
     },

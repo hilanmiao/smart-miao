@@ -1,29 +1,19 @@
-import store from '../store'
-
 import {httpClient as http} from '../services'
 
 const internals = {}
 
-internals.register = credentials => {
+internals.login = data => {
     return http
-        .post('/sys/user/add', credentials)
-        .then(response => {
-            return response
-        })
-        .catch(error => {
-            console.error('authService.register-error:\n', error)
-            throw error
-        })
-}
-
-internals.login = credentials => {
-    return http
-        .post('sys/user/login', credentials)
+        .post('api/login', data)
         .then(response => {
             const { data } = response.data
-            const { accessJwt: authentication } = data
-            this.$luchRequest.config.header.Authorization = authentication
-            uni.$u.vuex('vuex_token', authentication);
+            const { accessToken, refreshToken } = data
+            // 记住账号密码
+            this.$u.vuex('vuex_login', this.form)
+            // 设置授权
+            this.$luchRequest.config.header.Authorization = accessToken
+            uni.$u.vuex('vuex_accessToken', accessToken);
+            uni.$u.vuex('vuex_refreshToken', refreshToken);
             return response
         })
         .catch(error => {
@@ -32,80 +22,31 @@ internals.login = credentials => {
         })
 }
 
-internals.logout = () => {
-    return http
-        .delete('Api/Member/LoginOut')
-        .then(response => {
-            store.dispatch('auth/clearAuth')
-        })
-        .catch(error => {
-            console.error('authService.logout-error:\n', error)
-            throw error
-        })
-}
-
 internals.getUserInfo = (data) => {
     return http
-        .post('/sys/user/getList', data)
+        .post('api/system/user/basic', data)
         .then(response => {
             const { data } = response.data
-            let user
-            if(data.records && data.records.length) {
-                user = data.records[0]
-            }
-            uni.$u.vuex('vuex_user', user);
+            // 设置登录的用户信息
+            uni.$u.vuex('vuex_user', data);
             return response
         })
         .catch(error => {
-            console.error('authService.logout-error:\n', error)
+            console.error('authService.getUserInfo:-error:\n', error)
             throw error
         })
 }
 
-internals.changePass = credentials => {
+internals.logout = () => {
     return http
-        .post('/sys/user/change/password', credentials)
+        .get('api/logout')
         .then(response => {
-            return response
-        })
-        .catch(error => {
-            console.error('authService.ChangePass-error:\n', error)
-            throw error
-        })
-}
-
-internals.loginOut = () => {
-    return http
-        .get('Api/Member/LoginOut')
-        .then(response => {
+            // 清除授权
             uni.$u.vuex('vuex_user', '');
-            uni.$u.vuex('vuex_token', '');
+            uni.$u.vuex('vuex_accessToken', '');
+            uni.$u.vuex('vuex_refreshToken', '');
             this.$luchRequest.config.header.Authorization = ''
             return response.data
-        })
-        .catch(error => {
-            console.error('authService.logout-error:\n', error)
-            throw error
-        })
-}
-
-internals.changeInfo = data => {
-    return http
-        .post('sys/user/update', data)
-        .then(response => {
-            return response
-        })
-        .catch(error => {
-            console.error('authService.ChangeInfo-error:\n', error)
-            throw error
-        })
-}
-
-internals.getRoleList = (data) => {
-    return http
-        .post('/sys/role/getList', data)
-        .then(response => {
-            return response
         })
         .catch(error => {
             console.error('authService.logout-error:\n', error)

@@ -14,27 +14,27 @@
         <text class="subtitle">您的私人理财专家</text>
       </view>
       <u-form class="u-form" :model="form" ref="uForm" :errorType="errorType">
-        <u-form-item prop="userCode" :border-bottom="false">
+        <u-form-item prop="username" :border-bottom="false">
           <view class="u-flex u-flex-1" style="width: 100%">
-            <u-icon class="u-icon-left u-p-l-20 u-p-r-20" size="34" name="shouji" custom-prefix="custom-icon"></u-icon>
-            <u-input class="u-flex-1" v-model="form.userCode" type="text" placeholder="请输入账号"/>
+            <u-icon class="u-icon-left u-p-l-20 u-p-r-20" size="34" name="mobile" custom-prefix="custom-icon"></u-icon>
+            <u-input class="u-flex-1" v-model="form.username" type="text" placeholder="请输入账号"/>
           </view>
         </u-form-item>
         <u-form-item prop="userPassword" :border-bottom="false">
           <view class="u-flex u-flex-1">
-            <u-icon class="u-icon-left u-p-l-20 u-p-r-20" size="34" name="mima" custom-prefix="custom-icon"></u-icon>
-            <u-input class="u-flex-1" v-model="form.userPassword" type="password" placeholder="请输入密码"/>
+            <u-icon class="u-icon-left u-p-l-20 u-p-r-20" size="34" name="lock" custom-prefix="custom-icon"></u-icon>
+            <u-input class="u-flex-1" v-model="form.password" type="password" placeholder="请输入密码"/>
           </view>
         </u-form-item>
       </u-form>
       <view class="box-button">
-        <u-button @click="submit" :hair-line="false" shape="circle" :custom-style="customStyleBtn" :loading="loading">登录</u-button>
-        <u-button @click="submit" :hair-line="false" shape="circle" :custom-style="customStyleBtn2" :loading="loading">注册</u-button>
+        <u-button @click="handleLogin" :hair-line="false" shape="circle" :custom-style="customStyleBtn" :loading="loading">登录</u-button>
+        <u-button @click="handleLogin" :hair-line="false" shape="circle" :custom-style="customStyleBtn2" :loading="loading">注册</u-button>
         <view class="alternative">
           <view @click="openPage('/pages/login/forget')">
               <u-checkbox-group>
                 <u-checkbox v-model="checkedProtocal" shape="circle">
-                  <text>同意协议</text>
+                  <text>同意用户协议、隐私条款</text>
                 </u-checkbox>
               </u-checkbox-group>
           </view>
@@ -89,11 +89,11 @@ export default {
         marginTop: '14px'
       },
       form: {
-        userCode: '1111',
-        userPassword: '2'
+        username: 'admin',
+        password: '123456'
       },
       rules: {
-        userCode: [
+        username: [
           {
             required: true,
             message: '请输入账号',
@@ -109,7 +109,7 @@ export default {
           //   trigger: ['change', 'blur'],
           // }
         ],
-        userPassword: [
+        password: [
           {
             required: true,
             message: '请输入密码',
@@ -135,8 +135,8 @@ export default {
   },
   onReady() {
     this.$refs.uForm.setRules(this.rules);
-    this.form.userCode = this.vuex_login.userCode
-    this.form.userPassword = this.vuex_login.userPassword
+    this.form.username = this.vuex_login.username
+    this.form.password = this.vuex_login.password
   },
   methods: {
     openPage(path, type='to') {
@@ -145,34 +145,24 @@ export default {
         url: path
       })
     },
-    submit() {
+    handleLogin() {
       if(!this.checkedProtocal) {
-        this.$tip.toast('请勾选服务协议')
+        this.$u.toast('请勾选服务协议');
         return
       }
-      this.$refs.uForm.validate(valid => {
+      this.$refs.uForm.validate(async valid => {
         if (valid) {
-          this.$tip.loading('')
-          authService.login(this.form)
-              .then(response => {
-                // 记住账号密码
-                this.$u.vuex('vuex_login', this.form)
-                this.$tip.loaded()
-                authService.getUserInfo({ page:1, size:1, userCode: this.form.userCode})
-                    .then(userInfo => {
-                      this.openPage('/pages/news/index', 'tab')
-                    })
-                    .catch(e => {
-                      this.$tip.loaded()
-                      const errorMessage = e && e.data.message || '出错了，请重试'
-                      this.$tip.error(errorMessage)
-                    })
-              })
-              .catch(e => {
-                this.$tip.loaded()
-                const errorMessage = e && e.data.message || '出错了，请重试'
-                this.$tip.error(errorMessage)
-              })
+          uni.showLoading()
+          try {
+            await authService.login(this.form)
+            await authService.getUserInfo()
+            uni.hideLoading()
+            this.openPage('/pages/home/index', 'tab')
+          } catch (e) {
+            uni.hideLoading()
+            const errorMessage = e && e.data.message || '出错了，请重试'
+            this.$u.toast(errorMessage);
+          }
         }
       });
     }
