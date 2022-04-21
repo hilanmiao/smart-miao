@@ -4,9 +4,9 @@ import { httpClient as http } from '../services'
 
 const internals = {}
 
-internals.login = credentials => {
+internals.login = data => {
   return http
-    .post('api/login', credentials)
+    .post('api/login', data)
     .then(response => {
       const { data } = response.data
       store.dispatch('auth/setAuth', data)

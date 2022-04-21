@@ -27,11 +27,11 @@ internals.get = function(url, params, options) {
     })
 }
 
-internals.post = function(url, payload, options) {
+internals.post = function(url, data, options) {
   let config = {
     method: 'POST',
     url: url,
-    data: payload
+    data: data
   }
   config = Object.assign(config, options)
   return axios(config)
@@ -44,18 +44,18 @@ internals.post = function(url, payload, options) {
     .catch(function(error) {
       if (error === 'EXPIRED_ACCESS_TOKEN') {
         store.dispatch('auth/useRefreshToken')
-        return internals.post(url, payload, options)
+        return internals.post(url, data, options)
       } else {
         throw error
       }
     })
 }
 
-internals.put = function(url, payload, options) {
+internals.put = function(url, data, options) {
   let config = {
     method: 'PUT',
     url: url,
-    data: payload
+    data: data
   }
   config = Object.assign(config, options)
   return axios(config)
@@ -68,18 +68,18 @@ internals.put = function(url, payload, options) {
     .catch(function(error) {
       if (error === 'EXPIRED_ACCESS_TOKEN') {
         store.dispatch('auth/useRefreshToken')
-        return internals.put(url, payload, options)
+        return internals.put(url, data, options)
       } else {
         throw error
       }
     })
 }
 
-internals.delete = function(url, payload, options) {
+internals.delete = function(url, data, options) {
   let config = {
     method: 'DELETE',
     url: url,
-    data: payload
+    data: data
   }
   config = Object.assign(config, options)
   return axios(config)
@@ -92,7 +92,7 @@ internals.delete = function(url, payload, options) {
     .catch(function(error) {
       if (error === 'EXPIRED_ACCESS_TOKEN') {
         store.dispatch('auth/useRefreshToken')
-        return internals.delete(url, payload, options)
+        return internals.delete(url, data, options)
       } else {
         throw error
       }
