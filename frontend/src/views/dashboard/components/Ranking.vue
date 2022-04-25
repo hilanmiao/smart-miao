@@ -60,6 +60,7 @@ export default {
       align-items: center;
       justify-content: center;
       color: #909399;
+      border-radius: 4px;
     }
     .content {
       font-size: 18px;

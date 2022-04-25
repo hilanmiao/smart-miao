@@ -1,7 +1,11 @@
 # Smart miao
-生活小助理-招财猫，丰富的记账功能，助你养成良好的记账习惯。便捷的卡证照管理，打印、分享更加快捷高效。多用户管理，家庭成员、亲戚朋友都可以注册使用。
+招财猫-您的私人理财专家，丰富的记账功能，助你养成良好的记账习惯。便捷的卡证照管理，打印、分享更加快捷高效。
 
-> AE视频模板等资源太大，就不放到代码管理了，有需要可以提issue，写上你的邮箱，我会尽快发给你～
+做就做全套：网页端、移动端、桌面端多端开发，免费视频教程、免费营销网站、免费AE产品宣传视频、甚至是教你申请著作权......
+
+> 如果你是UI设计师，喜欢这个项目并希望贡献自己的能力，你出图，我来实现，love~
+
+> AE视频模板等资源太大，就不放到代码管理了，网盘也白瞎，有需要可以提issue，写上你的邮箱，我会尽快发给你～
 
 演示环境及账号密码：https://demo.smartmiao.com
 
@@ -11,14 +15,18 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-![营销网站](screen-shot-web.png)
+<div style="text-align:center;height: 600px;">
+<img src="screen-shot-web.png" height="100%"/>
+</div>
+
 
 ## 平台目录
 - [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
 - [x] frontend：基于`Vue.js 2.x`的前端工程
+- [x] app：基于`Uniapp、uviewui 1.x`的移动端工程
 - [x] web：基于`Bulma.css 0.9.x`的产品营销网站
-- [ ] app：基于`Uniapp、uviewui 2.x`的移动端工程
-- [x] desktop：基于`Electron 16.x`的桌面工程
+- [x] desktop：基于`Electron 16.x`和`electron-forge`的桌面工程，请查看另一个开源项目
+[LanMiaoDesktop](https://github.com/hilanmiao/LanMiaoDesktop) 的 `online` 分支
 
 ## 功能
 - [x] 系统管理-用户管理
@@ -48,7 +56,7 @@
 
 
 ## 教程
-请查阅每个工程下面的`Readme`文件，[全栈小白开发手册](https://hilanmiao.github.io/standards-recommendations/) 对你也许有用
+请查阅每个工程下面的`Readme`文件，另外 [全栈小白开发手册](https://hilanmiao.github.io/standards-recommendations/) 对你也许有用
 
 ## 赞助
 
