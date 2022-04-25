@@ -15,8 +15,8 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-<div style="text-align:center;height: 600px;">
-<img src="screen-shot-web.png" height="100%"/>
+<div align=center>
+ <img src="screen-shot-web.png" height="600" />
 </div>
 
 
