@@ -11,5 +11,6 @@ module.exports = app => {
   const tokenRequired = middleware.tokenRequired(null, app)
 
   apiRouter.post('/system/login-log', tokenRequired, systemLoginLog.create);
+  apiRouter.get('/system/login-log/pageMine', tokenRequired, systemLoginLog.pageMine);
   apiRouter.get('/system/login-log/page', tokenRequired, systemLoginLog.page);
 };

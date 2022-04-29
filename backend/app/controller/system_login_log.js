@@ -31,6 +31,19 @@ class SystemPowerController extends Controller {
 
     this.success({ ctx, data: res })
   }
+
+  /**
+   * 分页
+   * @return {Promise<void>}
+   */
+  async pageMine() {
+    const { ctx } = this;
+    const { page, limit, dateRange } = ctx.request.query
+    const user = ctx.request.user
+    const res = await ctx.service.systemLoginLog.page({ page, limit, dateRange, username: user.username })
+
+    this.success({ ctx, data: res })
+  }
 }
 
 module.exports = SystemPowerController;

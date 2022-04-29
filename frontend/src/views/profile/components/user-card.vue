@@ -190,6 +190,10 @@ export default {
     overflow: hidden;
     height: 100px;
     width: 100px;
+    ::v-deep .el-upload {
+      display: flex;
+      align-items: center;
+    }
     img {
       height: 92px;
       width: 92px;

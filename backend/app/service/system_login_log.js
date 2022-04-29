@@ -34,11 +34,12 @@ class SystemLoginLogService extends Service {
    * @param dateRange
    * @return {Promise<{pagination: {total, size, page}, list: number | M[] | TInstance[] | SQLResultSetRowList | HTMLCollectionOf<HTMLTableRowElement> | string}>}
    */
-  async page({ page, limit, dateRange }) {
+  async page({ page, limit, dateRange, username }) {
     const { ctx, app: { Sequelize: { Op } } } = this;
     const op = {
       where: {
         // name: { [Op.like]: `%${name || ''}%` },
+        username: { [Op.like]: `%${username || ''}%` },
       },
       order: [
         [ 'created_at', 'desc' ]

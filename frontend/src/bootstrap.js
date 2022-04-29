@@ -5,25 +5,17 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getAccessToken, getRefreshToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
-import qs from 'querystring'
+import qs from 'qs'
 import { authService, authInterceptor, notificationService } from '@/services'
 import axios from 'axios'
 
 // 打印项目信息
-console.log('%c更多内容请访问：https://gitee.com/XiaoLanMiao/smart-miao', 'color: red;')
+console.log('%c更多内容请访问：https://github.com/hilanmiao/smart-miao', 'color: red;')
 // Ascii字符画 http://patorjk.com/software/taag/
 console.log(`
- ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄
-▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌
-▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀█░█▀▀▀▀ ▐░▌
-▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌     ▐░▌
-▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     ▐░▌
-▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌     ▐░▌     ▐░▌
-▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀      ▐░▌     ▐░▌
-▐░▌       ▐░▌▐░▌          ▐░▌     ▐░▌       ▐░▌     ▐░▌
-▐░▌       ▐░▌▐░▌          ▐░▌      ▐░▌  ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄
-▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
- ▀         ▀  ▀            ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀
+┌─┐┌┬┐┌─┐┬─┐┌┬┐┌┬┐┬┌─┐┌─┐
+└─┐│││├─┤├┬┘ │ ││││├─┤│ │
+└─┘┴ ┴┴ ┴┴└─ ┴ ┴ ┴┴┴ ┴└─┘
 `)
 
 // NProgress Configuration
@@ -112,7 +104,8 @@ router.beforeEach(async(to, from, next) => {
         } catch (error) {
           // remove token
           await store.dispatch('auth/clearAuth')
-          Message.error(`${error}` || '发生了一些未知的错误，请重试！')
+          const errorMessage = error && error.data.message || '发生了一些未知的错误，请重试！'
+          Message.error(errorMessage)
 
           // go to login page to re-login
           next(`/login?redirect=${to.path}`)
