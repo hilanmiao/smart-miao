@@ -15,10 +15,29 @@
 | test  | 123456 | 拥有少部分菜单权限 |
 
 ## 应用截图
-<div align=center>
- <img src="screen-shot-web.png" height="600" />
-</div>
+<table>
+ <tr>
+    <th>网页端</th>
+    <th>移动端</th>
+    <th>桌面端</th>
+    <th>营销网站</th>
+ </tr>
+  <tr>
+    <td valign="top">
+        <img src="screenshot-frontend.png" height="200" />
+    </td>
+    <td valign="top">
+        <img src="screenshot-app.png" height="200" />
+    </td>
+    <td valign="top">
+        <img src="screenshot-desktop.png" height="200" />
+    </td>
+    <td valign="top">
+        <img src="screenshot-web.png" height="200" />
+    </td>
 
+  </tr>
+</table>
 
 ## 平台目录
 - [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
