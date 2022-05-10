@@ -116,7 +116,9 @@ export default {
       handler: function(val, oldVal) {
         // 对 Table 进行重新布局
         // https://element.eleme.cn/#/zh-CN/component/table#table-methods
-        this.$refs.table.doLayout()
+        this.$nextTick(() => {
+          this.$refs.table.doLayout()
+        })
       },
       immediate: true
     }
