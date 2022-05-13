@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { userService } from '@/services'
 
 export default {
   data() {
@@ -57,34 +58,32 @@ export default {
     this.$refs.uForm.setRules(this.rules);
   },
   methods: {
-    openPage({type = 'to', url = '/pages/me/info', params}) {
+    openPage(url = '/pages/me/info', type = 'to', params) {
       this.$u.route({
-        type,
         url,
+        type,
         params
       })
     },
     save() {
-      this.$refs.uForm.validate(valid => {
+      this.$refs.uForm.validate(async valid => {
         if (valid) {
           uni.showLoading()
-          let formData = { ...this.vuex_user }
-          formData.introduction = this.form.introduction
-          formData = [formData]
-          authService.changeInfo(formData)
-              .then(response => {
-                // 更新vuex保存的用户信息
-                this.$u.vuex('vuex_user.introduction', this.form.introduction)
+          const formData = this.form
+          try {
+            await userService.updateCurrentUserProfile(formData)
 
-                uni.hideLoading()
-                this.$u.toast('保存成功');
-                this.openPage()
-              })
-              .catch(e => {
-                uni.hideLoading()
-                const errorMessage = e && e.data.message || '出错了，请重试'
-                this.$u.toast(errorMessage);
-              })
+            // 更新vuex保存的用户信息
+            this.$u.vuex('vuex_user.introduction', this.form.introduction)
+
+            uni.hideLoading()
+            this.openPage()
+          } catch (e) {
+            console.error(e)
+            uni.hideLoading()
+            const errorMessage = e && e.data.message || '出错了，请重试'
+            this.$u.toast(errorMessage);
+          }
         }
       });
     },

@@ -71,7 +71,7 @@ export default {
   },
 
   created() {
-    this.form.displayName = this.user.display_name
+    this.form.displayName = this.user.displayName
     this.form.mobile = this.user.mobile
     this.form.email = this.user.email
     this.form.introduction = this.user.introduction

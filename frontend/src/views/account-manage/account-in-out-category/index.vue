@@ -2,7 +2,7 @@
   <div class="account-in-out-category-container">
     <table-layout class="table-layout">
       <template v-slot:headerLeft>
-        <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
+        <!--        <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>-->
         <!--        <warning-confirm-button-->
         <!--          button-type="danger"-->
         <!--          :content="`确认批量删除 ${tableMultipleSelection.length} 条数据？`"-->
@@ -38,6 +38,11 @@
               <span class="link-type" @click="handleEdit(row)">{{ row.name }}</span>
             </template>
           </el-table-column>
+          <el-table-column prop="icon" label="图标" width="60" align="center">
+            <template slot-scope="{row}">
+              <svg-icon v-if="row.icon" :icon-class="row.icon" />
+            </template>
+          </el-table-column>
           <!--          <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />-->
           <!--          <el-table-column prop="updatedAt" label="更新时间" align="center" width="200" />-->
           <el-table-column label="操作" width="100" align="center" fixed="right">
@@ -62,7 +67,7 @@
 
 <script>
 import _ from 'lodash'
-import WarningConfirmButton from '@/components/WarningConfirmButton'
+// import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
 import accountInOutCategoryFormDialog from './components/account-in-out-category-form-dialog'
@@ -73,7 +78,7 @@ export default {
   components: {
     TableLayout,
     Pagination,
-    WarningConfirmButton,
+    // WarningConfirmButton,
     accountInOutCategoryFormDialog
   },
   data() {

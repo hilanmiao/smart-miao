@@ -8,13 +8,14 @@ class AccountInOutCategoryService extends Service {
   /**
    * 创建
    * @param name
+   * @param icon
    * @return {Promise<{code: number}|{id}>}
    */
-  async create({ name }) {
+  async create({ name, icon }) {
     const { ctx } = this;
     let res
     try {
-      const model = await ctx.model.AccountInOutCategory.create({ name })
+      const model = await ctx.model.AccountInOutCategory.create({ name, icon })
       res = { id: model.id }
 
       return res
@@ -31,14 +32,15 @@ class AccountInOutCategoryService extends Service {
    * 更新
    * @param id
    * @param name
+   * @param icon
    * @return {Promise<{code: number}|{id}>}
    */
-  async update({ id, name }) {
+  async update({ id, name, icon }) {
     const { ctx } = this;
     let res
     try {
       const model = await ctx.model.AccountInOutCategory.findByPk(id);
-      await model.update({ name })
+      await model.update({ name, icon })
       res = { id: model.id }
 
       return res

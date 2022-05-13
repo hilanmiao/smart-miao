@@ -9,11 +9,11 @@
     <view class="box-head" @click="openPage()">
       <view class="box-info">
         <view class="box-avatar">
-          <u-avatar :src="vuex_user.avatar || '/static/app/common/logo.png'" size="140" bg-color="#fafafa"></u-avatar>
+          <u-avatar :src="avatar" size="140" bg-color="#fafafa"></u-avatar>
         </view>
         <view class="box-name">
-          <view class="nickname">{{ vuex_user.nickname || '张国栋' }}</view>
-          <view class="mobile">{{ vuex_user.mobile || '18353674768' }}</view>
+          <view class="nickname">{{ vuex_user.displayName }}</view>
+          <view class="mobile">{{ vuex_user.mobile }}</view>
         </view>
         <view class="box-arrow">
           <u-icon name="arrow-right" size="34"></u-icon>
@@ -86,6 +86,8 @@
 </template>
 
 <script>
+import { serverURL } from '@/config'
+
 import tabbar from "../../components/tabbar/tabbar";
 
 export default {
@@ -94,6 +96,7 @@ export default {
   },
   data() {
     return {
+      avatar: '',
       customStyleBtn: {
         color: '#323232',
         backgroundColor: '#ffe2b4',
@@ -105,7 +108,7 @@ export default {
   computed: {},
   watch: {},
   onShow() {
-
+    this.avatar = serverURL + this.vuex_user.avatar || '/static/app/common/logo.png'
   },
   methods: {
     openPage(url = '/pages/me/info', type = 'to', params) {

@@ -4,14 +4,14 @@ const internals = {}
 
 internals.login = data => {
     return http
-        .post('api/login', data)
+        .post('api/login-by-username-password', data)
         .then(response => {
-            const { data } = response.data
-            const { accessToken, refreshToken } = data
+            const { data: responseData } = response.data
+            const { accessToken, refreshToken } = responseData
             // 记住账号密码
-            this.$u.vuex('vuex_login', this.form)
+            uni.$u.vuex('vuex_login', data)
             // 设置授权
-            this.$luchRequest.config.header.Authorization = accessToken
+            uni.$luchRequest.config.header.Authorization = accessToken
             uni.$u.vuex('vuex_accessToken', accessToken);
             uni.$u.vuex('vuex_refreshToken', refreshToken);
             return response
@@ -24,7 +24,7 @@ internals.login = data => {
 
 internals.getUserInfo = (data) => {
     return http
-        .post('api/system/user/basic', data)
+        .get('api/system/user/basic', data)
         .then(response => {
             const { data } = response.data
             // 设置登录的用户信息
@@ -39,13 +39,13 @@ internals.getUserInfo = (data) => {
 
 internals.logout = () => {
     return http
-        .get('api/logout')
+        .put('api/logout')
         .then(response => {
             // 清除授权
             uni.$u.vuex('vuex_user', '');
             uni.$u.vuex('vuex_accessToken', '');
             uni.$u.vuex('vuex_refreshToken', '');
-            this.$luchRequest.config.header.Authorization = ''
+            uni.$luchRequest.config.header.Authorization = ''
             return response.data
         })
         .catch(error => {

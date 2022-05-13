@@ -11,9 +11,9 @@ class AccountInOutCategoryController extends Controller {
   async create() {
     const { ctx } = this;
     ctx.validate({ name: 'string' }, ctx.request.body)
-    const { name } = ctx.request.body
+    const { name, icon } = ctx.request.body
 
-    const res = await ctx.service.accountInOutCategory.create({ name })
+    const res = await ctx.service.accountInOutCategory.create({ name, icon })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -29,9 +29,9 @@ class AccountInOutCategoryController extends Controller {
   async update() {
     const { ctx } = this;
     ctx.validate({ id: 'string', name: 'string' }, ctx.request.body)
-    const { id, name } = ctx.request.body
+    const { id, name, icon } = ctx.request.body
 
-    const res = await ctx.service.accountInOutCategory.update({ id, name })
+    const res = await ctx.service.accountInOutCategory.update({ id, name, icon })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })

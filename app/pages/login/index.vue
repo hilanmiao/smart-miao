@@ -31,14 +31,14 @@
         <u-button @click="handleLogin" :hair-line="false" shape="circle" :custom-style="customStyleBtn" :loading="loading">登录</u-button>
         <u-button @click="handleLogin" :hair-line="false" shape="circle" :custom-style="customStyleBtn2" :loading="loading">注册</u-button>
         <view class="alternative">
-          <view @click="openPage('/pages/login/forget')">
+          <view @click="openPage('/pages/login/forget', 'to')">
               <u-checkbox-group>
                 <u-checkbox v-model="checkedProtocal" shape="circle">
                   <text>同意用户协议、隐私条款</text>
                 </u-checkbox>
               </u-checkbox-group>
           </view>
-          <view @click="openPage('/pages/login/forget')">忘记密码？</view>
+          <view @click="openPage('/pages/login/forget', 'to')">忘记密码？</view>
         </view>
         <view>
           <view class="box-divider">
@@ -72,7 +72,7 @@
 
 <script>
 import {mapState} from 'vuex';
-import { authService, configService } from '../../services'
+import { authService } from '@/services'
 
 export default {
   data() {
@@ -139,10 +139,11 @@ export default {
     this.form.password = this.vuex_login.password
   },
   methods: {
-    openPage(path, type='to') {
+    openPage(url = '/pages/home/index', type = 'tab', params) {
       this.$u.route({
+        url,
         type,
-        url: path
+        params
       })
     },
     handleLogin() {
@@ -157,8 +158,9 @@ export default {
             await authService.login(this.form)
             await authService.getUserInfo()
             uni.hideLoading()
-            this.openPage('/pages/home/index', 'tab')
+            this.openPage()
           } catch (e) {
+            console.error(e)
             uni.hideLoading()
             const errorMessage = e && e.data.message || '出错了，请重试'
             this.$u.toast(errorMessage);

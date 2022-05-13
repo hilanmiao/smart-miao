@@ -13,7 +13,11 @@ module.exports = app => {
     name: {
       type: STRING,
       comment: '名称'
-    }
+    },
+    icon: {
+      type: STRING,
+      comment: '对应图标'
+    },
   }, {
     comment: '收支分类表'
   });

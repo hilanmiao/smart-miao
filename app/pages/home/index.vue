@@ -250,12 +250,14 @@ export default {
         }
       ],
       current: 0,
-      showPopup: true
+      showPopup: false
     }
   },
   computed: {},
   onLoad() {
-
+    if (!this.$verifyPermission()) {
+      return false
+    }
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;

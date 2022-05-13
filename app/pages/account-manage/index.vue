@@ -74,12 +74,6 @@
               </u-grid-item>
               <u-grid-item>
                 <view class="box-icon">
-                  <u-icon size="50" name="sofa" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">家居家装</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
                   <u-icon size="50" name="dog" custom-prefix="custom-icon"></u-icon>
                 </view>
                 <text class="grid-text">宠物</text>

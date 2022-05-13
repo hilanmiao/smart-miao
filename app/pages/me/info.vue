@@ -17,22 +17,26 @@
     </view>
     <view class="u-m-t-20">
       <u-cell-group class="u-cell-group">
-        <u-cell-item title="昵称" :value="vuex_user.userName" @click="openPage('/pages/me/nickname')">
+        <u-cell-item title="昵称" :value="vuex_user.displayName" @click="openPage('/pages/me/nickname', 'to')">
         </u-cell-item>
-        <u-cell-item title="性别" :value="vuex_user.userName" @click="openPage('/pages/me/sex')">
+        <u-cell-item title="性别" :value="vuex_user.sex === '1' ? '男' : '女'" @click="openPage('/pages/me/sex', 'to')">
         </u-cell-item>
-        <u-cell-item title="个人简介" :value="vuex_user.userName" @click="openPage('/pages/me/introduction')">
+        <u-cell-item title="个人简介" :value="vuex_user.introduction" @click="openPage('/pages/me/introduction', 'to')">
         </u-cell-item>
       </u-cell-group>
     </view>
 
     <u-action-sheet :list="listActionsAvatar" v-model="showActionsAvatar" @click="handleActionAvatar"></u-action-sheet>
-    <u-action-sheet :list="listActionsAvatarChooseImage" v-model="showActionsAvatarChooseImage" @click="handleActionAvatarChooseImage"></u-action-sheet>
+    <u-action-sheet :list="listActionsAvatarChooseImage" v-model="showActionsAvatarChooseImage"
+                    @click="handleActionAvatarChooseImage"></u-action-sheet>
 
   </view>
 </template>
 
 <script>
+import { serverURL } from '@/config'
+import { fileService } from '@/services'
+
 export default {
   data() {
     return {
@@ -41,7 +45,7 @@ export default {
         backgroundColor: '#DC4232',
         border: 'none'
       },
-      avatar: '/static/app/common/logo.png',
+      avatar: '',
       listActionsAvatar: [
         {
           text: '拍照/上传头像'
@@ -69,6 +73,7 @@ export default {
     return true
   },
   onShow() {
+    this.avatar = serverURL + this.vuex_user.avatar || '/static/app/common/logo.png'
     this.onAvatarCropper()
   },
   methods: {
@@ -87,17 +92,25 @@ export default {
     },
     onAvatarCropper() {
       // 监听从裁剪页发布的事件，获得裁剪结果
-      uni.$on('uAvatarCropper', path => {
-        this.avatar = path;
+      uni.$on('uAvatarCropper', async path => {
         // 可以在此上传到服务端
-        uni.uploadFile({
-          url: 'http://www.example.com/upload',
-          filePath: path,
-          name: 'file',
-          complete: (res) => {
-            console.log(res);
-          }
-        });
+        uni.showLoading()
+        try {
+          // TODO: 上传了很多次？？？
+          const response = await fileService.uploadAvatar({ filePath: path })
+          const { data } = response.data
+          this.avatar = serverURL + data.url
+
+          // 更新vuex保存的用户信息
+          this.$u.vuex('vuex_user.avatar', data.url)
+
+          uni.hideLoading()
+        } catch (e) {
+          console.error(e)
+          uni.hideLoading()
+          const errorMessage = e && e.data.message || '出错了，请重试'
+          this.$u.toast(errorMessage);
+        }
       })
     },
     handleActionAvatar(index) {
@@ -107,7 +120,7 @@ export default {
     handleActionAvatarChooseImage(index) {
       this.showActionsAvatarChooseImage = false
       console.log(index)
-      if(index === 0) {
+      if (index === 0) {
         uni.chooseImage({
           count: 1, //默认9
           sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
