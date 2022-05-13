@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { authService } from '@/services'
+
 export default {
   data() {
     return {
@@ -56,6 +58,17 @@ export default {
         params
       })
     },
+    logout() {
+      try {
+        authService.logout()
+
+        this.openPage('/pages/login/index', 'to')
+      } catch (e) {
+        console.error(e)
+        const errorMessage = e && e.data.message || '出错了，请重试'
+        this.$u.toast(errorMessage);
+      }
+    }
   }
 }
 </script>

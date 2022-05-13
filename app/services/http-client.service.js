@@ -10,7 +10,7 @@ internals.get = function (url, params, options) {
   return uni.$luchRequest.middleware(config)
     .then(function (response) {
       if (response.header['x-access-token']) {
-        internals.updateTokens(response.headers)
+        internals.updateTokens(response.header)
       }
       return response
     })
@@ -29,7 +29,7 @@ internals.put = function (url, payload, options) {
   return uni.$luchRequest.middleware(config)
     .then(function (response) {
       if (response.header['x-access-token']) {
-        internals.updateTokens(response.headers)
+        internals.updateTokens(response.header)
       }
       return response
     })
@@ -48,7 +48,7 @@ internals.post = function (url, payload, options) {
   return uni.$luchRequest.middleware(config)
     .then(function (response) {
       if (response.header['x-access-token']) {
-        internals.updateTokens(response.headers)
+        internals.updateTokens(response.header)
       }
       return response
     })
@@ -67,7 +67,7 @@ internals.delete = function (url, payload, options) {
   return uni.$luchRequest.middleware(config)
     .then(function (response) {
       if (response.header['x-access-token']) {
-        internals.updateTokens(response.headers)
+        internals.updateTokens(response.header)
       }
       return response
     })
@@ -104,7 +104,7 @@ internals.download = function (url, options) {
     return uni.$luchRequest.middleware(config)
         .then(function (response) {
             if (response.header['x-access-token']) {
-                internals.updateTokens(response.headers)
+                internals.updateTokens(response.header)
             }
             return response
         })
@@ -114,11 +114,13 @@ internals.download = function (url, options) {
 }
 
 internals.updateTokens = function (headers) {
-  const tokens = {
-    accessToken: headers['x-access-token'],
-    refreshToken: headers['x-refresh-token']
-  }
-  store.dispatch('auth/updateTokens', tokens)
+    const accessToken = headers['x-access-token']
+    const refreshToken = headers['x-refresh-token']
+
+    // 设置授权
+    uni.$luchRequest.config.header.Authorization = accessToken
+    uni.$u.vuex('vuex_accessToken', accessToken);
+    uni.$u.vuex('vuex_refreshToken', refreshToken);
 }
 
 export default internals

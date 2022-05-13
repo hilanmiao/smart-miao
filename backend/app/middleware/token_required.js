@@ -6,6 +6,7 @@ module.exports = (options, app) => {
 
     const { header: { authorization }, url } = ctx;
     const decodedToken = ctx.helper.decodeToken(authorization);
+    console.log('decoded token: ', decodedToken);
 
     // 如果token验证不正确或没有
     if (!decodedToken) {

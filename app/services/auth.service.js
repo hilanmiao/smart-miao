@@ -1,3 +1,4 @@
+import store from '@/store'
 import {httpClient as http} from '../services'
 
 const internals = {}
@@ -38,6 +39,8 @@ internals.getUserInfo = (data) => {
 }
 
 internals.logout = () => {
+    // 使用refreshToken
+    uni.$luchRequest.config.header.Authorization = store.state.vuex_refreshToken
     return http
         .put('api/logout')
         .then(response => {

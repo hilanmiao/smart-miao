@@ -35,7 +35,6 @@
     <td valign="top">
         <img src="screenshot-web.png" height="200" />
     </td>
-
   </tr>
 </table>
 
@@ -47,35 +46,11 @@
 - [x] desktop：基于`Electron 16.x`和`electron-forge`的桌面工程，请查看另一个开源项目
 [LanMiaoDesktop](https://github.com/hilanmiao/LanMiaoDesktop) 的 `online` 分支
 
-## 功能
-- [x] 系统管理-用户管理
-- [x] 系统管理-角色管理
-- [x] 权限管理-菜单管理
-- [ ] 权限管理-操作管理
-- [ ] 权限管理-页面元素管理
-- [ ] 权限管理-文件管理
-- [x] 系统监控-在线用户
-- [x] 系统监控-登录日志
-- [x] 系统监控-服务监控
-- [x] 消息通知
-- [x] 登录-Token、RefreshToken
-- [x] 登录-账号密码登录
-- [ ] 登录-手机短信登录
-- [ ] 登录-Github、微信、钉钉第三方登录
-- [ ] 登录-app扫码登录
-- [x] 个人中心
-- [ ] 注册
-- [x] 卡证照管理
-- [x] 记账
-- [ ] 智能提醒
-- [ ] 运维-数据备份
-- [ ] 运维-版本管理
-- [ ] 增强网站无障碍功能的
-- [x] 应用链接-YApi、MinIO、开发手册
-
-
 ## 教程
-请查阅每个工程下面的`Readme`文件，另外 [全栈小白开发手册](https://hilanmiao.github.io/standards-recommendations/) 对你也许有用
+
+Bilibili-招财猫记账软件视频教程
+
+
 
 ## 赞助
 
