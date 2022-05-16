@@ -104,7 +104,58 @@ const store = new Vuex.Store({
             }
             // 保存变量到本地，见顶部函数定义
             saveLifeData(saveKey, state[saveKey])
-        }
+        },
+        RESET_STATE: state => {
+            state.vuex_user = {}
+            state.vuex_accessToken = ''
+            state.vuex_refreshToken = ''
+            uni.$u.vuex('vuex_accessToken', '')
+            uni.$u.vuex('vuex_refreshToken', '')
+        },
+        SET_USER: (state, user) => {
+            state.vuex_user = user
+        },
+        SET_ACCESS_TOKEN: (state, token) => {
+            state.vuex_accessToken = token
+        },
+        SET_REFRESH_TOKEN: (state, token) => {
+            state.vuex_refreshToken = token
+        },
+    },
+    actions: {
+        // 更新tokens
+        updateTokens({ commit }, { accessToken, refreshToken }) {
+            uni.$luchRequest.config.header.Authorization = accessToken
+            commit('SET_ACCESS_TOKEN', accessToken)
+            commit('SET_REFRESH_TOKEN', refreshToken)
+            uni.$u.vuex('vuex_accessToken', accessToken)
+            uni.$u.vuex('vuex_refreshToken', refreshToken)
+
+            console.debug('Tokens 已更新')
+        },
+
+        // 使用refreshToken
+        useRefreshToken({ state }) {
+            uni.$luchRequest.config.header.Authorization = state.vuex_refreshToken
+            console.debug('使用refreshToken')
+        },
+
+        // 设置授权
+        setAuth({ commit, dispatch }, data) {
+            dispatch('updateTokens', data)
+        },
+
+        // 清除授权
+        clearAuth({ commit, dispatch }) {
+            uni.$luchRequest.config.header.Authorization = undefined
+            commit('RESET_STATE')
+        },
+
+        // 设置登录的用户信息
+        setUserInfo({ commit, dispatch }, data) {
+            commit('SET_USER', data)
+            console.debug('设置登录的用户信息')
+        },
     }
 })
 

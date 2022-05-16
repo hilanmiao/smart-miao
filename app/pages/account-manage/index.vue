@@ -2,7 +2,7 @@
   <view class="wrap">
     <view class="box-head">
       <view class="box-select">
-        <text @click="showAction">{{ sexName }}</text>
+        <text @click="showAccountBook = true">{{ selectedAccountBook.name }}</text>
         <u-icon size="28" name="arrow-down-fill"></u-icon>
       </view>
     </view>
@@ -255,18 +255,16 @@
       <view class="box-btn">
         <view class="item">
           <u-button type="error" :custom-style="customStyleBtnAgain">再记一笔</u-button>
-
         </view>
         <view class="item">
           <u-button type="error" :custom-style="customStyleBtn">提交</u-button>
-
         </view>
       </view>
     </view>
 
-    <u-action-sheet @click="clickItem" :list="sexList" v-model="show"></u-action-sheet>
+    <u-select v-model="showAccountBook" :list="accountBookList" label-name="name" value-name="id"
+              @confirm="confirmAccountBook"></u-select>
     <u-picker v-model="showDateTime" mode="time" :params="params" @confirm="confirmDateTime"></u-picker>
-
 
     <u-no-network></u-no-network>
     <tabbar></tabbar>
@@ -274,6 +272,9 @@
 </template>
 
 <script>
+import { accountBookService } from '@/services'
+import { accountInOutCategoryService } from '@/services'
+
 import tabbar from "../../components/tabbar/tabbar";
 
 export default {
@@ -292,23 +293,12 @@ export default {
         backgroundColor: 'transparent',
         border: '1px solid #DC4232',
       },
-      sex: '',
-      sexName: '请选择账本',
-      sexList: [
-        {
-          text: '我的账本',
-          value: '0'
-        },
-        {
-          text: '老婆的账本',
-          value: '1'
-        },
-        {
-          text: '麦琪的账本',
-          value: '2'
-        }
-      ],
-      show: false,
+      accountBook: '',
+      accountBookName: '请选择账本',
+      accountBookList: [],
+      accountInOutCategoryList: [],
+      showAccountBook: false,
+      selectedAccountBook: {},
       list: [{
         name: '支出'
       }, {
@@ -335,6 +325,7 @@ export default {
   computed: {},
   onLoad() {
     this.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+    this.init()
   },
   onReady() {
   },
@@ -342,11 +333,27 @@ export default {
     this.scrollTop = e.scrollTop;
   },
   methods: {
-    showAction() {
-      this.show = true;
+    // 初始化数据事件等
+    async init() {
+      try {
+        const response = await accountBookService.getAccountBookList()
+        const { data: accountBookList } = response.data
+        this.accountBookList = accountBookList
+
+        const responseCategory = await accountInOutCategoryService.getAccountInOutCategoryList()
+        const { data: accountInOutCategoryList } = responseCategory.data
+        this.accountInOutCategoryList = accountInOutCategoryList
+      } catch (e) {
+        console.error('accountInOut.getAccountBookList-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+      }
     },
-    clickItem(index) {
-      this.sexName = this.sexList[index].text;
+    confirmAccountBook(e) {
+      console.log(e)
+      const obj = e[0]
+      const {label, value} = obj
+      this.selectedAccountBook = this.accountBookList.find(item => item.id === value)
     },
     change(index) {
       this.current = index;

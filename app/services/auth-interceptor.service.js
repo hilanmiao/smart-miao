@@ -16,6 +16,39 @@ internals.response = (response) => {
   //   return Promise.reject(response)
   // }
   if(code !== 200) {
+    if (code === 20104) {
+      // accessToken 过期，允许尝试一次 refreshToken，交由 http-client 处理
+      response = 'EXPIRED_ACCESS_TOKEN'
+    } else if (code === 20105 || code === 20109) {
+      // 如果 accessToken 是无效的，或者 refreshToken 已过期，强制用户登录
+      uni.$u.vuex('vuex_accessToken', '')
+      uni.$u.vuex('vuex_refreshToken', '')
+      uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
+    } else if (code === 20105) {
+      console.debug('检验失败，这个用户的session可能已经被删除')
+      // Message.error('用户已被下线')
+      uni.$u.vuex('vuex_accessToken', '')
+      uni.$u.vuex('vuex_refreshToken', '')
+      uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
+    } else if (code === 20110) {
+      console.debug('检验失败，这个用户的session可能已经被删除')
+      // Message.error('用户会话可能已经被删除')
+      uni.$u.vuex('vuex_accessToken', '')
+      uni.$u.vuex('vuex_refreshToken', '')
+      uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
+    } else if (code === 20111) {
+      console.debug('校验失败，这个用户可能已经被删除')
+      // Message.error('用户可能已经被删除')
+      uni.$u.vuex('vuex_accessToken', '')
+      uni.$u.vuex('vuex_refreshToken', '')
+      uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
+    } else if (code === 20112) {
+      console.debug('检验失败，用户密码可能已经被修改了（另一台电脑）')
+      // Message.error('用户密码可能已经被修改')
+      uni.$u.vuex('vuex_accessToken', '')
+      uni.$u.vuex('vuex_refreshToken', '')
+      uni.$u.route({url: 'pages/login/index', type: 'reLaunch'})
+    }
     return Promise.reject(response)
   }
   return response
