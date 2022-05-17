@@ -99,6 +99,24 @@ class AccountBookController extends Controller {
 
     this.success({ ctx, data: res })
   }
+
+  /**
+   * 设置是否默认
+   * @return {Promise<void>}
+   */
+  async setIsDefault() {
+    const { ctx } = this;
+    ctx.validate({ id: 'string' }, ctx.request.body)
+    const { id, isDefault: is_default } = ctx.request.body
+
+    const res = await ctx.service.accountBook.setIsDefault({ id, is_default })
+
+    if (res.code) {
+      this.fail({ ctx, code: res.code })
+      return
+    }
+    this.success({ ctx, data: res })
+  }
 }
 
 module.exports = AccountBookController;

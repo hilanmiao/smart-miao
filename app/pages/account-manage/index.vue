@@ -190,9 +190,14 @@ export default {
         const response = await accountBookService.getAccountBookList()
         const {data: accountBookList} = response.data
         this.accountBookList = accountBookList
-        // 默认选中第一个
+        // 默认选中
         if (accountBookList.length) {
-          this.selectedAccountBook = accountBookList[0]
+          const findOne = accountBookList.find(o => o.isDefault)
+          if(findOne) {
+            this.selectedAccountBook = findOne
+          } else {
+            this.selectedAccountBook = accountBookList[0]
+          }
         }
 
         const responseCategory = await accountInOutCategoryService.getAccountInOutCategoryList()

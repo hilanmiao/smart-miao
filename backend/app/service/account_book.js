@@ -14,10 +14,16 @@ class AccountBookService extends Service {
    */
   async create({ name, remark, balance }) {
     const { ctx } = this;
-    let res
+    let res,
+      is_default = false
     try {
       balance = parseFloat(balance)
-      const model = await ctx.model.AccountBook.create({ name, remark, balance })
+      // 查找是否有默认的
+      const findOne = await ctx.model.AccountBook.findOne({ where: { is_default: true } })
+      if (!findOne) {
+        is_default = true
+      }
+      const model = await ctx.model.AccountBook.create({ name, remark, balance, is_default })
       res = { id: model.id }
 
       return res
@@ -157,6 +163,42 @@ class AccountBookService extends Service {
     }
 
     return res;
+  }
+
+  /**
+   * 设置是否默认
+   * @param id
+   * @param is_default
+   * @return {Promise<{code: number}|{id}>}
+   */
+  async setIsDefault({ id, is_default }) {
+    const { ctx } = this;
+    let res,
+      transaction;
+    try {
+      // 开启事务
+      transaction = await ctx.model.transaction();
+
+      // 只能有一个默认
+      if (is_default) {
+        await ctx.model.AccountBook.update({ is_default: false }, { where: { is_default: true }, transaction })
+      }
+      const model = await ctx.model.AccountBook.findByPk(id);
+      await model.update({ is_default }, { transaction })
+
+      // 提交事务
+      await transaction.commit()
+      res = { id: model.id }
+
+      return res
+    } catch (e) {
+      console.log(e)
+      ctx.logger.error(e)
+      await transaction.rollback();
+
+      // 操作失败
+      return { code: 20107 }
+    }
   }
 }
 

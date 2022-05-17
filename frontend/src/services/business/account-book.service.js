@@ -26,4 +26,8 @@ internals.deleteAccountBook = (data) => {
   return http.delete(apiUrl, data)
 }
 
+internals.setAccountBookIsDefault = (data) => {
+  return http.put(apiUrl + 'set-is-default', data)
+}
+
 export default internals

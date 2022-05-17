@@ -10,6 +10,7 @@ module.exports = app => {
 
   const tokenRequired = middleware.tokenRequired(null, app)
 
+  apiRouter.put('/account-book/set-is-default', tokenRequired, accountBook.setIsDefault);
   apiRouter.post('/account-book', tokenRequired, accountBook.create);
   apiRouter.put('/account-book', tokenRequired, accountBook.update);
   apiRouter.delete('/account-book', tokenRequired, accountBook.delete);

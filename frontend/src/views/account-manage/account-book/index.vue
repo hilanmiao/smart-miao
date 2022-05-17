@@ -42,6 +42,14 @@
           <el-table-column prop="remark" label="备注" align="center" />
           <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
           <el-table-column prop="updatedAt" label="更新时间" align="center" width="200" />
+          <el-table-column label="是否默认" width="100px" align="center">
+            <template slot-scope="{row}">
+              <el-switch
+                v-model="row.isDefault"
+                @change="changeIsDefault(row)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="100" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
@@ -184,6 +192,18 @@ export default {
     handleView(row) {
       this.formId = row.id
       this.dialogVisibleView = true
+    },
+    // 设置是否默认
+    async changeIsDefault(row) {
+      try {
+        await accountBookService.setAccountBookIsDefault({ id: row.id, isDefault: row.isDefault })
+        this.handleRefresh()
+      } catch (e) {
+        console.error('accountBook.deleteAccountBook-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+        this.handleRefresh()
+      }
     }
   }
 }

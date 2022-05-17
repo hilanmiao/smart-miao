@@ -2,7 +2,7 @@
 
 const base = require('./base');
 module.exports = app => {
-  const { STRING, UUID, UUIDV1, TEXT, ENUM, JSON, DECIMAL } = app.Sequelize;
+  const { STRING, UUID, UUIDV1, TEXT, ENUM, JSON, DECIMAL, BOOLEAN } = app.Sequelize;
   const AccountBook = base.defineModel(app, 'account_book', {
     id: {
       type: UUID,
@@ -15,9 +15,14 @@ module.exports = app => {
       comment: '名称'
     },
     balance: {
-      type: DECIMAL,
+      type: DECIMAL(19, 2),
       comment: '余额',
       defaultValue: 0
+    },
+    is_default: {
+      type: BOOLEAN,
+      defaultValue: false,
+      comment: '是否是默认'
     },
     remark: {
       type: TEXT,
