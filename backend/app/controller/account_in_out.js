@@ -10,7 +10,7 @@ class AccountInOutController extends Controller {
    */
   async create() {
     const { ctx } = this;
-    ctx.validate({ amount: 'string' }, ctx.request.body)
+    ctx.validate({ accountBookId: 'string', accountInOutCategoryId: 'string' }, ctx.request.body)
     const { accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark } = ctx.request.body
 
     const res = await ctx.service.accountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark })

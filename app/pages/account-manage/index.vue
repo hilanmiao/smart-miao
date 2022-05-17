@@ -9,255 +9,88 @@
     <view class="box-content">
       <view class="box-in-out">
         <u-tabs active-color="#DC4232" inactive-color="#BFBFBF"
-                :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
+                :list="tabList" :is-scroll="false" :current="currentTab" @change="changeTab"></u-tabs>
       </view>
       <view class="box-input">
-        <u-field
-            v-model="money"
-            label="早饭"
-            input-align="right"
-        >
-        </u-field>
+        <text>{{ selectedInOutCategory.name }}</text>
+        <u-input v-model="form.amount" type="number" input-align="right"/>
+<!--        <u-field-->
+<!--            v-model="form.amount"-->
+<!--            :label="selectedInOutCategory.name"-->
+<!--            input-align="right"-->
+<!--        >-->
+<!--        </u-field>-->
       </view>
       <view class="box-category">
-        <swiper class="swiper">
-          <swiper-item>
+        <swiper class="swiper" @change="changeSwiper">
+          <swiper-item v-for="i in Math.ceil(accountInOutCategoryList.length/10)" :key="i">
             <u-grid :col="5" :border="false" hover-class="hover-class">
-              <u-grid-item class="active">
+              <u-grid-item
+                  :class="{active: item.id === selectedInOutCategory.id}"
+                  v-for="(item,index) in accountInOutCategoryList"
+                  :key="index"
+                  v-if="(index + 1) >= (i - 1) * 10 && (index + 1) <= i * 10"
+                  @click="clickGrid(item)"
+              >
                 <view class="box-icon">
-                  <u-icon size="50" name="food" custom-prefix="custom-icon"></u-icon>
+                  <u-icon size="50" :name="item.icon" custom-prefix="custom-icon"></u-icon>
                 </view>
-                <text class="grid-text">餐饮美食</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="skin" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">服饰装扮</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="shop" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">日用百货</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="sofa" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">家居家装</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="camera" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">数码电器</text>
-              </u-grid-item>
-
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="sports" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">运动户外</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="lipstick" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">美容美发</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="babybottle" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">母婴亲子</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="dog" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">宠物</text>
-              </u-grid-item>
-            </u-grid>
-          </swiper-item>
-          <swiper-item>
-            <u-grid :col="5" :border="false" hover-class="hover-class">
-              <u-grid-item class="active">
-                <view class="box-icon">
-                  <u-icon size="50" name="bus" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">交通出行</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="car" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">爱车养车</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="home" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">住房物业</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="suitcase" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">酒店旅游</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="movie" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">文化休闲</text>
-              </u-grid-item>
-
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="read" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">教育培训</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="medicinebox" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">医疗健康</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="life" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">生活服务</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="heartinhand" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">公共服务</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="business" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">商业服务</text>
-              </u-grid-item>
-            </u-grid>
-          </swiper-item>
-          <swiper-item>
-            <u-grid :col="5" :border="false" hover-class="hover-class">
-              <u-grid-item class="active">
-                <view class="box-icon">
-                  <u-icon size="50" name="love" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">公益捐赠</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="YUAN" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">投资理财</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="insurance" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">保险</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="creditcard" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">信用借还</text>
-              </u-grid-item>
-
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="recharge" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">充值缴费</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="moneycollect" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">收入</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="redenvelope" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">转账红包</text>
-              </u-grid-item>
-              <u-grid-item class="active">
-                <view class="box-icon">
-                  <u-icon size="50" name="refund" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">退款</text>
-              </u-grid-item>
-              <u-grid-item>
-                <view class="box-icon">
-                  <u-icon size="50" name="appstore" custom-prefix="custom-icon"></u-icon>
-                </view>
-                <text class="grid-text">其他</text>
+                <text class="grid-text">{{ item.name }}</text>
               </u-grid-item>
             </u-grid>
           </swiper-item>
         </swiper>
         <view class="indicator-dots">
-          <view class="indicator-dots-item" :class="[current == 0 ? 'indicator-dots-active' : '']">
-          </view>
-          <view class="indicator-dots-item" :class="[current == 1 ? 'indicator-dots-active' : '']">
-          </view>
-          <view class="indicator-dots-item" :class="[current == 2 ? 'indicator-dots-active' : '']">
+          <view class="indicator-dots-item"
+                v-for="i in Math.ceil(accountInOutCategoryList.length/10)" :key="i"
+                :class="[currentSwiper == i - 1 ? 'indicator-dots-active' : '']">
           </view>
         </view>
-
       </view>
     </view>
     <view class="box-remark">
       <u-field
           @click="showDateTime = true"
-          v-model="dateTime"
+          v-model="form.dateTime"
           :disabled="true"
           label="时间："
           placeholder="请选择时间"
           right-icon="arrow-right"
       >
       </u-field>
-      <u-field
-          label="标签："
-          :border-bottom="false"
-      >
-      </u-field>
-      <view class="box-category">
-        <u-tag text="午饭" type="info" mode="plain" size="mini"/>
-        <u-tag text="晚饭" type="info" mode="plain" size="mini"/>
-        <u-tag text="联通话费" type="info" mode="plain" size="mini"/>
-        <u-tag text="移动话费" type="info" mode="plain" size="mini"/>
-        <u-tag text="水费" type="info" mode="plain" size="mini"/>
-        <u-tag text="电费" type="info" mode="plain" size="mini"/>
-        <u-tag text="燃气费" type="info" mode="plain" size="mini"/>
-        <u-tag text="汽车保险" type="info" mode="plain" size="mini"/>
-        <u-tag text="摩托保险" type="info" mode="plain" size="mini"/>
-        <u-tag text="房贷" type="info" mode="plain" size="mini"/>
-      </view>
+<!--      <u-field-->
+<!--          label="标签："-->
+<!--          :border-bottom="false"-->
+<!--      >-->
+<!--      </u-field>-->
+<!--      <view class="box-category">-->
+<!--        <u-tag text="午饭" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="晚饭" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="联通话费" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="移动话费" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="水费" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="电费" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="燃气费" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="汽车保险" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="摩托保险" type="info" mode="plain" size="mini"/>-->
+<!--        <u-tag text="房贷" type="info" mode="plain" size="mini"/>-->
+<!--      </view>-->
       <u-field
           label="备注："
+          v-model="form.remark"
       >
       </u-field>
     </view>
     <view class="box-bottom">
-      <view class="box-audio">
-        <u-icon size="40" name="audio" custom-prefix="custom-icon"></u-icon>
-      </view>
+<!--      <view class="box-audio">-->
+<!--        <u-icon size="40" name="audio" custom-prefix="custom-icon"></u-icon>-->
+<!--      </view>-->
       <view class="box-btn">
         <view class="item">
-          <u-button type="error" :custom-style="customStyleBtnAgain">再记一笔</u-button>
+          <u-button type="error" :custom-style="customStyleBtnAgain" @click="resetData">再记一笔</u-button>
         </view>
         <view class="item">
-          <u-button type="error" :custom-style="customStyleBtn">提交</u-button>
+          <u-button type="error" :custom-style="customStyleBtn" @click="submit">提交</u-button>
         </view>
       </view>
     </view>
@@ -272,9 +105,7 @@
 </template>
 
 <script>
-import { accountBookService } from '@/services'
-import { accountInOutCategoryService } from '@/services'
-
+import {accountBookService, accountInOutCategoryService, accountInOutService } from '@/services'
 import tabbar from "../../components/tabbar/tabbar";
 
 export default {
@@ -293,20 +124,30 @@ export default {
         backgroundColor: 'transparent',
         border: '1px solid #DC4232',
       },
+      tabList: [{
+        name: '支出'
+      }, {
+        name: '收入'
+      }],
+      currentTab: 0,
       accountBook: '',
       accountBookName: '请选择账本',
       accountBookList: [],
       accountInOutCategoryList: [],
       showAccountBook: false,
       selectedAccountBook: {},
-      list: [{
-        name: '支出'
-      }, {
-        name: '收入'
-      }],
-      current: 0,
-      money: '99999999.00',
-      dateTime: '',
+      selectedInOutCategory: {},
+      currentSwiper: 0,
+
+      form: {
+        id: '',
+        accountInOutCategoryId: '',
+        accountBookId: '',
+        type: 'out',
+        amount: 0,
+        remark: '',
+        dateTime: ''
+      },
       showDateTime: false,
       params: {
         year: true,
@@ -322,9 +163,19 @@ export default {
       }
     }
   },
-  computed: {},
+  watch: {
+    currentTab () {
+      this.form.type = this.currentTab === 0 ? 'out' : 'in'
+    },
+    selectedAccountBook () {
+      this.form.accountBookId = this.selectedAccountBook.id
+    },
+    selectedInOutCategory () {
+      this.form.accountInOutCategoryId = this.selectedInOutCategory.id
+    },
+  },
   onLoad() {
-    this.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+    this.form.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
     this.init()
   },
   onReady() {
@@ -337,17 +188,35 @@ export default {
     async init() {
       try {
         const response = await accountBookService.getAccountBookList()
-        const { data: accountBookList } = response.data
+        const {data: accountBookList} = response.data
         this.accountBookList = accountBookList
+        // 默认选中第一个
+        if (accountBookList.length) {
+          this.selectedAccountBook = accountBookList[0]
+        }
 
         const responseCategory = await accountInOutCategoryService.getAccountInOutCategoryList()
-        const { data: accountInOutCategoryList } = responseCategory.data
+        const {data: accountInOutCategoryList} = responseCategory.data
         this.accountInOutCategoryList = accountInOutCategoryList
+        // 默认选中第一个
+        if (accountInOutCategoryList.length) {
+          this.selectedInOutCategory = accountInOutCategoryList[0]
+        }
       } catch (e) {
         console.error('accountInOut.getAccountBookList-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
         this.$message.error(errorMessage)
       }
+    },
+    setData() {},
+    resetData() {
+      this.currentTab = 0
+      this.currentSwiper = 0
+      this.selectedAccountBook = this.accountBookList[0]
+      this.selectedInOutCategory = this.accountInOutCategoryList[0]
+      this.form.amount = 0
+      this.form.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+      this.form.remark = ''
     },
     confirmAccountBook(e) {
       console.log(e)
@@ -355,18 +224,49 @@ export default {
       const {label, value} = obj
       this.selectedAccountBook = this.accountBookList.find(item => item.id === value)
     },
-    change(index) {
-      this.current = index;
+    changeTab(index) {
+      this.currentTab = index;
+    },
+    changeSwiper(e) {
+      this.currentSwiper = e.detail.current;
+    },
+    clickGrid(obj) {
+      this.selectedInOutCategory = obj
     },
     confirmDateTime(e) {
       // console.log(e);
-      this.dateTime = '';
-      if (this.params.year) this.dateTime += e.year;
-      if (this.params.month) this.dateTime += '-' + e.month;
-      if (this.params.day) this.dateTime += '-' + e.day;
-      if (this.params.hour) this.dateTime += ' ' + e.hour;
-      if (this.params.minute) this.dateTime += ':' + e.minute;
-      if (this.params.second) this.dateTime += ':' + e.second;
+      this.form.dateTime = '';
+      if (this.params.year) this.form.dateTime += e.year;
+      if (this.params.month) this.form.dateTime += '-' + e.month;
+      if (this.params.day) this.form.dateTime += '-' + e.day;
+      if (this.params.hour) this.form.dateTime += ' ' + e.hour;
+      if (this.params.minute) this.form.dateTime += ':' + e.minute;
+      if (this.params.second) this.form.dateTime += ':' + e.second;
+    },
+    validateForm() {
+      if(!this.form.accountBookId) {
+        this.$u.toast('请选择账本');
+      }
+      if(!this.form.accountInOutCategoryId) {
+        this.$u.toast('请选择分类');
+      }
+      return true
+    },
+    async submit() {
+      if (this.validateForm()) {
+        uni.showLoading()
+        const formData = this.form
+        try {
+          await accountInOutService.createAccountInOut(formData)
+          this.$u.toast('保存成功');
+          uni.hideLoading()
+        } catch (e) {
+          console.error(e)
+          uni.hideLoading()
+          const errorMessage = e && e.data.message || '出错了，请重试'
+          this.$u.toast(errorMessage);
+        }
+      }
     },
   }
 }
@@ -434,19 +334,14 @@ background-color: rgb(240, 242, 244);
 
   .box-input {
     margin-top: 4px;
-
-    ::v-deep .u-field {
+    display: flex;
+    align-items: center;
+    color: $cus-main-color;
+    ::v-deep .uni-input-input {
       color: $cus-main-color;
-
-      .u-label {
-        color: $cus-main-color;
-      }
-
-      input {
-        font-size: 24px;
-        font-family: monospace;
-        font-weight: bold;
-      }
+      font-size: 24px;
+      font-family: monospace;
+      font-weight: bold;
     }
   }
 
@@ -466,6 +361,7 @@ background-color: rgb(240, 242, 244);
       align-items: center;
       justify-content: center;
     }
+
     .active {
       .box-icon {
         background: linear-gradient($cus-main-color, #ff8c6f);
@@ -476,6 +372,7 @@ background-color: rgb(240, 242, 244);
         color: $cus-main-color;
       }
     }
+
     ::v-deep .u-grid-item-box {
       padding: 16px 0 0 0 !important;
     }
