@@ -50,8 +50,8 @@
     </view>
     <view class="box-remark">
       <u-field
-          @click="showDateTime = true"
-          v-model="form.dateTime"
+          @click="showInOutDate = true"
+          v-model="form.inOutDate"
           :disabled="true"
           label="时间："
           placeholder="请选择时间"
@@ -97,7 +97,7 @@
 
     <u-select v-model="showAccountBook" :list="accountBookList" label-name="name" value-name="id"
               @confirm="confirmAccountBook"></u-select>
-    <u-picker v-model="showDateTime" mode="time" :params="params" @confirm="confirmDateTime"></u-picker>
+    <u-picker v-model="showInOutDate" mode="time" :params="params" @confirm="confirmInOutDate"></u-picker>
 
     <u-no-network></u-no-network>
     <tabbar></tabbar>
@@ -146,9 +146,9 @@ export default {
         type: 'out',
         amount: 0,
         remark: '',
-        dateTime: ''
+        inOutDate: ''
       },
-      showDateTime: false,
+      showInOutDate: false,
       params: {
         year: true,
         month: true,
@@ -175,7 +175,7 @@ export default {
     },
   },
   onLoad() {
-    this.form.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+    this.form.inOutDate = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
     this.init()
   },
   onReady() {
@@ -220,7 +220,7 @@ export default {
       this.selectedAccountBook = this.accountBookList[0]
       this.selectedInOutCategory = this.accountInOutCategoryList[0]
       this.form.amount = 0
-      this.form.dateTime = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+      this.form.inOutDate = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
       this.form.remark = ''
     },
     confirmAccountBook(e) {
@@ -238,15 +238,15 @@ export default {
     clickGrid(obj) {
       this.selectedInOutCategory = obj
     },
-    confirmDateTime(e) {
+    confirmInOutDate(e) {
       // console.log(e);
-      this.form.dateTime = '';
-      if (this.params.year) this.form.dateTime += e.year;
-      if (this.params.month) this.form.dateTime += '-' + e.month;
-      if (this.params.day) this.form.dateTime += '-' + e.day;
-      if (this.params.hour) this.form.dateTime += ' ' + e.hour;
-      if (this.params.minute) this.form.dateTime += ':' + e.minute;
-      if (this.params.second) this.form.dateTime += ':' + e.second;
+      this.form.inOutDate = '';
+      if (this.params.year) this.form.inOutDate += e.year;
+      if (this.params.month) this.form.inOutDate += '-' + e.month;
+      if (this.params.day) this.form.inOutDate += '-' + e.day;
+      if (this.params.hour) this.form.inOutDate += ' ' + e.hour;
+      if (this.params.minute) this.form.inOutDate += ':' + e.minute;
+      if (this.params.second) this.form.inOutDate += ':' + e.second;
     },
     validateForm() {
       if(!this.form.accountBookId) {

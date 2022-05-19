@@ -2,7 +2,7 @@
 
 const base = require('./base');
 module.exports = app => {
-  const { STRING, UUID, UUIDV1, TEXT, ENUM, JSON, DECIMAL } = app.Sequelize;
+  const { STRING, UUID, UUIDV1, TEXT, ENUM, JSON, DECIMAL, DATE } = app.Sequelize;
   const AccountInOut = base.defineModel(app, 'account_in_out', {
     id: {
       type: UUID,
@@ -27,6 +27,10 @@ module.exports = app => {
     amount: {
       type: DECIMAL,
       comment: '金额'
+    },
+    in_out_date: {
+      type: DATE,
+      comment: '收支日期'
     },
     remark: {
       type: TEXT,

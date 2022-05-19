@@ -13,9 +13,10 @@ class AccountInOutService extends Service {
    * @param type
    * @param amount
    * @param remark
+   * @param in_out_date
    * @return {Promise<{code: number}|{id}>}
    */
-  async create({ account_book_id, account_in_out_category_id, type, amount, remark }) {
+  async create({ account_book_id, account_in_out_category_id, type, amount, remark, in_out_date }) {
     const { ctx } = this;
     let res,
       transaction;
@@ -23,7 +24,7 @@ class AccountInOutService extends Service {
       // 开启事务
       transaction = await ctx.model.transaction();
 
-      const model = await ctx.model.AccountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark }, { transaction })
+      const model = await ctx.model.AccountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark, in_out_date }, { transaction })
       // 更新账本余额
       const modelAccountBook = await ctx.model.AccountBook.findOne({ where: { id: account_book_id }, transaction, lock: true, skipLocked: true });
       let balance = modelAccountBook.balance
@@ -58,9 +59,10 @@ class AccountInOutService extends Service {
    * @param type
    * @param amount
    * @param remark
+   * @param in_out_date
    * @return {Promise<{code: number}|{id}>}
    */
-  async update({ id, account_book_id, account_in_out_category_id, type, amount, remark }) {
+  async update({ id, account_book_id, account_in_out_category_id, type, amount, remark, in_out_date }) {
     const { ctx } = this;
     let res,
       transaction;
@@ -107,7 +109,7 @@ class AccountInOutService extends Service {
         }
         await modelAccountBook.update({ balance }, { transaction })
       }
-      await model.update({ account_book_id, account_in_out_category_id, type, amount, remark }, { transaction })
+      await model.update({ account_book_id, account_in_out_category_id, type, amount, remark, in_out_date }, { transaction })
 
       // 提交事务
       await transaction.commit()
@@ -253,7 +255,7 @@ class AccountInOutService extends Service {
       op.where.type = type
     }
     if (dateRange && dateRange.length) {
-      op.where.created_at = {
+      op.where.in_out_date = {
         [Op.between]: dateRange
       }
     }

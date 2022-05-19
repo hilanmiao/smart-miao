@@ -48,6 +48,7 @@
           </el-table-column>
           <el-table-column prop="accountBook.name" label="账本" align="center" width="200" />
           <el-table-column prop="accountInOutCategory.name" label="收支分类" align="center" width="200" />
+          <el-table-column prop="inOutDate" label="收支日期" align="center" width="200" />
           <el-table-column prop="remark" label="备注" align="center" width="200" />
           <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
           <el-table-column prop="updatedAt" label="更新时间" align="center" width="200" />

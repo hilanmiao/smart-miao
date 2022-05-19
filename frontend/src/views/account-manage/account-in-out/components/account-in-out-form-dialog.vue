@@ -44,6 +44,16 @@
       <el-form-item label="金额" :label-width="labelWidth" prop="amount">
         <el-input v-model="form.amount" autocomplete="off" type="number" />
       </el-form-item>
+      <el-form-item label="日期" :label-width="labelWidth" prop="inOutDate">
+        <el-date-picker
+          v-model="form.inOutDate"
+          type="datetime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          size="mini"
+          align="right"
+          unlink-panels
+        />
+      </el-form-item>
       <el-form-item label="备注" :label-width="labelWidth" prop="remark">
         <el-input v-model="form.remark" autocomplete="off" type="textarea" />
       </el-form-item>
@@ -90,12 +100,14 @@ export default {
         accountBookId: '',
         type: 'out',
         amount: 0,
-        remark: ''
+        remark: '',
+        inOutDate: this.dayjs().format('YYYY-MM-DD HH:mm:ss')
       },
       rules: {
         accountBookId: [{ required: true, message: '必选', trigger: 'change' }],
         accountInOutCategoryId: [{ required: true, message: '必选', trigger: 'change' }],
-        amount: [{ required: true, message: '必填', trigger: 'blur' }]
+        amount: [{ required: true, message: '必填', trigger: 'blur' }],
+        inOutDate: [{ required: true, message: '必选', trigger: 'blur' }]
       },
       loading: false,
       saving: false,
@@ -157,12 +169,13 @@ export default {
       try {
         const response = await accountInOutService.getAccountInOut({ id: this.form.id })
         const { data: accountInOut } = response.data
-        const { accountBookId, accountInOutCategoryId, type, amount, remark } = accountInOut
+        const { accountBookId, accountInOutCategoryId, type, amount, remark, inOutDate } = accountInOut
         this.form.accountBookId = accountBookId
         this.form.accountInOutCategoryId = accountInOutCategoryId
         this.form.type = type
         this.form.amount = amount
         this.form.remark = remark
+        this.form.inOutDate = inOutDate
       } catch (e) {
         console.error('accountInOut.getAccountInOut-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
@@ -180,6 +193,7 @@ export default {
     closed() {
       // 重置form
       this.form = _.cloneDeep(this.defaultForm)
+      this.form.inOutDate = this.dayjs().format('YYYY-MM-DD HH:mm:ss')
     },
     // 完成
     done() {

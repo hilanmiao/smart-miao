@@ -11,9 +11,9 @@ class AccountInOutController extends Controller {
   async create() {
     const { ctx } = this;
     ctx.validate({ accountBookId: 'string', accountInOutCategoryId: 'string' }, ctx.request.body)
-    const { accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark } = ctx.request.body
+    const { accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark, inOutDate: in_out_date } = ctx.request.body
 
-    const res = await ctx.service.accountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark })
+    const res = await ctx.service.accountInOut.create({ account_book_id, account_in_out_category_id, type, amount, remark, in_out_date })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })
@@ -29,9 +29,9 @@ class AccountInOutController extends Controller {
   async update() {
     const { ctx } = this;
     ctx.validate({ id: 'string', amount: 'string' }, ctx.request.body)
-    const { id, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark } = ctx.request.body
+    const { id, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, amount, remark, inOutDate: in_out_date } = ctx.request.body
 
-    const res = await ctx.service.accountInOut.update({ id, account_book_id, account_in_out_category_id, type, amount, remark })
+    const res = await ctx.service.accountInOut.update({ id, account_book_id, account_in_out_category_id, type, amount, remark, in_out_date })
 
     if (res.code) {
       this.fail({ ctx, code: res.code })

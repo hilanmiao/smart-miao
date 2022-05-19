@@ -31,9 +31,9 @@
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
-          创建时间
+          收支日期
         </template>
-        {{ form.createdAt }}
+        {{ form.inOutDate }}
       </el-descriptions-item>
       <el-descriptions-item :span="2">
         <template slot="label">
