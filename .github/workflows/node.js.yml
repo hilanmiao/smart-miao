@@ -14,7 +14,6 @@ env:
   SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }} # 服务器私钥
   SERVER_HOST: ${{ secrets.SERVER_HOST }} # 服务器IP地址
   USER_NAME: ${{ secrets.USER_NAME }} # 服务器用户名
-  TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo # 服务器目标路径
 
 # jobs表示执行的一项或多项任务
 jobs:
@@ -68,7 +67,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
         ARGS: '-avz --delete'
-        SOURCE: 'dist/'
+        SOURCE: 'frontend/dist/' # 要推送的目录
         REMOTE_HOST: ${{ env.SERVER_HOST }}
         REMOTE_USER: ${{ env.USER_NAME }}
-        TARGET: ${{ env.REMOTE_TARGET }}
+        TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo # 服务器目标路径
