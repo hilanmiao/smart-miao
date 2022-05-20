@@ -91,10 +91,6 @@ jobs:
     # 步骤
     steps:
 
-      # 停止服务
-      - name: Stop service
-        run: npm run stop
-
       # 推送资源
       - name: Deploy
         uses: easingthemes/ssh-deploy@v2.2.11
@@ -116,5 +112,6 @@ jobs:
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
           # 执行脚本
           script: |
+            npm run stop
             npm install --production
             npm run start
