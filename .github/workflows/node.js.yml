@@ -18,7 +18,7 @@ env:
 # jobs表示执行的一项或多项任务
 jobs:
   # 任务的job_id，具体名称自定义，这里build代表打包
-  build:
+  build frontend:
     # runs-on字段指定运行所需要的虚拟机环境
     runs-on: ubuntu-latest
 
@@ -70,4 +70,4 @@ jobs:
         SOURCE: 'frontend/dist/' # 要推送的目录
         REMOTE_HOST: ${{ env.SERVER_HOST }}
         REMOTE_USER: ${{ env.USER_NAME }}
-        TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo # 服务器目标路径
+        TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo/frontend # 服务器目标路径
