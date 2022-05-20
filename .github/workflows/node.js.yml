@@ -64,7 +64,7 @@ jobs:
 
     # 上传打包资源
     - name: Deploy
-      uses: easingthemes/ssh-deploy@2.2.11
+      uses: easingthemes/ssh-deploy@v2.2.11
       env:
         SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
         ARGS: '-avz --delete'
