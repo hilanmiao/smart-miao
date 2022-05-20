@@ -47,11 +47,12 @@ jobs:
 
     # 缓存依赖
     - name: Cache nodemodules
-      - uses: actions/cache@v3
+      uses: actions/cache@v3
+      with:
         path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     # 安装依赖
     - name: Install
@@ -63,11 +64,11 @@ jobs:
 
     # 上传打包资源
     - name: Deploy
-        uses: easingthemes/ssh-deploy@2.2.11
-        env:
-          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-          ARGS: '-avz --delete'
-          SOURCE: 'dist/'
-          REMOTE_HOST: ${{ env.SERVER_HOST }}
-          REMOTE_USER: ${{ env.USER_NAME }}
-          TARGET: ${{ env.REMOTE_TARGET }}
+      uses: easingthemes/ssh-deploy@2.2.11
+      env:
+        SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+        ARGS: '-avz --delete'
+        SOURCE: 'dist/'
+        REMOTE_HOST: ${{ env.SERVER_HOST }}
+        REMOTE_USER: ${{ env.USER_NAME }}
+        TARGET: ${{ env.REMOTE_TARGET }}
