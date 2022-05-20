@@ -91,27 +91,9 @@ jobs:
     # 步骤
     steps:
 
-      # 检出仓库副本
-      - uses: actions/checkout@v3
-
-      # 规定node版本
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      # 缓存依赖
-      - name: Cache nodemodules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # 安装依赖
-      - name: Install
-        run: npm install --production
+      # 停止服务
+      - name: Stop service
+        run: npm run stop
 
       # 推送资源
       - name: Deploy
@@ -119,8 +101,20 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
           ARGS: '-avz --delete'
-          SOURCE: 'backend' # 要推送的目录
+          SOURCE: 'backend/' # 要推送的目录
           REMOTE_HOST: ${{ env.SERVER_HOST }}
           REMOTE_USER: ${{ env.USER_NAME }}
           TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo/backend # 服务器目标路径
-          EXCLUDE: '/config/config_env_local.js, /config/config_env_prod.js, /app/public/, /logs' # 排除文件，否则会被删除
+          EXCLUDE: '/node_modules, config/config_env_local.js, /config/config_env_prod.js, /app/public/, /logs' # 排除文件，否则会被删除
+
+      # 重启服务
+      - name: Restart service
+        uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.USER_NAME }}
+            key: ${{ secrets.SERVER_PRIVATE_KEY }}
+            # 执行脚本
+            script: |
+              npm install --production
+              npm run start
