@@ -1,31 +1,73 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# 前端、后端 CI/CD
+name: Frontend & Backend CI/CD
 
-name: Node.js CI
-
+# 触发workflow的条件
 on:
   push:
+    # 只有master分支发生push事件时，才会触发workflow
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-jobs:
-  build:
+# 变量
+env:
+  SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }} # 服务器私钥
+  SERVER_HOST: ${{ secrets.SERVER_HOST }} # 服务器IP地址
+  USER_NAME: ${{ secrets.USER_NAME }} # 服务器用户名
+  TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo # 服务器目标路径
 
+# jobs表示执行的一项或多项任务
+jobs:
+  # 任务的job_id，具体名称自定义，这里build代表打包
+  build:
+    # runs-on字段指定运行所需要的虚拟机环境
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # 配置所需node版本
+        node-version: [16.x]
 
+    # 设置工作目录(因为本项目包含多个子项目)
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    # 步骤
     steps:
+
+    # 检出仓库副本
     - uses: actions/checkout@v3
+
+    # 规定node版本
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    # 缓存依赖
+    - name: Cache nodemodules
+      - uses: actions/cache@v3
+        path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+    # 安装依赖
+    - name: Install
+      run: npm install
+
+    # 打包
+    - name: Build
+      run: npm run build:prod
+
+    # 上传打包资源
+    - name: Deploy
+        uses: easingthemes/ssh-deploy@2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+          ARGS: '-avz --delete'
+          SOURCE: 'dist/'
+          REMOTE_HOST: ${{ env.SERVER_HOST }}
+          REMOTE_USER: ${{ env.USER_NAME }}
+          TARGET: ${{ env.REMOTE_TARGET }}
