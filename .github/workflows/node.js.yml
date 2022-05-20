@@ -106,6 +106,6 @@ jobs:
           # 执行脚本
           script: |
             cd /var/www/html/www.smartmiao.com/smartmiao-demo/backend
-            npm run stop
             npm install --production
+            npm run stop
             npm run start
