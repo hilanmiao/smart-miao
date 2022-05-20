@@ -78,18 +78,11 @@ jobs:
     # runs-on字段指定运行所需要的虚拟机环境
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        # 配置所需node版本
-        node-version: [16.x]
-
-    # 设置工作目录(因为本项目包含多个子项目)
-    defaults:
-      run:
-        working-directory: ./backend
-
     # 步骤
     steps:
+
+      # 检出仓库副本
+      - uses: actions/checkout@v3
 
       # 推送资源
       - name: Deploy
@@ -97,10 +90,10 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
           ARGS: '-avz --delete'
-          SOURCE: 'backend/' # 要推送的目录
+          SOURCE: 'backend/'
           REMOTE_HOST: ${{ env.SERVER_HOST }}
           REMOTE_USER: ${{ env.USER_NAME }}
-          TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo/backend # 服务器目标路径
+          TARGET: /var/www/html/www.smartmiao.com/smartmiao-demo/backend
           EXCLUDE: '/node_modules, config/config_env_local.js, /config/config_env_prod.js, /app/public/, /logs' # 排除文件，否则会被删除
 
       # 重启服务
@@ -112,6 +105,7 @@ jobs:
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
           # 执行脚本
           script: |
+            cd /var/www/html/www.smartmiao.com/smartmiao-demo/backend
             npm run stop
             npm install --production
             npm run start
