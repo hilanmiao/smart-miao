@@ -8,6 +8,7 @@ import getPageTitle from '@/utils/get-page-title'
 import qs from 'qs'
 import { authService, authInterceptor, notificationService } from '@/services'
 import axios from 'axios'
+import _ from 'lodash'
 
 // 打印项目信息
 console.log('%c更多内容请访问：https://github.com/hilanmiao/smart-miao', 'color: red;')
@@ -84,7 +85,9 @@ router.beforeEach(async(to, from, next) => {
           let myPowerMenus = []
           await authService.getMyPowerMenus()
             .then(response => {
-              const { data } = response.data
+              let { data } = response.data
+              // 倒序排列
+              data = _.orderBy(data, ['orderNum'], ['desc'])
               myPowerMenus = data
             })
             .catch(error => {

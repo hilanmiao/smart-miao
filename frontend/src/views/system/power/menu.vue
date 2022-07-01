@@ -102,6 +102,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 import MenuFormDialog from '../components/power-menu-form-dialog'
 import WarningConfirmButton from '@/components/WarningConfirmButton'
 import PowerMenuMixin from '@/core/mixins/power-menu'
@@ -146,7 +148,10 @@ export default {
 
       try {
         const response = await menuService.getMenuList()
-        const { data } = response.data
+        let { data } = response.data
+        // 倒序排列
+        data = _.orderBy(data, ['orderNum'], ['desc'])
+
         // clean
         if (this.menutree && this.menutree.length > 0) {
           this.menutree = []

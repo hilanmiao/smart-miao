@@ -87,6 +87,9 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="排序" :label-width="labelWidth" prop="orderNum">
+        <el-input v-model="form.orderNum" autocomplete="off" />
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -137,7 +140,7 @@ export default {
         router: null,
         type: 'directory',
         icon: null,
-        orderNum: 0,
+        orderNum: 1,
         viewPath: null,
         keepalive: false,
         isHidden: false
