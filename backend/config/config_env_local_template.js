@@ -19,5 +19,10 @@ module.exports = {
     port: '6379',
     password: '你的密码',
     db: '1',
-  }
+  },
+  alinode: {
+    server: 'wss://agentserver.node.aliyun.com:8080',
+    appid: '',
+    secret: ''
+  },
 }

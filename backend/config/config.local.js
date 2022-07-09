@@ -97,6 +97,13 @@ module.exports = appInfo => {
     },
   };
 
+  // alinode 性能平台
+  config.alinode = {
+    server: envConfig.alinode.server,
+    appid: envConfig.alinode.appid,
+    secret: envConfig.alinode.secret
+  };
+
   // 其他配置
   config.envConfig = envConfig
 

@@ -13,6 +13,7 @@
     "crypto-random-string": "^3.3.1",
     "dayjs": "^1.10.6",
     "egg": "^2.15.1",
+    "egg-alinode": "^2.0.1",
     "egg-cors": "^2.2.3",
     "egg-global-header": "^1.0.1",
     "egg-logger": "^2.6.1",
