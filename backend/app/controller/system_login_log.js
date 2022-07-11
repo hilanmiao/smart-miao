@@ -2,7 +2,7 @@
 
 const Controller = require('../core/controller');
 
-class SystemPowerController extends Controller {
+class SystemLoginLogController extends Controller {
 
   /**
    * 创建
@@ -46,4 +46,4 @@ class SystemPowerController extends Controller {
   }
 }
 
-module.exports = SystemPowerController;
+module.exports = SystemLoginLogController;

@@ -187,13 +187,13 @@ export default {
       this.visible = false
       this.saving = false
       this.loading = false
-      this.clearValidate()
     },
     // 关闭回调
     closed() {
       // 重置form
       this.form = _.cloneDeep(this.defaultForm)
       this.form.inOutDate = this.dayjs().format('YYYY-MM-DD HH:mm:ss')
+      this.clearValidate()
     },
     // 完成
     done() {
@@ -214,7 +214,9 @@ export default {
     // 移除表单校验
     clearValidate(props) {
       if (this.$refs.form) {
-        this.$refs.form.clearValidate(props)
+        this.$nextTick(() => {
+          this.$refs.form.clearValidate(props)
+        })
       }
     },
     // 提交
