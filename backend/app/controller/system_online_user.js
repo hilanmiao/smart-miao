@@ -27,7 +27,8 @@ class SystemOnlineUserController extends Controller {
    */
   async page() {
     const { ctx } = this;
-    const { page, limit, dateRange } = ctx.request.query
+    let { page, limit, dateRange } = ctx.request.query
+    dateRange = JSON.parse(dateRange)
 
     const res = await ctx.service.systemOnlineUser.page({ page, limit, dateRange })
 

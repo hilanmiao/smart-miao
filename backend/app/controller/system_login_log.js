@@ -26,7 +26,9 @@ class SystemLoginLogController extends Controller {
    */
   async page() {
     const { ctx } = this;
-    const { page, limit, dateRange } = ctx.request.query
+    let { page, limit, dateRange } = ctx.request.query
+    dateRange = JSON.parse(dateRange)
+
     const res = await ctx.service.systemLoginLog.page({ page, limit, dateRange })
 
     this.success({ ctx, data: res })
@@ -38,8 +40,10 @@ class SystemLoginLogController extends Controller {
    */
   async pageMine() {
     const { ctx } = this;
-    const { page, limit, dateRange } = ctx.request.query
+    let { page, limit, dateRange } = ctx.request.query
+    dateRange = JSON.parse(dateRange)
     const user = ctx.request.user
+
     const res = await ctx.service.systemLoginLog.page({ page, limit, dateRange, username: user.username })
 
     this.success({ ctx, data: res })

@@ -93,7 +93,8 @@ class AccountInOutController extends Controller {
    */
   async page() {
     const { ctx } = this;
-    const { page, limit, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, dateRange } = ctx.request.query
+    let { page, limit, accountBookId: account_book_id, accountInOutCategoryId: account_in_out_category_id, type, dateRange } = ctx.request.query
+    dateRange = JSON.parse(dateRange)
 
     const res = await ctx.service.accountInOut.page({ page, limit, account_book_id, account_in_out_category_id, type, dateRange })
 

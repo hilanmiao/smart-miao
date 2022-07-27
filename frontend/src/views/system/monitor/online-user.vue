@@ -146,7 +146,7 @@ export default {
       this.tableLoading = true
       const page = this.tablePagination.currentPage
       const limit = this.tablePagination.pageSize
-      const dateRange = this.tableSearchParams.dateRange
+      const dateRange = JSON.stringify(this.tableSearchParams.dateRange)
       try {
         const response = await onlineUserService.getOnlineUserListByPage({ page, limit, dateRange })
         const { data } = response.data
