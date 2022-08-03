@@ -1,20 +1,21 @@
 <template>
   <div class="box-list">
-    <div class="item" v-for="i in 6" :key="i">
+    <div v-for="(item,index) in list" :key="index" class="item">
       <div class="left">
-        {{ i }}
+        {{ index + 1 }}
       </div>
       <div class="content">
-        餐饮美食
+        {{ item.accountInOutCategory.name }}
       </div>
       <div class="right">
-        ¥999.99
+        ¥{{ item.sumTotalAmount }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { accountBookService } from '@/services'
 
 export default {
   data() {
@@ -23,11 +24,20 @@ export default {
     }
   },
   created() {
-    this.list = [
-
-    ]
+    this.loadData()
   },
   methods: {
+    async loadData() {
+      try {
+        const response = await accountBookService.statisticsCurrentMonthCategoryRank()
+        const { data } = response.data
+        this.list = data
+      } catch (e) {
+        console.error('accountBook.statisticsCurrentMonthCategoryRank-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+      }
+    }
   }
 }
 </script>

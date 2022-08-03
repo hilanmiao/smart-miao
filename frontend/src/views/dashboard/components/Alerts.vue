@@ -1,6 +1,6 @@
 <template>
   <div class="box-list">
-    <div class="item" v-for="i in 10" :key="i">
+    <div v-for="i in 10" :key="i" class="item">
       <div class="left">
         12:00
       </div>

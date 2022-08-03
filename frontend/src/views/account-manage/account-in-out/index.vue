@@ -133,8 +133,10 @@ export default {
       const page = this.tablePagination.currentPage
       const limit = this.tablePagination.pageSize
       const name = this.tableSearchParams.name
+      const dateRange = JSON.stringify([])
+
       try {
-        const response = await accountInOutService.getAccountInOutListByPage({ page, limit, name })
+        const response = await accountInOutService.getAccountInOutListByPage({ page, limit, name, dateRange })
         const { data } = response.data
         this.tableData = data.list
         this.tablePagination.total = data.pagination.total

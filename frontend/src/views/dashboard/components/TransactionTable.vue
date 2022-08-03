@@ -21,7 +21,7 @@
     <el-table-column label="金额" width="100" align="left">
       <template slot-scope="{row}">
         <el-tag type="danger" size="mini">
-         -{{ row.amount }}
+          -{{ row.amount }}
         </el-tag>
       </template>
     </el-table-column>
@@ -109,7 +109,7 @@ export default {
         date: '2022-04-21',
         remark: '谷德十三太保套餐',
         amount: '99.99'
-      },
+      }
     ]
   },
   methods: {

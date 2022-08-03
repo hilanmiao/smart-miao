@@ -30,4 +30,12 @@ internals.setAccountBookIsDefault = (data) => {
   return http.put(apiUrl + 'set-is-default', data)
 }
 
+internals.statisticsCurrentMonthComprehensive = (params) => {
+  return http.get(apiUrl + 'statistics-current-month-comprehensive', params)
+}
+
+internals.statisticsCurrentMonthCategoryRank = (params) => {
+  return http.get(apiUrl + 'statistics-current-month-category-rank', params)
+}
+
 export default internals

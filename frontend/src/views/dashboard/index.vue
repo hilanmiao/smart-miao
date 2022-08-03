@@ -6,7 +6,7 @@
       <el-col :lg="16">
         <el-card class="box-card">
           <div slot="header" class="box-card-header">
-            <span>近12个月统计</span>
+            <span>月份统计</span>
             <div>
               <el-select v-model="value" size="mini" placeholder="请选择">
                 <el-option
@@ -25,18 +25,7 @@
       <el-col :lg="8">
         <el-card class="box-card">
           <div slot="header" class="box-card-header">
-            <span>类别排名</span>
-            <div>
-              <el-select v-model="value" size="mini" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-button size="mini" icon="el-icon-more" circle style="margin-left: 16px;" />
-            </div>
+            <span>本月支出类别排名</span>
           </div>
           <ranking style="height: 300px;" />
         </el-card>
@@ -47,7 +36,7 @@
       <el-col :lg="16">
         <el-card class="box-card">
           <div slot="header" class="box-card-header">
-            <span>收支记录</span>
+            <span>本周收支记录</span>
             <div>
               <el-select v-model="value" size="mini" placeholder="请选择">
                 <el-option

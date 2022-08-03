@@ -10,6 +10,8 @@ module.exports = app => {
 
   const tokenRequired = middleware.tokenRequired(null, app)
 
+  apiRouter.get('/account-book/statistics-current-month-comprehensive', tokenRequired, accountBook.statisticsCurrentMonthComprehensive);
+  apiRouter.get('/account-book/statistics-current-month-category-rank', tokenRequired, accountBook.statisticsCurrentMonthCategoryRank);
   apiRouter.put('/account-book/set-is-default', tokenRequired, accountBook.setIsDefault);
   apiRouter.post('/account-book', tokenRequired, accountBook.create);
   apiRouter.put('/account-book', tokenRequired, accountBook.update);
