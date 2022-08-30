@@ -28,11 +28,11 @@ internals.get = function (url, params, options) {
     })
 }
 
-internals.post = function (url, payload, options) {
+internals.post = function (url, data, options) {
     let config = {
         method: 'POST',
         url: url,
-        data: payload
+        data: data
     }
     config = Object.assign(config, options)
     return uni.$luchRequest.middleware(config)
@@ -54,11 +54,11 @@ internals.post = function (url, payload, options) {
         })
 }
 
-internals.put = function (url, payload, options) {
+internals.put = function (url, data, options) {
   let config = {
     method: 'PUT',
     url: url,
-    data: payload
+    data: data
   }
   config = Object.assign(config, options)
   return uni.$luchRequest.middleware(config)
@@ -80,11 +80,11 @@ internals.put = function (url, payload, options) {
     })
 }
 
-internals.delete = function (url, payload, options) {
+internals.delete = function (url, data, options) {
   let config = {
     method: 'DELETE',
     url: url,
-    data: payload
+    data: data
   }
   config = Object.assign(config, options)
   return uni.$luchRequest.middleware(config)

@@ -7,4 +7,5 @@ export default function verifyPermission() {
     this.$u.route({type: 'reLaunch', url: '/pages/login/index'})
     return false
   }
+  return true
 }

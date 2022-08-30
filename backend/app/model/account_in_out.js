@@ -25,7 +25,7 @@ module.exports = app => {
       comment: '收/支：out:支 in：收'
     },
     amount: {
-      type: DECIMAL,
+      type: DECIMAL(19, 2),
       comment: '金额'
     },
     in_out_date: {

@@ -58,16 +58,16 @@ Vue.prototype.$transformSvgIcon = function (svgIcon) {
 	return svgIcon.replaceAll('-', '')
 }
 
-// const app = new Vue({
-// 	store,
-// 	...App
-// });
-//
-// app.$mount();
-
-const vm = new Vue({
-	el: '#app',
+const app = new Vue({
 	store,
-	render: h => h(App)
-})
-export default vm
+	...App
+});
+
+app.$mount();
+
+// const vm = new Vue({
+// 	// el: '#app',
+// 	store,
+// 	render: h => h(App)
+// })
+// export default vm

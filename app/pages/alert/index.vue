@@ -1,16 +1,16 @@
 <template>
   <view class="wrap">
-    <u-navbar class="u-navbar"
-        back-text="智能提醒"
-              :is-back="true"
-              :border-bottom="true"
-              :background="{ background: '#f8f8f8' }">
-      <view class="navbar-right" slot="right">
-        <view class="right-item">
-          <text class="u-font-28">添加</text>
-        </view>
-      </view>
-    </u-navbar>
+<!--    <u-navbar class="u-navbar"-->
+<!--        back-text="智能提醒"-->
+<!--              :is-back="true"-->
+<!--              :border-bottom="true"-->
+<!--              :background="{ background: '#f8f8f8' }">-->
+<!--      <view class="navbar-right" slot="right">-->
+<!--        <view class="right-item">-->
+<!--          <text class="u-font-28">添加</text>-->
+<!--        </view>-->
+<!--      </view>-->
+<!--    </u-navbar>-->
 
     <view class="box-statistics">
       <view class="box-list">

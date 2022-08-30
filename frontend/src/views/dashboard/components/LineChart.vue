@@ -61,10 +61,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ outDataFull, inDataFull } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月', '3月', '4月'],
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -104,7 +104,7 @@ export default {
           },
           smooth: false,
           type: 'line',
-          data: expectedData,
+          data: outDataFull,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
@@ -124,7 +124,7 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: inDataFull,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

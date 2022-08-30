@@ -1,27 +1,30 @@
 <template>
   <el-table :data="list" size="mini" max-height="250">
     <el-table-column label="分类" width="150">
-      <template slot-scope="scope">
+      <template slot-scope="{ row }">
         <el-avatar size="small">
-          <svg-icon icon-class="car" />
+          <svg-icon :icon-class="row.accountInOutCategory.icon" />
         </el-avatar>
-        {{ scope.row.category }}
+        {{ row.accountInOutCategory.name }}
       </template>
     </el-table-column>
-    <el-table-column label="时间" width="100" align="left">
-      <template slot-scope="scope">
-        {{ scope.row.date }}
+    <el-table-column label="时间" width="150" align="left">
+      <template slot-scope="{ row }">
+        {{ row.inOutDate }}
       </template>
     </el-table-column>
     <el-table-column label="备注" align="left">
-      <template slot-scope="scope">
-        ¥{{ scope.row.remark }}
+      <template slot-scope="{ row }">
+        {{ row.remark }}
       </template>
     </el-table-column>
     <el-table-column label="金额" width="100" align="left">
       <template slot-scope="{row}">
-        <el-tag type="danger" size="mini">
+        <el-tag v-if="row.type === 'out'" type="danger" size="mini">
           -{{ row.amount }}
+        </el-tag>
+        <el-tag v-else type="success" size="mini">
+          +{{ row.amount }}
         </el-tag>
       </template>
     </el-table-column>
@@ -29,6 +32,8 @@
 </template>
 
 <script>
+
+import { accountInOutService } from '@/services'
 
 export default {
   filters: {
@@ -49,70 +54,20 @@ export default {
     }
   },
   created() {
-    this.list = [
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      },
-      {
-        category: '餐饮美食',
-        date: '2022-04-21',
-        remark: '谷德十三太保套餐',
-        amount: '99.99'
-      }
-    ]
+    this.loadData()
   },
   methods: {
+    async loadData() {
+      try {
+        const response = await accountInOutService.statisticsCurrentWeekInOut()
+        const { data } = response.data
+        this.list = data
+      } catch (e) {
+        console.error('accountInOut.statisticsCurrentWeekInOut-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+      }
+    }
   }
 }
 </script>

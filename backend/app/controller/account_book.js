@@ -118,29 +118,6 @@ class AccountBookController extends Controller {
     this.success({ ctx, data: res })
   }
 
-  /**
-   * 统计本月综合信息
-   * @return {Promise<void>}
-   */
-  async statisticsCurrentMonthComprehensive() {
-    const { ctx } = this;
-
-    const res = await ctx.service.accountBook.statisticsCurrentMonthComprehensive()
-
-    this.success({ ctx, data: res })
-  }
-
-  /**
-   * 统计本月支出分类排名
-   * @return {Promise<void>}
-   */
-  async statisticsCurrentMonthCategoryRank() {
-    const { ctx } = this;
-
-    const res = await ctx.service.accountBook.statisticsCurrentMonthCategoryRank()
-
-    this.success({ ctx, data: res })
-  }
 }
 
 module.exports = AccountBookController;

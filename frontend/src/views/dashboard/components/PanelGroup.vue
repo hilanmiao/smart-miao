@@ -9,7 +9,7 @@
           <div class="box-amount">
             ¥<count-to :start-val="0" :end-val="statisticsData.monthOut" :duration="2000" />
           </div>
-          <div class="box-tag">
+          <div v-if="diffPercentOut !== 'Infinity'" class="box-tag">
             <el-tag v-if="diffPercentOut < 0" type="danger" size="small">{{ diffPercentOut }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentOut }}%</el-tag>
           </div>
@@ -28,7 +28,7 @@
           <div class="box-amount">
             ¥<count-to :start-val="0" :end-val="statisticsData.monthIn" :duration="2000" />
           </div>
-          <div class="box-tag">
+          <div v-if="diffPercentIn !== 'Infinity'" class="box-tag">
             <el-tag v-if="diffPercentIn < 0" type="danger" size="small">{{ diffPercentIn }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentIn }}%</el-tag>
           </div>
@@ -47,7 +47,7 @@
           <div class="box-amount">
             <count-to :start-val="0" :end-val="statisticsData.monthCount" :duration="2000" />
           </div>
-          <div class="box-tag">
+          <div v-if="diffPercentCount !== 'Infinity'" class="box-tag">
             <el-tag v-if="diffPercentCount < 0" type="danger" size="small">{{ diffPercentCount }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentCount }}%</el-tag>
           </div>
@@ -79,7 +79,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { accountBookService } from '@/services'
+import { accountInOutService } from '@/services'
 
 export default {
   components: {
@@ -135,11 +135,11 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await accountBookService.statisticsCurrentMonthComprehensive()
+        const response = await accountInOutService.statisticsCurrentMonthComprehensive()
         const { data } = response.data
         this.statisticsData = data
       } catch (e) {
-        console.error('accountBook.statisticsCurrentMonthComprehensive-error:', e)
+        console.error('accountInOut.statisticsCurrentMonthComprehensive-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
         this.$message.error(errorMessage)
       }

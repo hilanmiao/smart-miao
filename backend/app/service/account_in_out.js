@@ -231,7 +231,7 @@ class AccountInOutService extends Service {
         // name: { [Op.like]: `%${name || ''}%` },
       },
       order: [
-        [ 'created_at', 'desc' ]
+        [ 'in_out_date', 'desc' ]
       ],
       offset: (+(page || 1) - 1) * +limit || 0,
       limit: +limit || 20,
@@ -241,7 +241,7 @@ class AccountInOutService extends Service {
           model: ctx.model.AccountBook,
         },
         {
-          attributes: ['id', 'name'],
+          attributes: ['name', 'icon'],
           model: ctx.model.AccountInOutCategory,
         },
       ]
@@ -272,6 +272,337 @@ class AccountInOutService extends Service {
 
     return res;
   }
+
+  /**
+   * 分页
+   * 综合：选择的账本、选择的年月、收或支
+   * @param page
+   * @param limit
+   * @param account_book_id
+   * @param type
+   * @param yearMonth
+   * @return {Promise<{pagination: {total, size, page}, list: number | TInstance[] | M[] | SQLResultSetRowList | HTMLCollectionOf<HTMLTableRowElement> | string}>}
+   */
+  async pageComprehensive({ page, limit, account_book_id, type, yearMonth }) {
+    const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    let whereAccountBookId
+    let whereYearMonth
+    let whereType
+
+    if (account_book_id) {
+      whereAccountBookId = { account_book_id }
+    }
+    if (yearMonth) {
+      whereYearMonth = Sequelize.where(
+        Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m'),
+        yearMonth ? yearMonth : Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y-%m')
+      )
+    }
+    if (type) {
+      whereType = { type }
+    }
+
+    const op = {
+      where: {
+        [Op.and]: [
+          whereType,
+          whereAccountBookId,
+          whereYearMonth
+        ]
+      },
+      order: [
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m'), 'DESC'],
+        ['in_out_date', 'DESC'],
+      ],
+      attributes: {
+        include: [
+          [Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m'), 'year_month'],
+        ]
+      },
+      offset: (+(page || 1) - 1) * +limit || 0,
+      limit: +limit || 20,
+      include: [
+        {
+          attributes: ['id', 'name'],
+          model: ctx.model.AccountBook,
+        },
+        {
+          attributes: ['name', 'icon'],
+          model: ctx.model.AccountInOutCategory,
+        },
+      ]
+    }
+    console.log(op)
+    let res = await ctx.model.AccountInOut.findAndCountAll(op);
+    res = {
+      list: res.rows,
+      pagination: {
+        page,
+        size: limit,
+        total: res.count
+      }
+    }
+
+    return res;
+  }
+
+  /**
+   * 统计本月综合信息
+   * @return {Promise<{monthIn: number, monthOut: number, allBalance: number, monthCount: number}>}
+   */
+  async statisticsCurrentMonthComprehensive() {
+    const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+
+    let monthOut = 0
+    let monthIn = 0
+    let monthCount = 0
+    let monthOutPrevious = 0
+    let monthInPrevious = 0
+    let monthCountPrevious = 0
+    let monthSurplusPrevious = 0
+    let allBalance = 0
+
+    const monthWhere = Sequelize.where(
+      Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m'),
+      Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y-%m')
+    )
+    const monthWherePrevious = Sequelize.where(
+      Sequelize.fn('PERIOD_DIFF',
+        // Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y-%m'),
+        // Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m')
+        // PERIOD_DIFF 只能用Ym格式
+        Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y%m'),
+        Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y%m')
+      ),
+      {
+        [Op.eq]: 1
+      }
+    )
+
+    // TODO: 属于我的账本
+    const listAccountBook = await ctx.model.AccountBook.findAll({ where: {} })
+    for (const accountBook of listAccountBook) {
+      // 统计本月收支
+      const sumAmountOut = await ctx.model.AccountInOut.sum('amount', {
+        where: {
+          [Op.and]: [
+            { type: 'out' },
+            { account_book_id: accountBook.id },
+            monthWhere
+          ]
+        }
+      })
+      const sumAmountIn = await ctx.model.AccountInOut.sum('amount', {
+        where: {
+          [Op.and]: [
+            { type: 'in' },
+            { account_book_id: accountBook.id },
+            monthWhere
+          ]
+        }
+      })
+      monthOut = NP.round(monthOut, 2) + NP.round(sumAmountOut, 2)
+      monthIn = NP.round(monthIn, 2) + NP.round(sumAmountIn, 2)
+      // 统计本月记账笔数
+      monthCount += await ctx.model.AccountInOut.count({
+        where: {
+          [Op.and]: [
+            { account_book_id: accountBook.id },
+            monthWhere
+          ]
+        }
+      })
+
+      // 统计上月收支
+      const sumAmountOutPrevious = await ctx.model.AccountInOut.sum('amount', {
+        where: {
+          [Op.and]: [
+            { type: 'out' },
+            { account_book_id: accountBook.id },
+            monthWherePrevious
+          ]
+        }
+      })
+      const sumAmountInPrevious = await ctx.model.AccountInOut.sum('amount', {
+        where: {
+          [Op.and]: [
+            { type: 'in' },
+            { account_book_id: accountBook.id },
+            monthWherePrevious
+          ]
+        }
+      })
+      monthOutPrevious = NP.round(monthOutPrevious, 2) + NP.round(sumAmountOutPrevious, 2)
+      monthInPrevious = NP.round(monthInPrevious, 2) + NP.round(sumAmountInPrevious, 2)
+      // 统计上月记账笔数
+      monthCountPrevious += await ctx.model.AccountInOut.count({
+        where: {
+          [Op.and]: [
+            { account_book_id: accountBook.id },
+            monthWherePrevious
+          ]
+        }
+      })
+
+      // 统计所有账本的余额
+      allBalance = NP.round(allBalance, 2) + NP.round(accountBook.balance, 2)
+    }
+
+    // 统计上月节余
+    monthSurplusPrevious = NP.minus(monthInPrevious, monthOutPrevious)
+
+    const res = {
+      monthOut,
+      monthIn,
+      monthCount,
+      monthOutPrevious,
+      monthInPrevious,
+      monthCountPrevious,
+      monthSurplusPrevious,
+      allBalance
+    }
+
+    return res;
+  }
+
+  /**
+   * 统计本月支出分类排名
+   * @return {Promise<Model[]|any[]>}
+   */
+  async statisticsCurrentMonthCategoryRank() {
+    const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+
+    // TODO: 属于我的账本
+    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const accountBookIds = listAccountBook.map(o => o.id)
+    const options = {
+      where: {
+        [Op.and]: [
+          { type: 'out' },
+          { account_book_id: { [Op.in]: accountBookIds } },
+          Sequelize.where(
+            Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m'),
+            Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y-%m')
+          )
+        ]
+      },
+      order: [
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'DESC'],
+      ],
+      limit: 6,
+      include: [
+        {
+          attributes: ['name'],
+          model: ctx.model.AccountInOutCategory
+        }
+      ],
+      attributes: [
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'sum_total_amount']
+      ],
+      group: ['account_in_out_category.id']
+    }
+
+    const res = await ctx.model.AccountInOut.findAll(options)
+
+    return res;
+  }
+
+  /**
+   * 统计本年每月收支信息
+   * @return {Promise<{in: Promise<Model[]> | Bluebird<any[]>, out: Promise<Model[]> | Bluebird<any[]>}>}
+   */
+  async statisticsEveryMonthInOut() {
+    const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+
+    // TODO: 属于我的账本
+    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const accountBookIds = listAccountBook.map(o => o.id)
+    const optionsIn = {
+      where: {
+        [Op.and]: [
+          { type: 'in' },
+          { account_book_id: { [Op.in]: accountBookIds } },
+          Sequelize.where(
+            Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y'),
+            Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y')
+          )
+        ]
+      },
+      order: [
+        [Sequelize.fn('MONTH', Sequelize.col('in_out_date')), 'ASC'],
+      ],
+      attributes: [
+        [Sequelize.fn('MONTH', Sequelize.col('in_out_date')), 'month'],
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'sum_total_amount']
+      ],
+      group: ['month']
+    }
+    const resIn = await ctx.model.AccountInOut.findAll(optionsIn)
+    const optionsOut = {
+      where: {
+        [Op.and]: [
+          { type: 'out' },
+          { account_book_id: { [Op.in]: accountBookIds } },
+          Sequelize.where(
+            Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y'),
+            Sequelize.fn('DATE_FORMAT', Sequelize.fn('CURDATE'), '%Y')
+          )
+        ]
+      },
+      order: [
+        [Sequelize.fn('MONTH', Sequelize.col('in_out_date')), 'ASC'],
+      ],
+      attributes: [
+        [Sequelize.fn('MONTH', Sequelize.col('in_out_date')), 'month'],
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'sum_total_amount']
+      ],
+      group: ['month']
+    }
+    const resOut = await ctx.model.AccountInOut.findAll(optionsOut)
+
+    const res = {
+      inData: resIn,
+      outData: resOut
+    }
+    return res;
+  }
+
+  /**
+   * 统计本周收支记录
+   * @return {Promise<{in: Promise<Model[]> | Bluebird<any[]>, out: Promise<Model[]> | Bluebird<any[]>}>}
+   */
+  async statisticsCurrentWeekInOut() {
+    const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    console.log(111)
+    // TODO: 属于我的账本
+    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const accountBookIds = listAccountBook.map(o => o.id)
+    const options = {
+      where: {
+        [Op.and]: [
+          { account_book_id: { [Op.in]: accountBookIds } },
+          Sequelize.where(
+            Sequelize.fn('YEARWEEK', Sequelize.fn('DATE_FORMAT', Sequelize.col('in_out_date'), '%Y-%m-%d')),
+            Sequelize.fn('YEARWEEK', Sequelize.fn('CURDATE'))
+          )
+        ]
+      },
+      order: [
+        ['in_out_date', 'DESC'],
+      ],
+      include: [
+        {
+          attributes: ['name', 'icon'],
+          model: ctx.model.AccountInOutCategory
+        }
+      ],
+      attributes: ['in_out_date', 'amount', 'remark', 'type']
+    }
+    const res = await ctx.model.AccountInOut.findAll(options)
+
+    return res;
+  }
+
 }
 
 module.exports = AccountInOutService;

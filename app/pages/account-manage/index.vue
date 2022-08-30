@@ -175,6 +175,9 @@ export default {
     },
   },
   onLoad() {
+    if (!this.$verifyPermission()) {
+      return false
+    }
     this.form.inOutDate = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
     this.init()
   },
@@ -210,7 +213,7 @@ export default {
       } catch (e) {
         console.error('accountInOut.getAccountBookList-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
-        this.$message.error(errorMessage)
+        this.$u.toast(errorMessage)
       }
     },
     setData() {},

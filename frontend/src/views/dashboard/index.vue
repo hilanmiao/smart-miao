@@ -6,18 +6,18 @@
       <el-col :lg="16">
         <el-card class="box-card">
           <div slot="header" class="box-card-header">
-            <span>月份统计</span>
-            <div>
-              <el-select v-model="value" size="mini" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-button size="mini" icon="el-icon-more" circle style="margin-left: 16px;" />
-            </div>
+            <span>年度统计</span>
+            <!--            <div>-->
+            <!--              <el-select v-model="value" size="mini" placeholder="请选择">-->
+            <!--                <el-option-->
+            <!--                  v-for="item in options"-->
+            <!--                  :key="item.value"-->
+            <!--                  :label="item.label"-->
+            <!--                  :value="item.value"-->
+            <!--                />-->
+            <!--              </el-select>-->
+            <!--              <el-button size="mini" icon="el-icon-more" circle style="margin-left: 16px;" />-->
+            <!--            </div>-->
           </div>
           <line-chart :chart-data="lineChartData" />
         </el-card>
@@ -37,17 +37,17 @@
         <el-card class="box-card">
           <div slot="header" class="box-card-header">
             <span>本周收支记录</span>
-            <div>
-              <el-select v-model="value" size="mini" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-button size="mini" icon="el-icon-more" circle style="margin-left: 16px;" />
-            </div>
+            <!--            <div>-->
+            <!--              <el-select v-model="value" size="mini" placeholder="请选择">-->
+            <!--                <el-option-->
+            <!--                  v-for="item in options"-->
+            <!--                  :key="item.value"-->
+            <!--                  :label="item.label"-->
+            <!--                  :value="item.value"-->
+            <!--                />-->
+            <!--              </el-select>-->
+            <!--              <el-button size="mini" icon="el-icon-more" circle style="margin-left: 16px;" />-->
+            <!--            </div>-->
           </div>
           <transaction-table />
         </el-card>
@@ -71,13 +71,7 @@ import LineChart from './components/LineChart'
 import TransactionTable from './components/TransactionTable'
 import Alerts from './components/Alerts'
 import Ranking from './components/Ranking'
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165, 100, 120, 161, 134, 105],
-    actualData: [120, 82, 91, 154, 162, 140, 145, 120, 82, 91, 154, 162]
-  }
-}
+import { accountBookService } from '@/services'
 
 export default {
   name: 'Dashboard',
@@ -90,7 +84,7 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis,
+      lineChartData: {},
       options: [{
         value: '1',
         label: '我的账本'
@@ -99,8 +93,34 @@ export default {
     }
   },
   computed: {},
+  created() {
+    this.loadData()
+  },
+  methods: {
+    async loadData() {
+      try {
+        const response = await accountBookService.statisticsEveryMonthInOut()
+        const { data } = response.data
+        const { inData, outData } = data
+        const inDataFull = []
+        const outDataFull = []
+        for (let i = 1; i <= 12; i++) {
+          const findObjIn = inData.find(o => o.month === i)
+          const valueIn = findObjIn ? findObjIn.sumTotalAmount : ''
+          inDataFull.push(valueIn)
 
-  methods: {}
+          const findObjOut = outData.find(o => o.month === i)
+          const valueOut = findObjOut ? findObjOut.sumTotalAmount : ''
+          outDataFull.push(valueOut)
+        }
+        this.lineChartData = { inDataFull, outDataFull }
+      } catch (e) {
+        console.error('accountBook.statisticsEveryMonthInOut-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+      }
+    }
+  }
 }
 </script>
 

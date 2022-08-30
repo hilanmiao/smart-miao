@@ -33,15 +33,17 @@
         >
           <el-table-column type="index" width="30" fixed="left" />
           <el-table-column type="selection" align="center" width="30" fixed="left" />
-          <el-table-column prop="name" label="名称" align="center" width="200">
+          <el-table-column prop="name" label="名称" align="center" width="160">
             <template slot-scope="{row}">
               <span class="link-type" @click="handleEdit(row)">{{ row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="balance" label="余额" align="center" width="160" />
+          <el-table-column prop="sumTotalAmountInMonth" label="本月收入" align="center" width="160" />
+          <el-table-column prop="sumTotalAmountOutMonth" label="本月支出" align="center" width="160" />
+          <el-table-column prop="sumTotalAmountIn" label="累计收入" align="center" width="160" />
+          <el-table-column prop="sumTotalAmountOut" label="累计支出" align="center" width="160" />
           <el-table-column prop="remark" label="备注" align="center" />
-          <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
-          <el-table-column prop="updatedAt" label="更新时间" align="center" width="200" />
           <el-table-column label="是否默认" width="100px" align="center">
             <template slot-scope="{row}">
               <el-switch
@@ -50,6 +52,8 @@
               />
             </template>
           </el-table-column>
+          <el-table-column prop="createdAt" label="创建时间" align="center" width="140" />
+          <el-table-column prop="updatedAt" label="更新时间" align="center" width="140" />
           <el-table-column label="操作" width="100" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>

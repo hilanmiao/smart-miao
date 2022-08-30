@@ -26,4 +26,24 @@ internals.deleteAccountInOut = (data) => {
   return http.delete(apiUrl, data)
 }
 
+internals.statisticsCurrentMonthComprehensive = (params) => {
+  return http.get(apiUrl + 'statistics-current-month-comprehensive', params)
+}
+
+internals.statisticsCurrentMonthCategoryRank = (params) => {
+  return http.get(apiUrl + 'statistics-current-month-category-rank', params)
+}
+
+internals.statisticsEveryMonthInOut = (params) => {
+  return http.get(apiUrl + 'statistics-every-month-in-out', params)
+}
+
+internals.statisticsCurrentWeekInOut = (params) => {
+  return http.get(apiUrl + 'statistics-current-week-in-out', params)
+}
+
+internals.getAccountInOutListByPageComprehensive = (params) => {
+  return http.get(apiUrl + 'page-comprehensive', params)
+}
+
 export default internals

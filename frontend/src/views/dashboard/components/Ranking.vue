@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { accountBookService } from '@/services'
+import { accountInOutService } from '@/services'
 
 export default {
   data() {
@@ -29,11 +29,11 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await accountBookService.statisticsCurrentMonthCategoryRank()
+        const response = await accountInOutService.statisticsCurrentMonthCategoryRank()
         const { data } = response.data
         this.list = data
       } catch (e) {
-        console.error('accountBook.statisticsCurrentMonthCategoryRank-error:', e)
+        console.error('accountInOut.statisticsCurrentMonthCategoryRank-error:', e)
         const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
         this.$message.error(errorMessage)
       }

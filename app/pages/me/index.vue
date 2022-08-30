@@ -21,16 +21,30 @@
       </view>
       <view class="box-statistics">
         <view class="item">
-          <text>125</text>
-          <text>记账天数</text>
+          <view class="box-head">
+            <text class="amount">¥{{ statisticsData.monthOut }}</text>
+            <view v-if="diffPercentOut !== 'Infinity'" class="box-tag">
+              <view class="tag" v-if="diffPercentOut < 0">{{ diffPercentOut }}%</view>
+              <view class="tag danger" v-else>+{{ diffPercentOut }}%</view>
+            </view>
+          </view>
+          <text>本月支出</text>
         </view>
         <view class="item">
-          <text>¥ 999,0000</text>
+          <view class="box-head">
+            <text class="amount">¥{{ statisticsData.allBalance }}</text>
+          </view>
           <text>净资产</text>
         </view>
         <view class="item">
-          <text>125</text>
-          <text>记账笔数</text>
+          <view class="box-head">
+            <text class="amount">¥{{ statisticsData.monthIn }}</text>
+<!--            <view v-if="diffPercentIn !== 'Infinity'" class="box-tag">-->
+<!--              <view class="tag danger" v-if="diffPercentIn < 0">{{ diffPercentIn }}%</view>-->
+<!--              <view class="tag" v-else>+{{ diffPercentIn }}%</view>-->
+<!--            </view>-->
+          </view>
+          <text>本月收入</text>
         </view>
       </view>
       <view class="box-buy">
@@ -89,6 +103,7 @@
 import { serverURL } from '@/config'
 
 import tabbar from "../../components/tabbar/tabbar";
+import {accountInOutService} from '@/services'
 
 export default {
   components: {
@@ -103,12 +118,52 @@ export default {
         border: 'none',
         display: 'inline-flex'
       },
+      statisticsData: {
+        monthCount: 0,
+        monthIn: 0,
+        monthOut: 0,
+        monthCountPrevious: 0,
+        monthInPrevious: 0,
+        monthOutPrevious: 0,
+        allBalance: 0,
+        monthSurplusPrevious: 0
+      },
+      diffPercentIn: 0,
+      diffPercentOut: 0,
+      diffPercentCount: 0
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    statisticsData: {
+      handler(val) {
+        const { monthOut, monthOutPrevious, monthIn, monthInPrevious, monthCount, monthCountPrevious } = val
+        const diffOut = monthOut - monthOutPrevious
+        let percentOut = (Math.abs(diffOut) / monthOutPrevious * 100).toFixed(2)
+        if (diffOut < 0) {
+          percentOut = percentOut * -1
+        }
+        this.diffPercentOut = percentOut
+
+        const diffIn = monthIn - monthInPrevious
+        let percentIn = (Math.abs(diffIn) / monthInPrevious * 100).toFixed(2)
+        if (diffIn < 0) {
+          percentIn = percentIn * -1
+        }
+        this.diffPercentIn = percentIn
+
+        const diffCount = monthCount - monthCountPrevious
+        let percentCount = (Math.abs(diffCount) / monthCountPrevious * 100).toFixed(2)
+        if (diffCount < 0) {
+          percentCount = percentCount * -1
+        }
+        this.diffPercentCount = percentCount
+      }
+    }
+  },
   onShow() {
     this.avatar = serverURL + this.vuex_user.avatar || '/static/app/common/logo.png'
+    this.statisticsCurrentMonthComprehensive()
   },
   methods: {
     openPage(url = '/pages/me/info', type = 'to', params) {
@@ -117,6 +172,17 @@ export default {
         type,
         params
       })
+    },
+    async statisticsCurrentMonthComprehensive() {
+      try {
+        const response = await accountInOutService.statisticsCurrentMonthComprehensive()
+        const {data} = response.data
+        this.statisticsData = data
+      } catch (e) {
+        console.error('accountInOutService.statisticsCurrentMonthComprehensive-error:', e)
+        const errorMessage = e && e.data.message || '发生了一些未知的错误，请重试！'
+        this.$message.error(errorMessage)
+      }
     },
   }
 }
@@ -133,115 +199,132 @@ page {
 .wrap {
   padding: 0;
   overflow: hidden;
-}
 
-.box-head {
-  position: relative;
-  padding: rpx(120) rpx(30) 0 rpx(30);
-  background: linear-gradient(to right, $cus-main-color, #ff8c6f);
-  color: #fff;
+  > .box-head {
+    position: relative;
+    padding: rpx(120) rpx(30) 0 rpx(30);
+    background: linear-gradient(to right, $cus-main-color, #ff8c6f);
+    color: #fff;
 
-  .box-avatar {
-    margin-right: rpx(40);
-    margin-left: rpx(20);
+    .box-avatar {
+      margin-right: rpx(40);
+      margin-left: rpx(20);
+    }
+
+    .box-info {
+      display: flex;
+      align-items: center;
+      .box-name {
+        flex: 1;
+      }
+      .nickname {
+        font-size: 20px;
+        //color: $cus-title-color
+      }
+
+      .mobile {
+        font-size: 16px;
+        //color: $cus-sub-title-color
+      }
+
+      .box-arrow {
+        padding: rpx(10);
+        margin-left: rpx(10);
+      }
+    }
+
+    .box-statistics {
+      display: flex;
+      justify-content: space-around;
+      margin-top: rpx(30);
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .box-head {
+          display: flex;
+          .box-tag {
+            margin-left: rpx(8);
+            .tag {
+              color: #19be6b;
+              background-color: #fff;
+              font-size: 12px;
+              border-radius: rpx(8);
+              margin-left: rpx(8);
+              padding: rpx(4) rpx(8);
+              &.danger {
+                color: #fa3534;
+              }
+            }
+          }
+        }
+        .amount {
+          font-size: 18px;
+          font-weight: bold;
+          padding-bottom: rpx(8);
+        }
+      }
+    }
+
+    .box-buy {
+      display: flex;
+      align-items: center;
+      margin-top: rpx(30);
+      padding: rpx(20);
+      background: linear-gradient(to right, #575757, #2f2828);
+      color: #ffe2b4;
+      border-radius: 8px 8px 0 0;
+      text {
+        flex: 1;
+      }
+    }
+
+    .box-cat {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-60%);
+      opacity: .08;
+      width: 200px;
+      height: 200px;
+    }
   }
 
-  .box-info {
+  .box-vip {
     display: flex;
     align-items: center;
-    .box-name {
-      flex: 1;
-    }
-    .nickname {
-      font-size: 20px;
-      //color: $cus-title-color
-    }
-
-    .mobile {
-      font-size: 16px;
-      //color: $cus-sub-title-color
-    }
-
-    .box-arrow {
-      padding: rpx(10);
-      margin-left: rpx(10);
-    }
-  }
-
-  .box-statistics {
-    display: flex;
-    justify-content: space-around;
-    margin-top: rpx(30);
+    background-color: #fff;
+    margin: rpx(30);
+    padding: rpx(20);
+    border-radius: 8px;
+    box-shadow: 0 0 rpx(20) 0 rgba(4, 0, 0, 0.06);
     .item {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text:first-child {
-        font-size: 16px;
-        font-weight: bold;
-        padding-bottom: rpx(8);
+      .u-icon {
+        color: $cus-secondary-color;
+      }
+      text {
+        padding-top: rpx(20);
+        color: #606266;
       }
     }
   }
 
-  .box-buy {
-    display: flex;
-    align-items: center;
-    margin-top: rpx(30);
-    padding: rpx(20);
-    background: linear-gradient(to right, #575757, #2f2828);
-    color: #ffe2b4;
-    border-radius: 8px 8px 0 0;
-    text {
-      flex: 1;
-    }
-  }
-
-  .box-cat {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-60%);
-    opacity: .08;
-    width: 200px;
-    height: 200px;
-  }
-}
-
-.box-vip {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  margin: rpx(30);
-  padding: rpx(20);
-  border-radius: 8px;
-  box-shadow: 0 0 rpx(20) 0 rgba(4, 0, 0, 0.06);
-  .item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .u-icon {
-      color: $cus-secondary-color;
-    }
-    text {
-      padding-top: rpx(20);
-      color: #606266;
-    }
-  }
-}
-
-.box-cell-group {
-  margin: rpx(30);
-  border-radius: 8px;
-  box-shadow: 0 0 rpx(20) 0 rgba(4, 0, 0, 0.06);
-  .u-cell-group {
-    ::v-deep .u-cell-item-box {
-      border-radius: 8px;
-    }
-    ::v-deep .u-icon-left {
-      margin-right: 10px;
-      color: $cus-secondary-color;
+  .box-cell-group {
+    margin: rpx(30);
+    border-radius: 8px;
+    box-shadow: 0 0 rpx(20) 0 rgba(4, 0, 0, 0.06);
+    .u-cell-group {
+      ::v-deep .u-cell-item-box {
+        border-radius: 8px;
+      }
+      ::v-deep .u-icon-left {
+        margin-right: 10px;
+        color: $cus-secondary-color;
+      }
     }
   }
 }

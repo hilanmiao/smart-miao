@@ -5,9 +5,9 @@
  * @returns {unknown[]}
  */
 export function camelizeKeys(obj) {
-  if (Array.isArray(obj)) {
+  if (uni.$_.isArray(obj)) {
     return obj.map(v => camelizeKeys(v))
-  } else if (obj !== null && obj.constructor === Object) {
+  } else if (uni.$_.isPlainObject(obj)) {
     return Object.keys(obj).reduce(
       (result, key) => ({
         ...result,

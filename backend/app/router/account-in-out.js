@@ -10,6 +10,11 @@ module.exports = app => {
 
   const tokenRequired = middleware.tokenRequired(null, app)
 
+  apiRouter.get('/account-in-out/page-comprehensive', tokenRequired, accountInOut.pageComprehensive);
+  apiRouter.get('/account-in-out/statistics-current-week-in-out', tokenRequired, accountInOut.statisticsCurrentWeekInOut);
+  apiRouter.get('/account-in-out/statistics-every-month-in-out', tokenRequired, accountInOut.statisticsEveryMonthInOut);
+  apiRouter.get('/account-in-out/statistics-current-month-comprehensive', tokenRequired, accountInOut.statisticsCurrentMonthComprehensive);
+  apiRouter.get('/account-in-out/statistics-current-month-category-rank', tokenRequired, accountInOut.statisticsCurrentMonthCategoryRank);
   apiRouter.post('/account-in-out', tokenRequired, accountInOut.create);
   apiRouter.put('/account-in-out', tokenRequired, accountInOut.update);
   apiRouter.delete('/account-in-out', tokenRequired, accountInOut.delete);
