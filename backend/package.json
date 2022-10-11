@@ -2,6 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
+  "author": "张国栋 <hilanmiao@126.com>",
+  "license": "MIT",
   "private": true,
   "egg": {
     "declarations": true
@@ -73,7 +75,5 @@
   "repository": {
     "type": "git",
     "url": ""
-  },
-  "author": "",
-  "license": "MIT"
+  }
 }
