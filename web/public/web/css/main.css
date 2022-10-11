@@ -10400,6 +10400,10 @@ section
   background-image: url(../img/section-bg-1.png);
   background-position: right center;
 }
+.section-terminal.mobile img {
+  max-height: 500px;
+  width: auto;
+}
 .section-terminal.pricing {
   background-image: url(../img/section-bg-3.png);
   background-position: center center;

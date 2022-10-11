@@ -124,6 +124,12 @@ section
     background-image: url(../img/section-bg-1.png);
     background-position: right center;
   }
+  &.mobile {
+    img {
+      max-height: 500px;
+      width: auto;
+    }
+  }
   &.pricing {
     background-image: url(../img/section-bg-3.png);
     background-position: center center;
