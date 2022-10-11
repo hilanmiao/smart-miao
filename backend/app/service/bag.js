@@ -13,9 +13,11 @@ class BagService extends Service {
    */
   async create({ type, content }) {
     const { ctx } = this;
+    const user_id = ctx.request.user.id
+
     let res
     try {
-      const model = await ctx.model.Bag.create({ type, content })
+      const model = await ctx.model.Bag.create({ user_id, type, content })
       res = { id: model.id }
 
       return res
@@ -115,8 +117,15 @@ class BagService extends Service {
    */
   async list() {
     const { ctx, app: { Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
 
-    const res = await ctx.model.Bag.findAll()
+    const op = {
+      where: {
+        user_id
+      }
+    }
+
+    const res = await ctx.model.Bag.findAll(op)
 
     return res;
   }
@@ -127,14 +136,17 @@ class BagService extends Service {
    * @param type
    * @param limit
    * @param name
-   * @returns {Promise<{pagination: {total, size, page}, list: number | TInstance[] | M[] | SQLResultSetRowList | HTMLCollectionOf<HTMLTableRowElement> | string}>}
+   * @return {Promise<{pagination: {total, size, page}, list: number | TInstance[] | M[] | SQLResultSetRowList | HTMLCollectionOf<HTMLTableRowElement> | string}>}
    */
   async page({ page, limit, type, name }) {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
+
     const op = {
       where: {
         type,
         'content.name': { [Op.like]: `%${name || ''}%` },
+        user_id
       },
       order: [
         [ 'created_at', 'desc' ]

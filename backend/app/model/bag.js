@@ -17,10 +17,18 @@ module.exports = app => {
     content: {
       type: JSON,
       comment: '内容'
+    },
+    user_id: {
+      type: UUID,
+      comment: '用户Id'
     }
   }, {
     comment: '卡证照表'
   });
+
+  Bag.associate = function() {
+    Bag.belongsTo(app.model.SystemUser, { foreignKey: 'user_id', targetKey: 'id', constraints: false });
+  }
 
   return Bag;
 };

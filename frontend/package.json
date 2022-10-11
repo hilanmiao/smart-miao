@@ -20,7 +20,7 @@
     "core-js": "^3.12.1",
     "dayjs": "^1.10.7",
     "echarts": "^4.9.0",
-    "element-ui": "^2.15.7",
+    "element-ui": "^2.15.10",
     "file-saver": "^2.0.5",
     "github-markdown-css": "^5.1.0",
     "jszip": "^3.6.0",

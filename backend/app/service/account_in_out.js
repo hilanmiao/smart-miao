@@ -208,8 +208,21 @@ class AccountInOutService extends Service {
    */
   async list() {
     const { ctx, app: { Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
 
-    const res = await ctx.model.AccountInOut.findAll()
+    const op = {
+      include: [
+        {
+          attributes: ['id', 'name'],
+          model: ctx.model.AccountBook,
+          where: {
+            user_id
+          }
+        }
+      ]
+    }
+
+    const res = await ctx.model.AccountInOut.findAll(op)
 
     return res;
   }
@@ -226,6 +239,8 @@ class AccountInOutService extends Service {
    */
   async page({ page, limit, account_book_id, account_in_out_category_id, type, dateRange }) {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
+
     const op = {
       where: {
         // name: { [Op.like]: `%${name || ''}%` },
@@ -239,6 +254,9 @@ class AccountInOutService extends Service {
         {
           attributes: ['id', 'name'],
           model: ctx.model.AccountBook,
+          where: {
+            user_id
+          }
         },
         {
           attributes: ['name', 'icon'],
@@ -352,6 +370,7 @@ class AccountInOutService extends Service {
    */
   async statisticsCurrentMonthComprehensive() {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
 
     let monthOut = 0
     let monthIn = 0
@@ -379,8 +398,7 @@ class AccountInOutService extends Service {
       }
     )
 
-    // TODO: 属于我的账本
-    const listAccountBook = await ctx.model.AccountBook.findAll({ where: {} })
+    const listAccountBook = await ctx.model.AccountBook.findAll({ where: { user_id } })
     for (const accountBook of listAccountBook) {
       // 统计本月收支
       const sumAmountOut = await ctx.model.AccountInOut.sum('amount', {
@@ -471,9 +489,9 @@ class AccountInOutService extends Service {
    */
   async statisticsCurrentMonthCategoryRank() {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
 
-    // TODO: 属于我的账本
-    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const listAccountBook = await ctx.model.AccountBook.findAll({ where: { user_id } })
     const accountBookIds = listAccountBook.map(o => o.id)
     const options = {
       where: {
@@ -513,9 +531,9 @@ class AccountInOutService extends Service {
    */
   async statisticsEveryMonthInOut() {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
 
-    // TODO: 属于我的账本
-    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const listAccountBook = await ctx.model.AccountBook.findAll({ where: { user_id } })
     const accountBookIds = listAccountBook.map(o => o.id)
     const optionsIn = {
       where: {
@@ -573,9 +591,9 @@ class AccountInOutService extends Service {
    */
   async statisticsCurrentWeekInOut() {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
-    console.log(111)
-    // TODO: 属于我的账本
-    const listAccountBook = await ctx.model.AccountBook.findAll()
+    const user_id = ctx.request.user.id
+
+    const listAccountBook = await ctx.model.AccountBook.findAll({ where: { user_id } })
     const accountBookIds = listAccountBook.map(o => o.id)
     const options = {
       where: {

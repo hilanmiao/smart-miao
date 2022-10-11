@@ -71,7 +71,7 @@ import LineChart from './components/LineChart'
 import TransactionTable from './components/TransactionTable'
 import Alerts from './components/Alerts'
 import Ranking from './components/Ranking'
-import { accountBookService } from '@/services'
+import { accountInOutService } from '@/services'
 
 export default {
   name: 'Dashboard',
@@ -93,13 +93,13 @@ export default {
     }
   },
   computed: {},
-  created() {
-    this.loadData()
+  async created() {
+    await this.loadData()
   },
   methods: {
     async loadData() {
       try {
-        const response = await accountBookService.statisticsEveryMonthInOut()
+        const response = await accountInOutService.statisticsEveryMonthInOut()
         const { data } = response.data
         const { inData, outData } = data
         const inDataFull = []

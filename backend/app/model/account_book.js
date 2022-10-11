@@ -27,10 +27,18 @@ module.exports = app => {
     remark: {
       type: TEXT,
       comment: '备注'
+    },
+    user_id: {
+      type: UUID,
+      comment: '用户Id'
     }
   }, {
     comment: '账本表'
   });
+
+  AccountBook.associate = function() {
+    AccountBook.belongsTo(app.model.SystemUser, { foreignKey: 'user_id', targetKey: 'id', constraints: false });
+  }
 
   return AccountBook;
 };

@@ -9,7 +9,7 @@
           <div class="box-amount">
             ¥<count-to :start-val="0" :end-val="statisticsData.monthOut" :duration="2000" />
           </div>
-          <div v-if="diffPercentOut !== 'Infinity'" class="box-tag">
+          <div v-if="diffPercentOut !== 'Infinity' && diffPercentOut !== 'NaN'" class="box-tag">
             <el-tag v-if="diffPercentOut < 0" type="danger" size="small">{{ diffPercentOut }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentOut }}%</el-tag>
           </div>
@@ -28,7 +28,7 @@
           <div class="box-amount">
             ¥<count-to :start-val="0" :end-val="statisticsData.monthIn" :duration="2000" />
           </div>
-          <div v-if="diffPercentIn !== 'Infinity'" class="box-tag">
+          <div v-if="diffPercentIn !== 'Infinity' && diffPercentIn !== 'NaN'" class="box-tag">
             <el-tag v-if="diffPercentIn < 0" type="danger" size="small">{{ diffPercentIn }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentIn }}%</el-tag>
           </div>
@@ -47,7 +47,7 @@
           <div class="box-amount">
             <count-to :start-val="0" :end-val="statisticsData.monthCount" :duration="2000" />
           </div>
-          <div v-if="diffPercentCount !== 'Infinity'" class="box-tag">
+          <div v-if="diffPercentCount !== 'Infinity' && diffPercentCount !== 'NaN'" class="box-tag">
             <el-tag v-if="diffPercentCount < 0" type="danger" size="small">{{ diffPercentCount }}%</el-tag>
             <el-tag v-else type="success" size="small">+{{ diffPercentCount }}%</el-tag>
           </div>

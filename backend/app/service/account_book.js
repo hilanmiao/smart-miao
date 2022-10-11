@@ -15,16 +15,18 @@ class AccountBookService extends Service {
    */
   async create({ name, remark, balance }) {
     const { ctx } = this;
+    const user_id = ctx.request.user.id
+
     let res,
       is_default = false
     try {
       balance = parseFloat(balance)
       // 查找是否有默认的
-      const findOne = await ctx.model.AccountBook.findOne({ where: { is_default: true } })
+      const findOne = await ctx.model.AccountBook.findOne({ where: { user_id, is_default: true } })
       if (!findOne) {
         is_default = true
       }
-      const model = await ctx.model.AccountBook.create({ name, remark, balance, is_default })
+      const model = await ctx.model.AccountBook.create({ user_id, name, remark, balance, is_default })
       res = { id: model.id }
 
       return res
@@ -127,7 +129,12 @@ class AccountBookService extends Service {
    */
   async list() {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
+
     const op = {
+      where: {
+        user_id
+      },
       attributes: {
         include: [
           [Sequelize.literal(`(
@@ -169,9 +176,12 @@ class AccountBookService extends Service {
    */
   async page({ page, limit, name }) {
     const { ctx, app: { Sequelize, Sequelize: { Op } } } = this;
+    const user_id = ctx.request.user.id
+
     const op = {
       where: {
         name: { [Op.like]: `%${name || ''}%` },
+        user_id
       },
       order: [
         [ 'created_at', 'desc' ]
