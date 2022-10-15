@@ -41,7 +41,7 @@
 ## 平台目录
 - [x] backend：基于`Egg.js 2.x`和`nodejs 16.x`的后端工程
 - [x] frontend：基于`Vue.js 2.x`的前端工程
-- [x] app：基于`Uniapp、uviewui 1.x`的移动端工程
+- [x] app：基于`uni-app、uviewui 1.x`的移动端工程
 - [x] web：基于`Bulma.css 0.9.x`的产品营销网站
 - [x] desktop：基于`Electron 16.x`和`electron-forge`的桌面工程，请查看另一个开源项目
 [LanMiaoDesktop](https://github.com/hilanmiao/LanMiaoDesktop) 的 `online` 分支
