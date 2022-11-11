@@ -289,6 +289,7 @@ background-color: rgb(240, 242, 244);
 <style lang="scss" scoped>
 .wrap {
   padding: 0;
+  //padding-top: var(--status-bar-height);
   height: calc(100vh);
   display: flex;
   flex-direction: column;

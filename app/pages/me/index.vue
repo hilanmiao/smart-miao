@@ -198,6 +198,7 @@ page {
 <style lang="scss" scoped>
 .wrap {
   padding: 0;
+  //padding-top: var(--status-bar-height);
   overflow: hidden;
 
   > .box-head {

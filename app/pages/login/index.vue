@@ -11,7 +11,7 @@
       <view class="box-title">
         <u-image class="u-image" mode="scaleToFill" height="200" width="200" src="@/static/app/common/logo.png"></u-image>
         <text class="title">招财猫</text>
-        <text class="subtitle">您的私人理财专家</text>
+        <text class="subtitle">您的贴心生活助理</text>
       </view>
       <u-form class="u-form" :model="form" ref="uForm" :errorType="errorType">
         <u-form-item prop="username" :border-bottom="false">

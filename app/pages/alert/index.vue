@@ -102,6 +102,7 @@ background-color: rgb(240, 242, 244);
 
 <style lang="scss" scoped>
 .wrap {
+  padding-top: var(--status-bar-height);
   .u-navbar {
     .navbar-right {
       color: $cus-title-color;

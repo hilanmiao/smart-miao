@@ -68,7 +68,7 @@ const classifyData = [
         "key": "A字裙",
         "icon": "https://cdn.uviewui.com/uview/common/classify/1/1.jpg",
         "cat": 10,
-        no: '370784199206224510',
+        no: '110101199003073933',
         date: '2022-12-12 ~ 2022-12-12'
       }
     ]
@@ -306,6 +306,7 @@ page {
 <style lang="scss" scoped>
 .wrap {
   padding: 0;
+  padding-top: var(--status-bar-height);
   height: calc(100vh);
   display: flex;
   flex-direction: column;
