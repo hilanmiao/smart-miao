@@ -2,8 +2,8 @@
     "name" : "招财猫",
     "appid" : "__UNI__F648F04",
     "description" : "luckycat",
-    "versionName" : "1.0.0",
-    "versionCode" : 100,
+    "versionName" : "1.0.1",
+    "versionCode" : 101,
     "transformPx" : false,
     "app-plus" : {
         // APP-VUE分包，可提APP升启动速度，2.7.12开始支持，兼容微信小程序分包方案，默认关闭

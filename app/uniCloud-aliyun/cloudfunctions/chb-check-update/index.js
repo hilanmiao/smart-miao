@@ -22,7 +22,7 @@ exports.main = async (event, context) => {
   if (appid && clientVersion) {
     const db = uniCloud.database();
 
-    const collection = db.collection('uni-app-version')
+    const collection = db.collection('app-version')
     const record = await collection.where({
       appid: appid
     }).limit(1).get()
