@@ -3,6 +3,8 @@ name: Frontend & Backend CI/CD
 
 # 触发workflow的条件
 on:
+  # 可以手动触发
+  workflow_dispatch:
   push:
     # 只有master分支发生push事件时，才会触发workflow
     branches: [ master ]
