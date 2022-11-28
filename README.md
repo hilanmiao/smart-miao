@@ -5,7 +5,7 @@
 
 > 如果你是UI设计师，喜欢这个项目并希望贡献自己的能力，你出图，我来实现，love~
 
-> AE视频模板等资源太大，就不放到代码管理了，网盘也白瞎，有需要可以提issue，写上你的邮箱，我会尽快发给你～
+> 资源太大，就不放到代码管理了，阿里云盘： https://www.aliyundrive.com/s/qmYuPJBE9mc  提取码：d48b
 
 演示环境及账号密码：https://demo.smartmiao.com
 
