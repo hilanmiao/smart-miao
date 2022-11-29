@@ -27,8 +27,8 @@ $primary-invert: $pink-invert;
 */
 
 @import "../../../node_modules/bulma/bulma";
-@import "../../../node_modules/bulma-carousel/dist/css/bulma-carousel.min.css";
-@import "../../../node_modules/bulma-pricingtable/dist/css/bulma-pricingtable.min.css";
+@import "../../../node_modules/bulma-carousel/src/sass/index";
+@import "../../../node_modules/bulma-pricingtable/src/sass/index";
 
 $main-color: #1992ec;
 
