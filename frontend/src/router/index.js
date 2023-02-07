@@ -98,6 +98,7 @@ export const NotFoundRouter = {
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
+  base: '/frontend/',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
