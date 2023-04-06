@@ -401,7 +401,7 @@ class AccountInOutService extends Service {
     const listAccountBook = await ctx.model.AccountBook.findAll({ where: { user_id } })
     for (const accountBook of listAccountBook) {
       // 统计本月收支
-      const sumAmountOut = await ctx.model.AccountInOut.sum('amount', {
+      let sumAmountOut = await ctx.model.AccountInOut.sum('amount', {
         where: {
           [Op.and]: [
             { type: 'out' },
@@ -410,7 +410,10 @@ class AccountInOutService extends Service {
           ]
         }
       })
-      const sumAmountIn = await ctx.model.AccountInOut.sum('amount', {
+      // todo：判断空，sum 本地返回的是 0，服务器返回的是null
+      sumAmountOut = !_.isEmpty(sumAmountOut) ? sumAmountOut : 0
+
+      let sumAmountIn = await ctx.model.AccountInOut.sum('amount', {
         where: {
           [Op.and]: [
             { type: 'in' },
@@ -419,6 +422,8 @@ class AccountInOutService extends Service {
           ]
         }
       })
+      sumAmountIn = !_.isEmpty(sumAmountIn) ? sumAmountIn : 0
+
       monthOut = NP.round(monthOut, 2) + NP.round(sumAmountOut, 2)
       monthIn = NP.round(monthIn, 2) + NP.round(sumAmountIn, 2)
       // 统计本月记账笔数
@@ -432,7 +437,7 @@ class AccountInOutService extends Service {
       })
 
       // 统计上月收支
-      const sumAmountOutPrevious = await ctx.model.AccountInOut.sum('amount', {
+      let sumAmountOutPrevious = await ctx.model.AccountInOut.sum('amount', {
         where: {
           [Op.and]: [
             { type: 'out' },
@@ -441,7 +446,9 @@ class AccountInOutService extends Service {
           ]
         }
       })
-      const sumAmountInPrevious = await ctx.model.AccountInOut.sum('amount', {
+      sumAmountOutPrevious = !_.isEmpty(sumAmountOutPrevious) ? sumAmountOutPrevious : 0
+
+      let sumAmountInPrevious = await ctx.model.AccountInOut.sum('amount', {
         where: {
           [Op.and]: [
             { type: 'in' },
@@ -450,6 +457,8 @@ class AccountInOutService extends Service {
           ]
         }
       })
+      sumAmountInPrevious = !_.isEmpty(sumAmountInPrevious) ? sumAmountInPrevious : 0
+
       monthOutPrevious = NP.round(monthOutPrevious, 2) + NP.round(sumAmountOutPrevious, 2)
       monthInPrevious = NP.round(monthInPrevious, 2) + NP.round(sumAmountInPrevious, 2)
       // 统计上月记账笔数
