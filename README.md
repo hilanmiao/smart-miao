@@ -46,10 +46,17 @@
 - [x] desktop：基于`Electron 16.x`和`electron-forge`的桌面工程，请查看另一个开源项目
 [LanMiaoDesktop](https://github.com/hilanmiao/LanMiaoDesktop) 的 `online` 分支
 
-## 教程
+## Bilibili视频教程
 
-Bilibili-招财猫记账软件视频教程
+[01招财猫开源记账软件教程-介绍](https://www.bilibili.com/video/BV1Cg411J7Ew/?vd_source=1902bc0bfc0140a117144dec558c1565)
 
+[02招财猫开源记账软件教程-跑起来](https://www.bilibili.com/video/BV1Ue411w7vd/?vd_source=1902bc0bfc0140a117144dec558c1565)
+
+[03招财猫开源记账软件教程-部署](https://www.bilibili.com/video/BV1cW4y1o75L/?vd_source=1902bc0bfc0140a117144dec558c1565)
+
+[04招财猫开源记账软件教程-网页端、桌面端宣传演示视频](https://www.bilibili.com/video/BV1yG4y1N712/?vd_source=1902bc0bfc0140a117144dec558c1565)
+
+[05招财猫开源记账软件教程-移动端宣传演示视频](https://www.bilibili.com/video/BV1c84y14784/?vd_source=1902bc0bfc0140a117144dec558c1565)
 
 
 ## 赞助
