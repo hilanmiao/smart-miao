@@ -2,13 +2,14 @@
   <div class="account-in-out-category-container">
     <table-layout class="table-layout">
       <template v-slot:headerLeft>
-        <!--        <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>-->
-        <!--        <warning-confirm-button-->
-        <!--          button-type="danger"-->
-        <!--          :content="`确认批量删除 ${tableMultipleSelection.length} 条数据？`"-->
-        <!--          :closed="handleRefresh"-->
-        <!--          @confirm="(o) => { handleBulkDelete(o) }"-->
-        <!--        >批量删除</warning-confirm-button>-->
+        <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
+        <warning-confirm-button
+          button-type="danger"
+          :content="`确认批量删除 ${tableMultipleSelection.length} 条数据？`"
+          :closed="handleRefresh"
+          @confirm="(o) => { handleBulkDelete(o) }"
+        >批量删除
+        </warning-confirm-button>
       </template>
       <template v-slot:headerRight>
         <el-input v-model="tableSearchParams.name" size="mini" placeholder="请输入名称" class="search-input">
@@ -67,7 +68,7 @@
 
 <script>
 import _ from 'lodash'
-// import WarningConfirmButton from '@/components/WarningConfirmButton'
+import WarningConfirmButton from '@/components/WarningConfirmButton'
 import TableLayout from '@/layout/components/TableLayout'
 import Pagination from '@/components/Pagination'
 import accountInOutCategoryFormDialog from './components/account-in-out-category-form-dialog'
@@ -78,7 +79,7 @@ export default {
   components: {
     TableLayout,
     Pagination,
-    // WarningConfirmButton,
+    WarningConfirmButton,
     accountInOutCategoryFormDialog
   },
   data() {
