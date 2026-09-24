@@ -16,9 +16,9 @@
   >
     <el-option
         v-for="item in filteredList"
-        :key="item.id"
-        :label="item.name"
-        :value="item.id"
+        :key="item[optionKey]"
+        :label="item[optionLabel]"
+        :value="item[optionValue]"
     />
   </el-select>
 </template>
@@ -36,15 +36,37 @@ const props = defineProps({
   list: {
     type: Array,
     default: () => [],
-    validator: (list) => list.every(item => item.id !== undefined && typeof item.name === 'string')
+    // validator: (list) => list.every(item => item.id !== undefined && typeof item.name === 'string')
   },
-  multiple: { type: Boolean, default: false }, // 👈 控制模式
-  placeholder: { type: String, default: '请选择' },
+  optionKey: { type: String, default: 'id' },
+  optionLabel: { type: String, default: 'name' },
+  optionValue: { type: String, default: 'id' },
+  multiple: { type: Boolean, default: false }, // 控制模式
+  placeholder: { type: String, default: '请输入或选择' },
   width: { type: String, default: '' },
   maxCollapseTags : { type: Number, default: 3 },
   clearable: { type: Boolean, default: true },
   disabled: { type: Boolean, default: false }
 })
+
+// 在运行时进行动态验证，此时 props 已完全可用
+if (import.meta.env.DEV) {
+  watch(
+      () => [props.list, props.optionKey, props.optionLabel],
+      ([list, key, label]) => {
+        const invalid = list.some(
+            item => item[key] === undefined || typeof item[label] !== 'string'
+        )
+        if (invalid) {
+          console.warn(
+              `[MyComponent] Invalid list item: each item must have "${key}" defined and "${label}" as string.`,
+              toRaw(list)
+          )
+        }
+      },
+      { immediate: true, deep: true }
+  )
+}
 
 const emit = defineEmits(['update:modelValue', 'change', 'clear'])
 
@@ -68,8 +90,8 @@ const processedList = computed(() => {
   return props.list.map(item => ({
     ...item,
     // 设置 options.v 为 true 之后，转换结果中的 ü 将会被替换为 v
-    _pinyin: pinyin(item.name, { toneType: 'none', type: 'array', v: true }).join('').toLowerCase(),
-    _abbr: pinyin(item.name, { toneType: 'none', type: 'array', pattern: 'first', v: true }).join('').toLowerCase()
+    _pinyin: pinyin(item[props.optionLabel], { toneType: 'none', type: 'array', v: true }).join('').toLowerCase(),
+    _abbr: pinyin(item[props.optionLabel], { toneType: 'none', type: 'array', pattern: 'first', v: true }).join('').toLowerCase()
   }))
 })
 
@@ -81,7 +103,7 @@ const handleFilter = (query) => {
   }
   const q = query.toLowerCase()
   filteredList.value = processedList.value.filter(item =>
-      item.name.includes(query) ||
+      item[props.optionLabel].includes(query) ||
       item._pinyin.includes(q) ||
       item._abbr.includes(q)
   )
@@ -90,10 +112,10 @@ const handleFilter = (query) => {
 // change 事件：统一返回选中的完整对象（单选）或对象数组（多选）
 const handleChange = (val) => {
   if (props.multiple) {
-    const selectedItems = props.list.filter(item => val.includes(item.id))
+    const selectedItems = props.list.filter(item => val.includes(item[props.optionValue]))
     emit('change', selectedItems)
   } else {
-    const selectedItem = props.list.find(item => item.id === val) || null
+    const selectedItem = props.list.find(item => item[props.optionValue] === val) || null
     emit('change', selectedItem)
   }
 }

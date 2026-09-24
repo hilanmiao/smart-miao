@@ -2,8 +2,8 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
 
-// const baseUrl = 'http://192.168.0.99:20001' // 后端接口
-const baseUrl = 'http://192.168.0.88:10003' // 后端接口
+const baseUrl = 'http://192.168.0.99:20001' // 后端接口
+// const baseUrl = 'http://192.168.0.88:10003' // 后端接口
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
@@ -48,22 +48,25 @@ export default defineConfig(({ mode, command }) => {
       port: 20002,
       host: true,
       open: true,
+      // 关键配置：启用轮询以兼容 Docker/WSL/NFS
+      watch: {
+        usePolling: true,
+        interval: 1000, // 1秒轮询一次，可根据性能调整
+      },
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         // '/dev-api': {
         '/frontend/dev-api': {
-          // target: 'http://192.168.0.88:8888/api',
           target: baseUrl + '/api',
-          // target: 'http://vue.ruoyi.vip/prod-api',
           changeOrigin: true,
+          secure: false, // 允许自签名/无效HTTPS证书
           // rewrite: (p) => p.replace(/^\/dev-api/, '')
           rewrite: (p) => p.replace(/^\/frontend\/dev-api/, '')
         },
         '/frontend/uploads': {
           target: baseUrl + '/uploads',
-          // target: 'http://vue.ruoyi.vip/prod-api',
           changeOrigin: true,
-          // rewrite: (p) => p.replace(/^\/dev-api/, '')
+          secure: false, // 允许自签名/无效HTTPS证书
           rewrite: (p) => p.replace(/^\/frontend\/uploads/, '')
         },
       }

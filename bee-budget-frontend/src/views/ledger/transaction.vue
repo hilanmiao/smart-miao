@@ -6,34 +6,18 @@
         <el-card shadow="always" class="search">
           <el-form :model="searchParams" ref="searchRef" :inline="true" label-width="100px" @submit.prevent="onSearch">
             <el-form-item label="账本" prop="ledgerId">
-              <el-select
+              <select-advance
                   v-model="searchParams.ledgerId"
-                  placeholder="请选择账本"
-                  style="width: 160px"
+                  :list="ledgerList"
               >
-                <el-option
-                    v-for="item in ledgerList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                    :disabled="item.status === 1"
-                />
-              </el-select>
+              </select-advance>
             </el-form-item>
             <el-form-item label="交易分类" prop="transactionCategoryId">
-              <el-select
+              <select-advance
                   v-model="searchParams.transactionCategoryId"
-                  placeholder="请选择账本"
-                  style="width: 160px"
+                  :list="transactionCategoryList"
               >
-                <el-option
-                    v-for="item in transactionCategoryList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                    :disabled="item.status === 1"
-                />
-              </el-select>
+              </select-advance>
             </el-form-item>
             <el-form-item label="交易描述" prop="description">
               <el-input
@@ -44,19 +28,14 @@
               />
             </el-form-item>
             <el-form-item label="状态" prop="status">
-              <el-select
+              <select-advance
                   v-model="searchParams.status"
-                  placeholder="状态"
-                  clearable
-                  style="width: 160px"
+                  :list="transaction_status"
+                  option-key="value"
+                  option-label="label"
+                  option-value="value"
               >
-                <el-option
-                    v-for="dict in transaction_status"
-                    :key="dict.value"
-                    :label="dict.label"
-                    :value="dict.value"
-                />
-              </el-select>
+              </select-advance>
             </el-form-item>
             <el-form-item label="日期范围" prop="dateRange">
               <el-date-picker
@@ -189,33 +168,18 @@
     <el-dialog :title="dialogTitle" v-model="isDialogOpen" width="800px" append-to-body>
       <el-form :model="formData" :rules="formRules" ref="formRef" label-width="110">
         <el-form-item label="账本" prop="ledgerId">
-          <el-select
+          <select-advance
               v-model="formData.ledgerId"
-              placeholder="请选择账本"
-              :disabled="formData.id"
+              :list="ledgerList"
           >
-            <el-option
-                v-for="item in ledgerList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-                :disabled="item.status === 1"
-            />
-          </el-select>
+          </select-advance>
         </el-form-item>
         <el-form-item label="交易分类" prop="transactionCategoryId">
-          <el-select
+          <select-advance
               v-model="formData.transactionCategoryId"
-              placeholder="请选择交易分类"
+              :list="transactionCategoryList"
           >
-            <el-option
-                v-for="item in transactionCategoryList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-                :disabled="item.status === 1"
-            />
-          </el-select>
+          </select-advance>
         </el-form-item>
         <el-form-item label="交易类型" prop="type">
           <el-radio-group v-model="formData.type">
@@ -291,6 +255,7 @@ import {
   batchDeleteTransaction,
   changeTransactionStatus,
 } from "@/api/ledger/transaction.js"
+import SelectAdvance from "@/components/SelectAdvance/index.vue";
 
 // --- 表格相关 ---
 const tableRef = ref(null)
@@ -552,8 +517,8 @@ function onSortChange({column, prop, order}) {
 function reset() {
   formData.value = {
     id: null,
-    ledgerId: null,
-    transactionCategoryId: null,
+    ledgerId: ledgerList.value?.[0]?.id || null,
+    transactionCategoryId: transactionCategoryList.value?.[0]?.id || null,
     type: '支出',
     amount: null,
     description: null,
@@ -811,7 +776,7 @@ function onExport() {
       },
       {
         v: item.transactionCategoryName,
-        t: 'n',
+        t: 's',
         s: {
           alignment: {vertical: 'center', horizontal: 'center'}, // 居中对齐
           fill: {fgColor: {rgb: yellowColor}}, // 背景色
@@ -819,7 +784,7 @@ function onExport() {
       },
       {
         v: item.type,
-        t: 'n',
+        t: 's',
         s: {
           alignment: {vertical: 'center', horizontal: 'center'}, // 居中对齐
           fill: {fgColor: {rgb: yellowColor}}, // 背景色
@@ -835,7 +800,7 @@ function onExport() {
       },
       {
         v: item.description,
-        t: 'n',
+        t: 's',
         s: {
           alignment: {vertical: 'center', horizontal: 'center'}, // 居中对齐
           fill: {fgColor: {rgb: yellowColor}}, // 背景色
@@ -843,7 +808,7 @@ function onExport() {
       },
       {
         v: dayjs(item.date).format('YYYY-MM-DD HH:mm:ss'),
-        t: 'n',
+        t: 's',
         s: {
           alignment: {vertical: 'center', horizontal: 'center'}, // 居中对齐
           fill: {fgColor: {rgb: yellowColor}}, // 背景色
@@ -858,8 +823,8 @@ function onExport() {
         },
       },
       {
-        v: item.remark,
-        t: 'n',
+        v: item.remark || '',
+        t: 's',
         s: {
           alignment: {vertical: 'center', horizontal: 'center'}, // 居中对齐
           fill: {fgColor: {rgb: yellowColor}}, // 背景色
