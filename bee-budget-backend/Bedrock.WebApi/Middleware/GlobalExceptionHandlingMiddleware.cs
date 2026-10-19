@@ -39,7 +39,7 @@ namespace Bedrock.WebApi.Middleware
             }
             catch (Exception ex)
             {
-                ConsoleHelper.Error($"一个未处理的全局异常发生：{ex.Message}");
+                //ConsoleHelper.Error($"一个未处理的全局异常发生：{ex.Message}");
 
                 // 记录异常信息
                 _logger.LogError(ex, "一个未处理的全局异常发生");

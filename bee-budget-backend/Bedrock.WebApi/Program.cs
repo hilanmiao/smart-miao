@@ -152,7 +152,7 @@ builder.Services.AddScoped<ISqlSugarClient>(s =>
         //Log.Information("SQL 执行中: {Sql}, 参数: {@Params}", sql, pars);
 
         // 输出sql,查看执行sql 性能无影响
-        ConsoleHelper.Success($"{DateTime.UtcNow} SQL 执行中: {sql}");
+        //ConsoleHelper.Success($"{DateTime.UtcNow} SQL 执行中: {sql}");
 
         // 获取原生SQL推荐 5.1.4.63  性能OK
         //ConsoleHelper.Success(UtilMethods.GetNativeSql(sql, pars));
