@@ -12,6 +12,18 @@ namespace Bedrock.WebApi.Filters
     /// </summary>
     public class ApiExceptionFilter : IExceptionFilter
     {
+        private readonly ILogger<ApiExceptionFilter> _logger;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ApiExceptionFilter(ILogger<ApiExceptionFilter> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         /// <summary>
         /// 当发生未处理的异常时调用此方法。
         /// 捕获异常、生成标准化错误响应，并记录详细日志。
@@ -53,7 +65,8 @@ namespace Bedrock.WebApi.Filters
             }
 
             // 使用控制台输出错误信息
-            ConsoleHelper.Error($"API Exception: {context.Exception.Message}");
+            //ConsoleHelper.Error($"API Exception: {context.Exception.Message}");
+            _logger.LogError(context.Exception, "发生未处理的 API 异常 (Path: {Path})", context.HttpContext.Request.Path);
 
             // 设置ActionResult为包含错误信息的对象结果，并指定状态码
             context.Result = new ObjectResult(errorResponse)

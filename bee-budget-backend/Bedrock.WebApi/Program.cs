@@ -458,7 +458,7 @@ var app = builder.Build(); // DI 容器已准备好
 
 try
 {
-    ConsoleHelper.Success("正在启动应用...");
+    //ConsoleHelper.Success("正在启动应用...");
     Log.Information("正在启动应用...");
 
     // 注册全局异常处理中间件（中间件的执行顺序遵循“先进后出”（First In, Last Out）的栈式模型。想象成洋葱圈，需要放最前面才能捕获全局异常！）
@@ -568,14 +568,14 @@ try
     // 映射控制器路由
     app.MapControllers();
 
-    ConsoleHelper.Success($"应用启动成功，监听端口 {port}");
+    //ConsoleHelper.Success($"应用启动成功，监听端口 {port}");
     Log.Information("应用启动成功，监听端口 {Port}", port);
 
     app.Run();
 }
 catch (Exception ex)
 {
-    ConsoleHelper.Error($"启动应用时发生致命错误: {ex.Message}");
+    //ConsoleHelper.Error($"启动应用时发生致命错误: {ex.Message}");
     Log.Fatal(ex, "启动应用时发生致命错误");
     throw;
 }
